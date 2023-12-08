@@ -1,0 +1,41 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  SERVER_HOST: 188.127.225.100
+  SERVER_USER: user744875
+  SERVER_PORT: 22122
+  SERVER_PASS: m3WfF65xoCpG
+  SERVER_PATH: /var/www/user744875/data/www
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Actions checkout
+      - uses: actions/checkout@v3
+        with:
+          node-version: '18.x'
+
+      # Deploy
+      - name: Connect on remote server and deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{env.SERVER_HOST}}
+          port: ${{env.SERVER_PORT}}
+          username: ${{env.SERVER_USER}}
+          password: ${{env.SERVER_PASS}}
+          key: ${{secrets.KEY}}
+          script: |
+            cd ${{env.SERVER_PATH}}/alba-del-mare.ru;
+            git checkout master;
+            git reset --hard
+            git pull origin master;
+            cd backend
+            date +%s > version.txt
