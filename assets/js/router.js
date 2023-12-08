@@ -14,8 +14,6 @@ if (getAuthorization != null && getAuthorization == "true") {
 
 
 
-
-
 async function authorization() {
     importComponent(`/pages/authorization/authorization.js`);
 }
