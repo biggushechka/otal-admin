@@ -1,0 +1,204 @@
+html,
+body {
+    background: var(--dark-blue);
+}
+
+#app {
+    padding: 0;
+}
+
+.P-authorization-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(var(--vh, 1vh) * 100);
+    padding: 15px;
+}
+
+.P-authorization-form .form-container {
+    width: 456px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 16px rgba(91, 100, 129, 0.08);
+    transition: opacity 200ms ease-in-out, transform 600ms ease-in-out;
+}
+
+.P-authorization-form .form-container.fadeOut {
+    opacity: 0;
+    transform: scale(0.6);
+}
+
+.P-authorization-form .form-container .wrapper-container {
+    width: 100%;
+    height: 100%;
+    padding: 48px;
+}
+
+.P-authorization-form .form-container .wrapper-container .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 15px;
+    width: 100%;
+    margin-bottom: 48px;
+}
+
+.P-authorization-form .form-container .wrapper-container .logo-container .img-logo {
+    width: 40px;
+}
+
+.P-authorization-form .form-container .wrapper-container .logo-container > .title {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .title-form {
+    display: block;
+    color: #333;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper label {
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper label:last-child {
+    margin-bottom: 0;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .field-input {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #E5E5E5;
+    background: #F2F2F2;
+    color: var(--text-primary);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus
+input:-webkit-autofill {
+    -webkit-text-fill-color: var(--text-primary);
+    -webkit-box-shadow: 0 0 0px 1000px #F2F2F2 inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .field-input:hover {
+    border-color: #333;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .field-input:focus {
+    border-color: var(--global-primary);
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .field-input.error-valid {
+    border-color: var(--danger);
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    color: #fff !important;
+    border-radius: 6px;
+    margin-top: 17px;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .error-notification {
+    margin-top: -10px;
+    opacity: 0;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .error-notification.active {
+    opacity: 1;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .error-notification .text {
+    color: var(--danger);
+    font-size: 13px;
+}
+
+
+
+
+
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization:focus-within,
+.P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization:active {
+    transform: scale(0.99);
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization.completed {
+    pointer-events: none;
+    cursor: default;
+    background: var(--done);
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization.loading {
+    pointer-events: none;
+    cursor: default;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization.completed .title,
+.P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization.loading .title {
+    opacity: 0;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization.loading:after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 10px);
+    left: calc(50% - 10px);
+
+    width: 20px;
+    height: 20px;
+    border: 3px solid #fff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    -webkit-animation: rotation 1s linear infinite;
+    animation: rotation 1s linear infinite;
+}
+
+.P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization.completed:before {
+    content: '';
+    position: absolute;
+    top: calc(50% - 14px);
+    left: calc(50% - 5px);
+
+    display: inline-block;
+    width: 14px;
+    height: 23px;
+    border: solid #fff;
+    border-width: 0px 6px 6px 0;
+    transform: rotate( 45deg);
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+@media (max-width: 767px) {
+    .P-authorization-form .form-container .wrapper-container {
+        padding: 24px;
+    }
+}

@@ -1,0 +1,91 @@
+@charset "UTF-8";
+
+/* ------------------------------- import ------------------------------- */
+@import "./../../plugins/uikit/uikit.min.css";
+@import "./variables.css";
+@import "./fonts.css";
+@import "../icons/icons.css";
+@import "./uikit.css";
+@import "./normalize.css";
+/*@import "./modal.css";*/
+
+/* -------------------------- import Components -------------------------- */
+@import "/components/Navigation/Navigation.css";
+@import "/components/Header/Header.css";
+
+html {
+    background-color: var(--body-color);
+}
+
+body {
+    min-height: calc(var(--vh, 1vh) * 100);
+    background-color: var(--body-color);
+    font-family: 'Ubuntu', sans-serif;
+}
+
+/* скелетон заглушка для img */
+img[src=''] {
+    background-color: #e2e5e7;
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+    background-size: 60px 100%;
+    background-repeat: no-repeat;
+    background-position: left -40px top 0;
+    -webkit-animation: shine 1s ease-in-out infinite;
+    animation: shine 1s ease infinite;
+}
+
+@keyframes shine {
+    to {
+        background-position: right -40px top 0;
+    }
+}
+
+.no-scroll {
+    overflow: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.no-scroll::-webkit-scrollbar {
+    width: 0;
+}
+
+.no-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+#app {
+    min-height: calc(var(--vh, 1vh) * 100);
+    opacity: 0;
+    padding-left: 260px;
+    padding-top: 95px;
+
+    animation-fill-mode: forwards;
+    animation-delay: 0s;
+    animation-duration: 200ms;
+    animation-name: visibleApp;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+}
+
+@keyframes visibleApp {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#app.visible {
+    opacity: 1;
+}
+
+.G-container {
+    max-width: calc(var(--container) + 120px);
+    width: 100%;
+    padding: 0 60px;
+    margin: 0 auto;
+    z-index: 1;
+}

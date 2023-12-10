@@ -1,0 +1,52 @@
+#G-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 100%;
+    height: 60px;
+    padding-left: 260px;
+    background-color: #fff;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+#G-header > .wrapper-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    height: 100%;
+}
+
+#G-header > .wrapper-container .left-col {
+    display: flex;
+    align-items: center;
+}
+
+#G-header > .wrapper-container .left-col .title-page {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 10px;
+    color: var(--text-primary);
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+#G-header > .wrapper-container .left-col .title-page a {
+    position: relative;
+    color: inherit;
+    cursor: default;
+}
+
+#G-header > .wrapper-container .left-col .title-page a[href]:hover {
+    color: var(--global-primary);
+    cursor: pointer;
+}
+
+#G-header > .wrapper-container .left-col .title-page i {
+    color: #ccc;
+    font-size: 16px;
+}

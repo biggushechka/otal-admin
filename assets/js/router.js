@@ -3,16 +3,12 @@ var pathname = document.location.pathname,
     page = "",
     getAuthorization = getCookie("authorization");
 
-console.log("authorization", getAuthorization);
-
 // проверяем, есть ли авторизация пользователя
 if (getAuthorization != null && getAuthorization == "true") {
     initCarcass();
 } else {
     authorization();
 }
-
-
 
 async function authorization() {
     importComponent(`/pages/authorization/authorization.js`);
@@ -21,12 +17,10 @@ async function authorization() {
 async function initCarcass() {
     getPage();
 
-    console.log("page:", page);
-
     // Navigation
-    // await import("/components/Navigation/Navigation.js?v="+version);
+    await import("/components/Navigation/Navigation.js?v="+version);
     // Header
-    // await import("/components/Header/Header.js?v="+version).then(obj => obj.default);
+    await import("/components/Header/Header.js?v="+version).then(obj => obj.default);
     // page
     createCSSLink(`/pages/${page}/css/${page}.css`);
     await importComponent(`/pages/${page}/${page}.js`);

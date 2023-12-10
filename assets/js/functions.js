@@ -1,3 +1,23 @@
+function settingPage(data) {
+    document.title = data.title+" | OTAL Admin";
+
+    var getBreadcrumbs = ``;
+    for (var i in data.breadcrumbs) {
+        var item = data.breadcrumbs[i],
+            link = (item.link != undefined && item.link != "") ? `href="${item.link}"` : ``,
+            title = (item.title != undefined && item.title != "") ? item.title : `<span style="color: red;">NaN</span>`,
+            icon = (data.breadcrumbs.length > 1) ? `<i class="ph ph-caret-right"></i>` : "";
+
+        getBreadcrumbs += `${(i != 0) ? icon : ""}<a ${link}>${title}</a>`;
+    }
+    document.querySelector("#G-header .title-page").innerHTML = getBreadcrumbs;
+}
+
+function sizeBarBrowser() {
+    const viewPortHeight = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${viewPortHeight}px`);
+}
+
 // создание <link> тега
 function createCSSLink(path) {
     let nameFile = path.match(/\/([^\/]+)\.css$/)[1];

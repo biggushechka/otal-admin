@@ -1,0 +1,119 @@
+@charset "UTF-8";
+
+/* кнопки */
+.btn {
+    font-family: "Ubuntu", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: max-content;
+    border-radius: 64px;
+    padding: 10px 32px;
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 114.286% */
+    letter-spacing: 0.2px;
+    text-align: center;
+    text-decoration: none;
+
+    width: max-content;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+/* primary */
+.btn.btn-primary {
+    color: var(--text-primary);
+    background: var(--global-primary);
+}
+
+.btn.btn-primary:hover {
+    background: #3f6ad2;
+}
+
+.btn.btn-primary:active {
+    background: #466fd2;
+}
+
+.btn.btn-primary[disabled] {
+    background: #ccc;
+}
+
+
+/* secondary */
+.btn.btn-secondary {
+    color: var(--text-primary);
+    background: var(--text-constant);
+}
+
+.btn.btn-secondary:hover {
+    color: #000;
+    background: var(--button-secondary-light);
+}
+
+.btn.btn-secondary:active {
+    color: var(--text-secondary);
+    background: var(--button-secondary-light);
+}
+
+.btn.btn-secondary[disabled] {
+    color: var(--text-secondary);
+    background: var(--button-secondary-light);
+}
+
+/* outline-primary */
+.btn.btn-outline-primary {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+.btn.btn-outline-primary:hover {
+    color: var(--text-constant);
+    background: var(--button-secondary-light-2);
+    border-color: transparent;
+}
+
+.btn.btn-outline-primary:active {
+    color: var(--text-constant);
+    background: var(--global-primary);
+    border-color: transparent;
+}
+
+.btn.btn-outline-primary[disabled] {
+    color: var(--text-thirdly);
+    background: var(--text-thirdly);
+}
+
+/* link */
+.btn.btn-link {
+    background: transparent;
+    padding: 0;
+    color: var(--global-primary);
+    border-color: transparent;
+}
+
+.btn.btn-link:hover {
+    color: var(--text-constant);
+    background: var(--button-secondary-light-2);
+    border-color: transparent;
+}
+
+.btn.btn-link:active {
+    color: var(--text-constant);
+    background: var(--global-primary);
+    border-color: transparent;
+}
+
+.btn.btn-link[disabled] {
+    color: var(--text-thirdly);
+    background: var(--text-thirdly);
+}
