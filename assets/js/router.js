@@ -4,7 +4,7 @@ var pathname = document.location.pathname,
     getAuthorization = getCookie("authorization");
 
 // проверяем, есть ли авторизация пользователя
-if (getAuthorization != null && getAuthorization == "true") {
+if (getAuthorization != null && getAuthorization != "") {
     initCarcass();
 } else {
     authorization();
@@ -30,8 +30,8 @@ async function initCarcass() {
 function getPage() {
     if (pathname == "/") {
         page = "home";
-    } else if (paths.length == 2 && paths[1] == "sites") {
-        page = "sites";
+    } else if (paths.length == 2 && paths[1] == "my-sites") {
+        page = "my-sites";
     } else if (paths.length == 3 && paths[1] == "sites" && paths[2] != "") {
         page = "site";
     } else {

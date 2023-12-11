@@ -1,3 +1,13 @@
+// отправляем форму на сервер
+var getUser = XMLHttpRequestAJAX({
+    url: "/api/user",
+    method: "GET",
+    body: {
+        id: getAuthorization
+    }
+});
+getUser = getUser.data;
+
 let header = document.createElement('header');
 header.id = "G-header";
 var headerHTML = `
@@ -5,8 +15,20 @@ var headerHTML = `
     <div class="left-col">
         <h2 class="title-page"></h2>
     </div>
-    <div class="right-col"></div>
+    <div class="right-col">
+        <div class="user-container">
+            <img src="/api/media/admin.jpg" class="photo">
+            <span class="name">${getUser.name}</span>
+        </div>
+        <div class="event-buttons-container">
+            <button type="button" class="btn btn-item btn-logout"><i class="ph ph-sign-out"></i>Выход</button>
+        </div>
+    </div>
 </div>`;
 
 header.innerHTML = headerHTML;
 document.getElementById("app").before(header);
+
+document.querySelector(".btn-logout").addEventListener("click", function () {
+    logOutAdmin();
+});

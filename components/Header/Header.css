@@ -15,7 +15,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 30px;
+    padding-left: 30px;
+    padding-right: 10px;
     height: 100%;
 }
 
@@ -49,4 +50,66 @@
 #G-header > .wrapper-container .left-col .title-page i {
     color: #ccc;
     font-size: 16px;
+}
+
+
+
+
+
+
+#G-header > .wrapper-container .right-col {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+#G-header > .wrapper-container .right-col .user-container {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 10px;
+    height: 100%;
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+#G-header > .wrapper-container .right-col .user-container:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+#G-header > .wrapper-container .right-col .user-container .photo {
+    width: 36px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50px;
+    background-color: #ccc;
+    object-fit: cover;
+}
+
+#G-header > .wrapper-container .right-col .user-container .name {
+    color: var(--text-primary);;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#G-header > .wrapper-container .right-col .event-buttons-container {
+    display: flex;
+    height: 100%;
+}
+
+#G-header > .wrapper-container .right-col .event-buttons-container .btn-item {
+    padding: 0 20px;
+    height: 100%;
+    color: var(--text-primary);
+    border-left: 1px solid rgba(0, 0, 0, 0.10);;
+    border-radius: 0;
+}
+
+#G-header > .wrapper-container .right-col .event-buttons-container .btn-item i {
+    margin-right: 10px;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#G-header > .wrapper-container .right-col .event-buttons-container .btn-item:hover {
+    background-color: rgba(0, 0, 0, 0.08);
 }

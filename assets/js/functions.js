@@ -2,13 +2,17 @@ function settingPage(data) {
     document.title = data.title+" | OTAL Admin";
 
     var getBreadcrumbs = ``;
-    for (var i in data.breadcrumbs) {
-        var item = data.breadcrumbs[i],
-            link = (item.link != undefined && item.link != "") ? `href="${item.link}"` : ``,
-            title = (item.title != undefined && item.title != "") ? item.title : `<span style="color: red;">NaN</span>`,
-            icon = (data.breadcrumbs.length > 1) ? `<i class="ph ph-caret-right"></i>` : "";
+    if (data.breadcrumbs != undefined && data.breadcrumbs.length != 0) {
+        for (var i in data.breadcrumbs) {
+            var item = data.breadcrumbs[i],
+                link = (item.link != undefined && item.link != "") ? `href="${item.link}"` : ``,
+                title = (item.title != undefined && item.title != "") ? item.title : `<span style="color: red;">NaN</span>`,
+                icon = (data.breadcrumbs.length > 1) ? `<i class="ph ph-caret-right"></i>` : "";
 
-        getBreadcrumbs += `${(i != 0) ? icon : ""}<a ${link}>${title}</a>`;
+            getBreadcrumbs += `${(i != 0) ? icon : ""}<a ${link}>${title}</a>`;
+        }
+    } else {
+        getBreadcrumbs += data.title;
     }
     document.querySelector("#G-header .title-page").innerHTML = getBreadcrumbs;
 }
@@ -124,5 +128,191 @@ function deleteCookie(nameCookie) {
 
             break;
         }
+    }
+}
+
+
+function XMLHttpRequestAJAX(data) {
+
+    var sendData = {
+        url: (data.url != undefined && data.url != "") ? data.url : "",
+        method: (data.method != undefined && data.method != "") ? data.method : "POST",
+        body: (data.body != undefined && data.body != "") ? new URLSearchParams(data.body).toString() : ""
+    }
+
+    var xhr = new XMLHttpRequest();
+
+    if (sendData.method === "GET") {
+        xhr.open("GET", sendData.url + "?" + sendData.body, false);
+    } else {
+        xhr.open(sendData.method, sendData.url, false);
+    }
+
+    xhr.onload = function() {
+        if (xhr.status !== 200) console.error('%c ERROR: Request ', 'background: red; color: #fff; border-radius: 50px;', xhr);
+    };
+
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+
+    xhr.send(sendData.body);
+
+    var getData = {};
+    getData.code = xhr.status;
+
+    if (typeof xhr.responseText === "string") {
+        getData.data = JSON.parse(xhr.responseText);
+    } else {
+        getData.data = xhr.responseText;
+    }
+
+    return getData;
+}
+
+function logOutAdmin() {
+    var bodyTag = document.body;
+
+    getAuthorization = "";
+    deleteCookie("authorization");
+    bodyTag.classList.add("exit");
+
+    bodyTag.addEventListener('animationend', function(e) {
+        location.reload();
+    });
+}
+
+
+function DateFormat(date, format) {
+    if(date == "") date = "0000-00-00";
+    if(date == '0000-00-00 00:00:00' || date == '0000-00-00'){
+        if(format == 'd.m.Y'){
+            return '00.00.0000';
+        }else{
+            return date;
+        }
+    }
+    if (date instanceof Date){
+    }else{
+        if(typeof date != 'number') {
+            var dateReg = /^\d{2}([.])\d{2}\1\d{4}$/
+            var matches = date.match(dateReg); // matches
+            if (matches) {
+                date = date.replace(/^(\d{2})[.](\d{2})[.](\d{4})$/, '$3-$2-$1');
+            }
+            date = date.replaceAll('-','/');
+        }
+        date = new Date(date);
+    }
+    var arr_months_wd = {'01':'Января', '02':'Февраля', '03':'Марта','04':'Апреля', '05':'Мая', '06':'Июня', '07':'Июля', '08':'Августа', '09':'Сентября', '10':'Октября', '11':'Ноября', '12':'Декабря'}
+    var arr_months = {'01':'Январь', '02':'Февраль', '03':'Март','04':'Апрель', '05':'Май', '06':'Июнь', '07':'Июль', '08':'Август', '09':'Сентябрь', '10':'Октябрь', '11':'Ноябрь', '12':'Декабрь'}
+    var week_days = ['вс', 'пн', 'вт','ср','чт','пт','сб']
+    if(format == undefined){
+        format = "Y-m-d";
+    }
+    var month = date.getMonth()+1,
+        day = date.getDate(),
+        hour = date.getHours(),
+        minute = date.getMinutes(),
+        second = date.getSeconds(),
+        quarter = Math.ceil(month/3);
+
+
+    hour = (hour<10)?"0"+hour:hour;
+    minute = (minute<10)?"0"+minute:minute;
+    second = (second<10)?"0"+second:second;
+    var t = new Date(date.getFullYear(), date.getMonth()+1, 0);
+    t = t.getDate()+1;
+    month = month.toString().length > 1 ? month : '0' + month;
+    day = day.toString().length > 1 ? day : '0' + day;
+    var fullYear = date.getFullYear();
+    if(format == "Y"){
+        return fullYear;
+    }
+    if(format == "d"){
+        return day;
+    }
+    if(format == "Y-m-01"){
+        return fullYear+"-"+month+"-01";
+    }
+    if(format == "d Month, N (H:i)") {
+        return day + " " + arr_months_wd[month] + ", " + week_days[date.getDay()]+" ("+hour+":"+minute+")";
+    }
+    if(format.indexOf("Y-m-w")>-1){ // week - число , это номер дня недели
+        var num_week = format.replace("Y-m-w", "");
+        var week_n = date.getDay();
+        date.setDate(date.getDate() - week_n+parseInt(num_week));
+
+        return dt_format(date, 'Y-m-d');
+    }
+    if(format == "d Month, N"){
+        return day+" "+arr_months_wd[month]+", "+week_days[date.getDay()];
+    }
+    if(format == "d Month, N (Y)"){
+        return day+" "+arr_months_wd[month]+", "+week_days[date.getDay()] + " ("+fullYear+")";
+    }
+    if(format == "d Month Y"){
+        return day+" "+arr_months_wd[month]+" "+fullYear;
+    }
+    if(format == "d Month Y (H:i)"){
+        return day+" "+arr_months_wd[month]+" "+fullYear+" ("+hour+":"+minute+")";
+    }
+    if(format == "d.m.Y"){
+        return day+"."+month+"."+fullYear;
+    }
+    if(format == "Q Y"){
+        return quarter+" кв. "+fullYear;
+    }
+    if(format == "Y-m-d"){
+        return fullYear+"-"+month+"-"+day;
+    }
+    if(format == "d Month"){
+        return day+" "+arr_months_wd[month];
+    }
+    if(format == "H:i"){
+        return hour+":"+minute;
+    }
+    if(format == "d.m H:i"){
+        return day+"."+month+" "+hour+":"+minute;
+    }
+    if(format == "d.m.Y H:i:s"){
+        return day+"."+month+"."+fullYear+" "+hour+":"+minute+":"+second;
+    }
+    if(format == "d.m.Y H:i"){
+        return day+"."+month+"."+fullYear+" "+hour+":"+minute;
+    }
+    if(format == "Y-m-d H:i:s"){
+        return fullYear+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
+    }
+    if(format == "Y-m-dTH:i:s"){
+        return fullYear+"-"+month+"-"+day+"T"+hour+":"+minute+":"+second;
+    }
+    if(format == "Month Y"){
+        return arr_months[month] + " " + fullYear;
+    }
+    if(format == "Month"){
+        return arr_months[month];
+    }
+    if(format == "Y"){
+        return fullYear;
+    }
+    if(format == "NearFriday.m.Y"){
+        var delta = 5-date.getDay();
+        var result = new Date(date);
+        if (delta >= 0){
+            result.setDate(result.getDate()+delta);
+        }else{
+            result.setDate(result.getDate()+7+delta);
+        }
+        day = result.getDate();
+        day = day.toString().length > 1 ? day : '0' + day;
+        month = result.getMonth()+1;
+        month = month.toString().length > 1 ? month : '0' + month;
+        return "до "+day+"."+month+"."+fullYear;
+    }
+    if(format == "Y-m-t"){
+        var lastDayOfMonth = new Date(fullYear, date.getMonth()+1, 0);
+        lastDayOfMonth = lastDayOfMonth.getDate();
+        lastDayOfMonth = lastDayOfMonth.toString().length > 1 ? lastDayOfMonth : '0' + lastDayOfMonth;
+        return fullYear+"-"+month+"-"+lastDayOfMonth;
     }
 }

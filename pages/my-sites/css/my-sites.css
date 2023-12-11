@@ -1,0 +1,37 @@
+.P-my-sites {
+
+}
+
+.P-my-sites > .wrapper-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.P-my-sites > .wrapper-container .P-table-my-sites {
+
+}
+
+.P-my-sites > .wrapper-container .P-table-my-sites tbody .cell-title .link-to-site {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: inherit;
+}
+
+.P-my-sites > .wrapper-container .P-table-my-sites tbody .cell-title .link-to-site:hover {
+    color: var(--global-primary);
+}
+
+.P-my-sites > .wrapper-container .P-table-my-sites tbody .cell-title .link-to-site i {
+    color: #FFCC66;
+    font-size: 14px;
+    margin-right: 6px;
+}
+
+
+
+
+
+.P-modal-create-site form {
+
+}

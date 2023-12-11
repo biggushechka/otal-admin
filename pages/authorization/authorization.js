@@ -76,19 +76,21 @@ function authorizationVerification() {
         form.querySelector(".error-notification").classList.remove("active");
         btnSubmit.classList.add('loading'); // запускаем анимацию в кнопке submit
 
-
         setTimeout(function () {
             // отправляем форму на сервер
-            // var res = XMLHttpRequestAJAX({
-            //     url: "https://mirjk.planetarf.ru/api/v2/login",
-            //     method: "POST",
-            //     data: formData
-            // });
+            var res = XMLHttpRequestAJAX({
+                url: "/api/login",
+                method: "POST",
+                body: formData
+            });
 
-            if (formData.login == "admin" && formData.password == "123") {
+            console.log("res", res)
+
+            if (res.code === 200) {
+
                 setCookie({
                     name: "authorization",
-                    data: "true",
+                    data: res.data.id,
                     expires: "",
                     path: "/"
                 });

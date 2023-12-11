@@ -7,14 +7,11 @@
     align-items: center;
     justify-content: center;
     height: max-content;
-    border-radius: 64px;
-    padding: 10px 32px;
+    border-radius: 5px;
+    padding: 9px 15px;
 
-    font-size: 14px;
+    font-size: 13px;
     font-style: normal;
-    font-weight: 500;
-    line-height: 16px; /* 114.286% */
-    letter-spacing: 0.2px;
     text-align: center;
     text-decoration: none;
 
@@ -31,7 +28,7 @@
 
 /* primary */
 .btn.btn-primary {
-    color: var(--text-primary);
+    color: var(--text-constant);
     background: var(--global-primary);
 }
 
@@ -117,3 +114,69 @@
     color: var(--text-thirdly);
     background: var(--text-thirdly);
 }
+
+/* table */
+.G-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ccc;
+}
+
+.G-table thead tr {
+
+}
+
+.G-table thead tr th {
+    color: #767676;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.G-table td,
+.G-table th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.G-table tbody tr:hover {
+    background: rgba(30, 135, 240, 0.12);
+}
+
+/* end - table */
+
+/* form */
+form {
+    display: flex;
+    flex-direction: column;
+    grid-row-gap: 10px;
+}
+form .field-container {
+
+}
+
+form .field-container .title-field {
+    color: #767676;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+form .field-container input[type=text] {
+    width: 100%;
+    height: 38px;
+    border-radius: 5px;
+    border: 1px solid #9a9a9a;
+    margin-top: 6px;
+    padding: 0 10px;
+}
+
+form .field-container input[type=text]:hover {
+    border-color: #565656;
+}
+
+form .field-container input[type=text]:focus {
+    border-color: var(--global-primary);
+}
+/* end - form */
