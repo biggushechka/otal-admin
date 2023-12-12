@@ -65,7 +65,7 @@ export default function mySites() {
             dataForm.domain = domainSite;
 
             var createSite = XMLHttpRequestAJAX({
-                url: "/api/my-sites",
+                url: "/api/my_sites",
                 method: "POST",
                 body: dataForm
             });
@@ -76,7 +76,7 @@ export default function mySites() {
 
     function getAllSite() {
         var getSite = XMLHttpRequestAJAX({
-            url: "/api/my-sites",
+            url: "/api/my_sites",
             method: "GET"
         });
         getSite = getSite.data;

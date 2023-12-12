@@ -10,7 +10,7 @@ if ($method === "POST") {
     $domain = $_POST['domain'];
     $currentDateTime = date('Y-m-d H:i:s');
 
-    $sth = $dbh->prepare("INSERT INTO `my-sites` SET `title` = :title, `domain` = :domain, `date_create` = :date_create, `status` = :status");
+    $sth = $dbh->prepare("INSERT INTO `my_sites` SET `title` = :title, `domain` = :domain, `date_create` = :date_create, `status` = :status");
     $sth->execute(["title" => $title, "domain" => $domain, "date_create" => $currentDateTime, "status" => "on"]);
 
     header('Content-Type: application/json; charset=UTF-8');
@@ -18,7 +18,7 @@ if ($method === "POST") {
 
     die();
 } else if ($method === "GET") {
-    $sth = $dbh->prepare("SELECT * FROM `my-sites`");
+    $sth = $dbh->prepare("SELECT * FROM `my_sites`");
     $sth->execute();
     $my_sites = $sth->fetchAll(PDO::FETCH_ASSOC);
 
