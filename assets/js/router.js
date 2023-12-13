@@ -32,7 +32,7 @@ function getPage() {
         page = "home";
     } else if (paths.length == 2 && paths[1] == "my-sites") {
         page = "my-sites";
-    } else if (paths.length == 3 && paths[1] == "sites" && paths[2] != "") {
+    } else if (paths.length == 3 && paths[1] == "my-sites" && paths[2] != "") {
         page = "site";
     } else {
         page = "404";

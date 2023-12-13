@@ -28,10 +28,20 @@
     margin-right: 6px;
 }
 
+.P-my-sites > .wrapper-container .P-table-my-sites tbody .cell-domain a {
+    color: inherit;
+}
+
+.P-my-sites > .wrapper-container .P-table-my-sites tbody .cell-domain a:hover {
+    color: var(--global-primary);
+}
 
 
 
-
-.P-modal-create-site form {
-
+.P-modal-create-site .error-notification {
+    padding: 10px;
+    color: var(--danger);
+    font-size: 13px;
+    background: rgba(255, 0, 0, 0.1);
+    border-radius: 5px;
 }

@@ -148,10 +148,6 @@ function XMLHttpRequestAJAX(data) {
         xhr.open(sendData.method, sendData.url, false);
     }
 
-    xhr.onload = function() {
-        if (xhr.status !== 200) console.error('%c ERROR: Request ', 'background: red; color: #fff; border-radius: 50px;', xhr);
-    };
-
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
 

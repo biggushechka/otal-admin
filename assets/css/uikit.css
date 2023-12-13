@@ -115,6 +115,16 @@
     background: var(--text-thirdly);
 }
 
+.btn.btn-icon-left i {
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.btn.btn-icon-right i {
+    margin-left: 5px;
+    font-size: 18px;
+}
+
 /* table */
 .G-table {
     width: 100%;
@@ -179,4 +189,97 @@ form .field-container input[type=text]:hover {
 form .field-container input[type=text]:focus {
     border-color: var(--global-primary);
 }
+
+form .field-container .grid-fields-array {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 2px;
+    margin-top: 5px;
+}
+
+form .field-container .grid-fields-array label {
+    display: flex;
+    grid-gap: 6px;
+    padding: 6px 10px;
+    border-radius: 50px;
+}
+
+form .field-container .grid-fields-array label:hover {
+    background: #e0e5ff;
+    cursor: pointer;
+}
+
+form .field-container .grid-fields-array label input[type="radio"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+form .field-container .grid-fields-array label .title {
+    font-size: 14px;
+}
+
+form .field-container.error > .title-field {
+    color: var(--danger) !important;
+}
+
+form .field-container.error input[type=text] {
+    border-color: var(--danger) !important;
+}
+
+form .field-container.error .grid-fields-array label .title {
+    color: var(--danger) !important;
+}
+
+.G-switch-radio {
+
+}
+
+.G-switch-radio .row-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.G-switch-radio .row-container label {
+    position: relative;
+    display: block;
+    width: 36px;
+    height: 20px;
+    border-radius: 50px;
+    background: #c3c3c3;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.G-switch-radio .row-container label:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 70%;
+    aspect-ratio: 1 / 1;
+    background: #fff;
+    border-radius: 50px;
+    transform: translate(25%, -50%);
+    transition: transform 100ms ease-in-out;
+}
+
+.G-switch-radio .row-container input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    visibility: hidden;
+    opacity: 0;
+    margin: 0;
+}
+
+.G-switch-radio .row-container input[type="checkbox"]:checked + label {
+    background: #78C288;
+}
+
+.G-switch-radio .row-container input[type="checkbox"]:checked + label:before {
+    transform: translate(135%, -50%);
+}
+
 /* end - form */
