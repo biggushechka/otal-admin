@@ -74,9 +74,9 @@
 }
 
 .btn.btn-outline-primary:hover {
-    color: var(--text-constant);
-    background: var(--button-secondary-light-2);
-    border-color: transparent;
+    color: var(--global-primary);
+    background: rgba(0, 75, 255, 0.06);
+    border-color: var(--global-primary);
 }
 
 .btn.btn-outline-primary:active {
@@ -125,6 +125,16 @@
     font-size: 18px;
 }
 
+.btn.btn-square {
+    width: 38px;
+    padding: 0;
+    aspect-ratio: 1 / 1;
+}
+
+.btn.btn-square i {
+    font-size: 150%;
+}
+
 /* table */
 .G-table {
     width: 100%;
@@ -163,8 +173,13 @@ form {
     flex-direction: column;
     grid-row-gap: 10px;
 }
+
 form .field-container {
 
+}
+
+form .field-container[type="input-hidden"] {
+    display: none !important;
 }
 
 form .field-container .title-field {
@@ -250,6 +265,10 @@ form .field-container.error .grid-fields-array label .title {
     cursor: pointer;
 }
 
+.G-switch-radio .row-container label:hover {
+    background: #b6b6b6;
+}
+
 .G-switch-radio .row-container label:before {
     content: "";
     position: absolute;
@@ -283,3 +302,52 @@ form .field-container.error .grid-fields-array label .title {
 }
 
 /* end - form */
+
+
+/* dropdown */
+.mr-dropdown {
+
+}
+
+.mr-dropdown .dropdown-container {
+    background: var(--dark-blue);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 6px 25px rgba(0, 7, 22, 0.15);
+    border-radius: 5px;
+    padding: 5px 0;
+    overflow: hidden;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.mr-dropdown .dropdown-container .item-action {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    color: var(--text-thirdly);
+    padding: 6px 20px;
+    min-height: 33px;
+}
+
+.mr-dropdown .dropdown-container .item-action i:not(.icon) {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.mr-dropdown .dropdown-container .item-action .title {
+    color: var(--text-thirdly);
+    font-size: 13px;
+}
+
+.mr-dropdown .dropdown-container .item-action:hover {
+    background: rgba(120, 120, 120, 0.1)
+}
+
+.mr-dropdown .dropdown-container .separator {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 2px 0;
+}
+/* end - dropdown */

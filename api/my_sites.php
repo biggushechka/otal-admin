@@ -5,12 +5,13 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/db_connect.php';
 
+$title = isset($_POST['title']) ? $_POST['title'] : (isset($_GET['title']) ? $_GET['title'] : null);
+$domain = isset($_POST['domain']) ? $_POST['domain'] : (isset($_GET['domain']) ? $_GET['domain'] : null);
+$currentDateTime = date('Y-m-d H:i:s');
+
+
 // добавление нового сайта
 if ($method === "POST") {
-    $title = $_POST['title'];
-    $domain = $_POST['domain'];
-    $currentDateTime = date('Y-m-d H:i:s');
-
     // проверяем, есть ли уже такой сайт в БД по (title, domain)
     $query_findSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title OR `domain` = :domain LIMIT 1");
     $query_findSite->execute(["title" => $title, "domain" => $domain]);
@@ -18,10 +19,10 @@ if ($method === "POST") {
 
     if ($isSite) {
         header("HTTP/1.1 409 Conflict");
-        echo json_encode(["error"=>"Сайт с таким названием или доменом уже существует"], JSON_UNESCAPED_UNICODE);
+        echo json_encode("Сайт с таким названием или доменом уже существует", JSON_UNESCAPED_UNICODE);
     } else {
-        $query_create_site = $dbh->prepare("INSERT INTO `my_sites` SET `title` = :title, `domain` = :domain, `date_create` = :date_create, `status` = :status");
-        $query_create_site->execute(["title" => $title, "domain" => $domain, "date_create" => $currentDateTime, "status" => "on"]);
+        $query_create_site = $dbh->prepare("INSERT INTO `my_sites` SET `title` = :title, `domain` = :domain, `date_create` = :date_create, `activity` = :activity");
+        $query_create_site->execute(["title" => $title, "domain" => $domain, "date_create" => $currentDateTime, "activity" => "on"]);
 
         $query_get_site = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title AND `domain` = :domain LIMIT 1");
         $query_get_site->execute(["title" => $title, "domain" => $domain]);
@@ -44,9 +45,26 @@ if ($method === "GET") {
     header("HTTP/1.1 200 OK");
     header('Content-Type: application/json; charset=UTF-8');
     echo json_encode($my_sites, JSON_UNESCAPED_UNICODE);
-} else {
-    header("HTTP/1.1 404 Not Found");
-    echo json_encode(['user'=>null], JSON_UNESCAPED_UNICODE);
+}
+
+
+// удаление сайта
+if ($method === "DELETE") {
+    // проверяем, есть ли уже такой сайт в БД по (title, domain)
+    $query_findSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
+    $query_findSite->execute(["domain" => $domain]);
+    $isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
+
+    if ($isSite) {
+        $query_deleteSite = $dbh->prepare("DELETE FROM `my_sites` WHERE `domain` = :domain");
+        $query_deleteSite->execute(["domain" => $domain]);
+
+        header("HTTP/1.1 200 Delete");
+        echo json_encode("Сайт был успешно удален", JSON_UNESCAPED_UNICODE);
+    } else {
+        header("HTTP/1.1 409 Conflict");
+        echo json_encode("Сайт с таким доменом не найден", JSON_UNESCAPED_UNICODE);
+    }
 }
 
 die();

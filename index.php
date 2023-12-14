@@ -27,6 +27,7 @@ require_once $root . '/backend/template.php';
     <script src="/plugins/uikit/uikit.min.js"></script>
     <script src="/assets/icons/index.js"></script>
     <script src="/plugins/modal/modal.js?v=<?=$version?>"></script>
+    <script src="/plugins/imask/imask.js"></script>
     <script src="/plugins/form-fields/form-fields.js?v=<?=$version?>"></script>
     <script src="/assets/js/functions.js?v=<?=$version?>"></script>
     <script src="/assets/js/scripts.js?v=<?=$version?>"></script>

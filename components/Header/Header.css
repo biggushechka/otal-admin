@@ -4,7 +4,7 @@
     right: 0;
     z-index: 1;
     width: 100%;
-    height: 60px;
+    height: max-content;
     padding-left: 260px;
     background-color: #fff;
     backdrop-filter: blur(20px);
@@ -17,7 +17,7 @@
     justify-content: space-between;
     padding-left: 30px;
     padding-right: 10px;
-    height: 100%;
+    height: 60px;
 }
 
 #G-header > .wrapper-container .left-col {

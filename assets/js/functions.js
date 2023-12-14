@@ -132,8 +132,108 @@ function deleteCookie(nameCookie) {
 }
 
 
-function XMLHttpRequestAJAX(data) {
+function dropdownWidget(data) {
+    let classWrapper = (data.classWrapper != '' && data.classWrapper != undefined) ? data.classWrapper : null,
+        classList = (data.classList != '' && data.classList != undefined) ? data.classList : "",
+        buttonToggle = (data.buttonToggle != '' && data.buttonToggle != undefined) ? data.buttonToggle : '<button type="button" class=""><i class="icon menu-dots"></i></button>',
+        pos = (data.pos != undefined && data.pos != "") ? `pos: ${data.pos}` : "",
+        btn;
 
+    var dropdown = document.createElement("div");
+    dropdown.classList.add("mr-dropdown", classWrapper);
+    var html = `
+    ${buttonToggle}
+    <div uk-dropdown="mode: click; animation: uk-animation-slide-bottom-small; auto-update: false; offset: 5; ${pos}" class="dropdown-container uk-animation-fast ${classList}">`;
+        for (var i in data.buttonsList) {
+            btn = data.buttonsList[i];
+
+            if (btn.separator != undefined && btn.separator == "true") {
+                html += `<div class="separator"></div>`;
+                continue;
+            }
+
+            let className = (btn.class != '' && btn.class != undefined) ? btn.class : '',
+                link = (btn.link != '' && btn.link != undefined) ? `href="${btn.link}"` : '',
+                target = (btn.target != '' && btn.target != undefined) ? `target=${btn.target}` : '',
+                title = (btn.title != '' && btn.title != undefined) ? btn.title : 'NaN';
+
+            html += `<a ${link} ${target} class="item-action ${className}">`;
+
+            if (btn.icon != undefined) {
+                if (btn.icon.type == 'icon') {
+                    html += `<i class="icon ${btn.icon.name}"></i>`;
+                } if (btn.icon.type == 'icon-ph') {
+                    html += `<i class="${btn.icon.name}"></i>`;
+                } else if (btn.icon.type == 'img') {
+                    html += `<img src="${btn.icon.name}" alt="icon" class="icon-img">`;
+                }
+            }
+                html += `
+                <span class="title">${title}</span>
+            </a>`;
+        }
+        html += `
+    </div>`;
+    dropdown.innerHTML = html;
+
+    // закрыть dropdown по клику на любой пункт
+    var allbtn = dropdown.querySelectorAll(".item-action");
+
+    allbtn.forEach(function (btnItem) {
+        btnItem.addEventListener("click", function () {
+            UIkit.dropdown(this.closest('[uk-dropdown]')).hide(0);
+        });
+    });
+
+    return dropdown;
+}
+
+function modalAlert(data) {
+    var type = (data.type != undefined && data.type != "") ? data.type : "confirmation",
+        title = (type == "delete") ? `Вы действительно хотите удалить <br>"<b>${data.title}</b>"?` : (type == "confirmation") ? data.title : "NaN";
+        titleBtn = (type == "delete") ? `Удалить` : (type == "confirmation") ? `Продолжить` : "NaN";
+
+    var modalTAG = document.createElement("div");
+    modalTAG.classList.add("modal-alert-container");
+    modalTAG.innerHTML = `<p>${title}</p>`;
+
+    var modal = new Modal({
+        title: 'Подтвердите действие',
+        classModal: 'P-modal-alert',
+        content: modalTAG,
+        mode: 'center',
+        width: '480px',
+        footerEvents:{
+            cancel: {
+                active: true,
+            },
+            submit: {
+                active: true,
+                title: "Удалить",
+                nameClass: type,
+                callback: function(modalClass) {
+                    modalClass.closeModal();
+                    if(data.callback) data.callback(true);
+                },
+            },
+        }
+    });
+}
+
+function alertNotification(data) {
+    var icon = (data.status == "alert") ? "ph ph-warning" : (data.status == "error") ? "ph ph-x" : (data.status == "success") ? "ph ph-check-fat" : "";
+
+    var content = `
+    <div class="G-item-notif-msg ${data.status}">
+        <i class="${icon}"></i>
+        <p class='text'>${data.text}</p>
+    </div>`;
+
+    UIkit.notification({message: content, pos: data.pos});
+}
+
+
+function XMLHttpRequestAJAX(data) {
     var sendData = {
         url: (data.url != undefined && data.url != "") ? data.url : "",
         method: (data.method != undefined && data.method != "") ? data.method : "POST",
@@ -142,9 +242,11 @@ function XMLHttpRequestAJAX(data) {
 
     var xhr = new XMLHttpRequest();
 
-    if (sendData.method === "GET") {
-        xhr.open("GET", sendData.url + "?" + sendData.body, false);
-    } else {
+    if (sendData.method === "GET" || sendData.method === "DELETE") {
+        xhr.open(sendData.method, sendData.url + "?" + sendData.body, false);
+    }
+
+    if (sendData.method === "POST") {
         xhr.open(sendData.method, sendData.url, false);
     }
 
@@ -156,9 +258,9 @@ function XMLHttpRequestAJAX(data) {
     var getData = {};
     getData.code = xhr.status;
 
-    if (typeof xhr.responseText === "string") {
+    try {
         getData.data = JSON.parse(xhr.responseText);
-    } else {
+    } catch (error) {
         getData.data = xhr.responseText;
     }
 
@@ -311,4 +413,19 @@ function DateFormat(date, format) {
         lastDayOfMonth = lastDayOfMonth.toString().length > 1 ? lastDayOfMonth : '0' + lastDayOfMonth;
         return fullYear+"-"+month+"-"+lastDayOfMonth;
     }
+}
+
+function getDomainSite() {
+    var pathname = document.location.pathname,
+        paths = pathname.split('/'),
+        domain = paths[2];
+
+    return domain;
+}
+
+function animationBtnSuccess(btn) {
+    btn.classList.add("success-animation");
+    setTimeout(function () {
+        btn.classList.remove("success-animation");
+    }, 1500);
 }

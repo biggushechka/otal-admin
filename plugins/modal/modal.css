@@ -103,7 +103,7 @@
     opacity: 0;
     max-height: 100%;
     min-width: 400px;
-    transform: translate3d(0, -50px, 0);
+    transform: translate3d(0, 0, -50px);
     -webkit-transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
     -moz-transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
     transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
@@ -277,7 +277,7 @@
     will-change: transform, transform3d, opacity;
 }
 
-/* end - Модальное окно Планеты */
+/* end - Модальное окно */
 
 
 @media (max-width: 767px) {

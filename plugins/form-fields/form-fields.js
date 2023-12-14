@@ -9,7 +9,6 @@ class FormFields {
      */
 
     inputText(data) {
-
         var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
             name = (data.name != undefined && data.name != "") ? data.name : "",
             value = (data.value != undefined && data.value != "") ? data.value : "",
@@ -23,6 +22,41 @@ class FormFields {
         var fieldHTML = `
         ${label}
         <input type="text" name="${name}" value="${value}" ${placeholder} class="field-input" ${validate}>`;
+        fieldTAG.innerHTML = fieldHTML;
+
+        if (data.mask != undefined) {
+            var input = fieldTAG.querySelector("input");
+            if (data.mask == "phone") {
+                IMask(input, {mask: '+{7} (000) 000-00-00', min: 16, lazy: true});
+                input.onblur = function() {
+                    if (input.value.length != 18) input.value = "";
+                };
+            }
+            if (data.mask == "email") {
+                var pattern = /^([a-z0-9_\.-])+[@][a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
+
+                input.onblur = function() {
+                    if (!pattern.test(input.value)) {
+                        input.value = "";
+                    }
+                };
+            }
+        }
+
+        return fieldTAG;
+    }
+
+    inputHidden(data) {
+        var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
+            name = (data.name != undefined && data.name != "") ? data.name : "",
+            value = (data.value != undefined && data.value != "") ? data.value : "";
+
+        var fieldTAG = document.createElement("div");
+        fieldTAG.classList.add("field-container");
+        fieldTAG.setAttribute("type", "input-hidden");
+        var fieldHTML = `
+        ${label}
+        <input type="text" name="${name}" value="${value}" class="field-input">`;
         fieldTAG.innerHTML = fieldHTML;
 
         return fieldTAG;
@@ -90,7 +124,7 @@ class FormFields {
 
 
     switchRadio(data) {
-        var id_checkbox = Date.now();
+        var id_checkbox = Math.floor(Math.random() * (1000000 - 100000 + 1)) + 100000;
         var switchTAG = document.createElement("div");
         switchTAG.classList.add("G-switch-radio");
         switchTAG.innerHTML = `
@@ -99,18 +133,43 @@ class FormFields {
             <label for="${id_checkbox}"></label>
         </div>`;
 
-        console.log(data.checked)
+        var label = switchTAG.querySelector("label"),
+            input = switchTAG.querySelector("input");
 
         if (data.checked == "on") {
-            var maxmax = switchTAG.querySelector("input");
-            maxmax.checked
+            input.checked = true;
+        } else {
+            input.checked = false;
         }
+
+        label.addEventListener("click", function (e) {
+            if (data.callback) {
+                var changeActivity = (input.checked == true) ? false : true;
+                data.callback(changeActivity);
+            }
+        });
 
         return switchTAG;
     }
 
 
     // -------------------------------------------------------
+
+    setValuesForm(form, values) {
+        // Получение всех тегов "field-container"
+        var fieldContainers = form.querySelectorAll(".field-container");
+
+        fieldContainers.forEach(function(field) {
+            var typeField = field.getAttribute("type");
+
+            if (typeField === "input-text" || typeField === "input-hidden") {
+                var input = field.querySelector("input"),
+                    name = input.getAttribute("name");
+
+                input.value = values[name];
+            }
+        });
+    }
 
     getValuesForm(form) {
         var formData = {},
@@ -123,7 +182,7 @@ class FormFields {
         fieldContainers.forEach(function(container) {
             var typeField = container.getAttribute("type");
 
-            if (typeField === "input-text") {
+            if (typeField === "input-text" || typeField === "input-hidden") {
                 var field = container.querySelector("input"),
                     name = field.getAttribute("name"),
                     value = field.value,

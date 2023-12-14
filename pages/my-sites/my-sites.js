@@ -25,6 +25,7 @@ export default function mySites() {
     initTable();
     getAllSite();
 
+    // создание нового сайта
     sitesHTML.querySelector(".btn-add-site").addEventListener("click", function () {
         var modalHTML = document.createElement("form");
 
@@ -51,6 +52,7 @@ export default function mySites() {
             }
         });
 
+        // выполняем запрос на создание нового сайта
         function creatNewSite() {
             var getValuesForm = formFields.getValuesForm(modalHTML);
 
@@ -74,6 +76,7 @@ export default function mySites() {
         }
     });
 
+    // получаем все сайты
     function getAllSite() {
         var getSite = XMLHttpRequestAJAX({
             url: "/api/my_sites",
@@ -89,6 +92,7 @@ export default function mySites() {
         }
     }
 
+    // выводим таблицу для сайтов
     function initTable() {
         tableHTML = document.createElement("table");
         tableHTML.classList.add("P-table-my-sites");
@@ -96,10 +100,10 @@ export default function mySites() {
         tableHTML.innerHTML = `
         <thead>
             <tr>
-                <th>id</th>
-                <th>Проект</th>
-                <th>Домен</th>
-                <th>Дата создания</th>
+                <th width="64">id</th>
+                <th width="300">Проект</th>
+                <th width="200">Домен</th>
+                <th width="200">Дата создания</th>
                 <th>Статус</th>
                 <th>Действия</th>
             </tr>
@@ -108,34 +112,86 @@ export default function mySites() {
         sitesHTML.querySelector(".content-card").append(tableHTML);
     }
 
+    // выводим один сайт
     function getItemSite(site) {
+        var linkEDIT = `/my-sites/${site.domain}`,
+            linkTOSITE = `https://${site.domain}/`;
+
         siteHTML = document.createElement("tr");
+
         var siteTMPL = `
         <td class="cell-id">${site.id}</td>
-        <td class="cell-title"><a href="/my-sites/${site.domain}" class="link-to-site"><i class="ph-fill ph-folder-simple"></i>${site.title}</a></td>
-        <td class="cell-domain"><a href="//${site.domain}" target="_blank" uk-tooltip="Перейти на сайт">${site.domain}</a></td>
+        <td class="cell-title"><a href="${linkEDIT}" class="link-to-site"><i class="ph-fill ph-folder-simple"></i>${site.title}</a></td>
+        <td class="cell-domain"><a href="${linkTOSITE}" target="_blank" uk-tooltip="Перейти на сайт">${site.domain}</a></td>
         <td class="cell-dc">${DateFormat(site.date_create, "d Month, N (H:i)")}</td>
         <td class="cell-activity"></td>
-        <td class="cell-events">1 2</td>`;
+        <td class="cell-events">
+            <div class="row-container">
+                <a href="${linkEDIT}" class="btn btn-outline-primary btn-square"><i class="ph ph-pencil-simple"></i></a>
+            </div>
+        </td>`;
         siteHTML.innerHTML = siteTMPL;
         tableHTML.querySelector("tbody").append(siteHTML);
 
-        siteHTML.querySelector(".cell-activity").append(
-            formFields.switchRadio({name: "activity", checked: site.activity})
-        );
+        // вставляем switch активности сайта
+        var switchActivity = formFields.switchRadio({name: "activity", checked: site.activity, callback: isActivitySite})
+        siteHTML.querySelector(".cell-activity").append(switchActivity);
 
+
+
+        // изменение активности сайта
+        function isActivitySite(status) {
+            var isActivity = XMLHttpRequestAJAX({
+                url: "/api/site/general/isActivity",
+                method: "POST",
+                body: {
+                    domain: site.domain,
+                    activity: status
+                }
+            });
+
+            if (isActivity.code === 200) {
+                var status = (isActivity.data.activity == "off") ? "выключен" : "включен";
+                alertNotification({status: "success", text: `Cайт ${site.domain} - ${status}`, pos: "top-center"});
+            }
+
+            return isActivity.data.activity
+        }
+
+        // вставляем dropdown с действиями над сайтом
+        var btnsEvents = dropdownWidget({
+            classWrapper: "dropdown-tels",
+            classList: "",
+            pos: "bottom-center",
+            buttonToggle: `<button type="button" class="btn btn-outline-primary btn-square"><i class="ph-bold ph-dots-three"></i></button>`,
+            buttonsList: [
+                {class: 'dp-btn-edit', title: `Редактировать`, link: linkEDIT, icon: {type: "icon-ph", name: "ph ph-pencil-simple"}, callback: modalAlert},
+                {class: 'dp-btn-link', title: `Перейти на сайт`, link: linkTOSITE, target: "_blank", icon: {type: "icon-ph", name: "ph ph-link-simple"}},
+                {separator: 'true'},
+                {class: 'dp-btn-delete_project', title: `Удалить`, icon: {type: "icon-ph", name: "ph ph-trash"}}
+            ]
+        })
+        siteHTML.querySelector(".cell-events .row-container").append(btnsEvents);
+
+        // удаление сайта
+        btnsEvents.querySelector(".dp-btn-delete_project").addEventListener("click", function () {
+            modalAlert({
+                type: "delete",
+                title: site.title,
+                callback: deleteSite,
+            });
+
+            // запрос на удаление сайта
+            function deleteSite() {
+                var deleteSiteReq = XMLHttpRequestAJAX({
+                    url: "/api/my_sites",
+                    method: "DELETE",
+                    body: {
+                        domain: site.domain
+                    }
+                });
+                console.log("deleteSiteReq", deleteSiteReq);
+            }
+        });
     }
 }
-
-
-// Alba Del Mare
-// alba-del-mare.ru
-//
-// Аю-Даг
-// ayu-dag.ru
-//
-// Darsan Residence
-// darsan-apartments.ru
-//
-// Darsan Residence
-// darsan-apartments.ru

@@ -144,3 +144,70 @@ img[src=''] {
 .card-body .header-card-body .title-card span {
     margin-left: 5px;
 }
+
+/* модальное окно "подтверждения" */
+.P-modal-alert {
+
+}
+
+.P-modal-alert .modal-alert-container {
+    text-align: center;
+    line-height: 160%;
+}
+
+.P-modal-alert .modal-footer {
+
+}
+
+.P-modal-alert .modal-footer .btn {
+    flex: 1;
+}
+
+.P-modal-alert .modal-footer .btn.delete {
+    background: var(--danger);
+}
+/* end - модальное окно "подтверждения" */
+
+
+/* notification-message */
+.uk-notification-message {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.uk-notification-message .G-item-notif-msg {
+    display: flex;
+    align-items: start;
+    padding: 10px 20px;
+    grid-column-gap: 20px;
+}
+
+.uk-notification-message .G-item-notif-msg.alert {
+    background: orange;
+}
+.uk-notification-message .G-item-notif-msg.error {
+    background: var(--danger);
+}
+.uk-notification-message .G-item-notif-msg.success {
+    background: var(--done);
+}
+
+.uk-notification-message .G-item-notif-msg i {
+    font-size: 20px;
+    color: #fff;
+    margin-top: 3px;
+}
+
+.uk-notification-message .G-item-notif-msg .text {
+    color: #fff;
+    font-size: 14px;
+    padding-top: 3px;
+}
+/* end - notification-message */
+
+
+/* animationBtnSuccess */
+.btn.success-animation {
+    background: var(--done);
+}
+/* end - animationBtnSuccess */

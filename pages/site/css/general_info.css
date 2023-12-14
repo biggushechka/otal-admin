@@ -1,0 +1,21 @@
+.P-general-info {
+
+}
+
+.P-general-info .form-wrapper {
+
+}
+
+.P-general-info .form-wrapper .preview-image-project {
+    max-width: 544px;
+    height: 230px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.P-general-info .form-wrapper .preview-image-project img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
