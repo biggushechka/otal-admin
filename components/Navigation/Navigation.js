@@ -32,7 +32,7 @@ var navigationHTML = `
 <div class="wrapper-container">
     <a href="/" class="header-container">
         <img src="/assets/img/logo.svg" class="logo-image">
-        <span class="title">OTAL Admin</span>
+        <span class="title">OTAL Admin 2</span>
     </a>
     <div class="nav-container">`;
         for (var linkItem in navigationList) {
