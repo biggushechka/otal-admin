@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  SERVER_HOST: 5.101.159.131
+  SERVER_HOST: novato1v.beget.tech
   SERVER_USER: novato1v
   SERVER_PORT: 22
   SERVER_PASS: F8t5vkza
