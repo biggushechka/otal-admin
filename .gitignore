@@ -21,10 +21,4 @@ logs
 *.conf
 
 #project files
-api/media
-api/media/
-api/media/*
-
-/api/media
 /api/media/
-/api/media/*
