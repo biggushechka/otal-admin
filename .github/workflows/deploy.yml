@@ -1,0 +1,47 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  SERVER_HOST: 5.101.159.131
+  SERVER_USER: novato1v
+  SERVER_PATH: /home/n/novato1v/otal-estate.ru/public_html
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Actions checkout
+      - uses: actions/checkout@v3
+        with:
+          node-version: '18.x'
+
+      # Install ssh key
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2.3.1
+        with:
+          node-version: '18.x'
+          key: "${{ secrets.KEY }}"
+
+      - name: Generate auth hosts
+        run: ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      # Deploy
+      - name: Connect on remote server and deploy
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{env.SERVER_HOST}}
+          user: ${{env.SERVER_USER}}
+          private_key: ${{secrets.KEY}}
+          command: |
+            cd ${{env.SERVER_PATH}};
+            git checkout master;
+            git reset --hard
+            git pull origin master;
+            cd backend
+            date +%s > version.txt

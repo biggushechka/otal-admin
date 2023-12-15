@@ -4,7 +4,7 @@ node_modules/
 # Ignore Logs
 logs
 *.log
-*.yml
+#*.yml
 
 # Ignore the build directory
 #/dist
