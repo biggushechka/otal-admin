@@ -38,4 +38,6 @@ jobs:
             git reset --hard
             git pull origin master;
             cd backend
-            sed -i '2s/.*/$(date "+%s")/' version.txt
+            
+            timestamp=$(date +%s)
+            sed -i '2s/.*/'$timestamp'/' version.txt
