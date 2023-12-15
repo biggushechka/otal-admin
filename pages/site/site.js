@@ -5,13 +5,18 @@ export default function site() {
         paths = pathname.split('/'),
         domain = paths[2];
 
-    console.log("domain", getDomainSite())
+    var get_site = getSite(domain);
+
+    if (get_site.code !== 200) {
+        alert(get_site.data);
+        return false;
+    }
 
     settingPage({
-        title: domain,
+        title: get_site.data.domain,
         breadcrumbs: [
             {title: "Мои сайты", link: "/my-sites"},
-            {title: domain, link: ""},
+            {title: get_site.data.domain, link: ""},
         ]
     });
 
@@ -23,9 +28,11 @@ export default function site() {
         document.getElementById("app").innerHTML = "";
 
         import(`./${tab}.js?v=`+version).then(function(obj) {
-            obj.default();
+            obj.default(get_site.data);
         }).catch(function(err) {
             console.log('catch', err);
         });
     }
+
+
 }

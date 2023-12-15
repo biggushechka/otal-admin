@@ -63,6 +63,7 @@ export default function mySites() {
                 method: "POST",
                 body: getValuesForm.form
             });
+            console.log("createSite", createSite);
 
             if (createSite.code === 201) {
                 getItemSite(createSite.data)
@@ -143,9 +144,9 @@ export default function mySites() {
         function isActivitySite(status) {
             var isActivity = XMLHttpRequestAJAX({
                 url: "/api/site/general/isActivity",
-                method: "POST",
+                method: "UPDATE",
                 body: {
-                    domain: site.domain,
+                    id_site: site.id,
                     activity: status
                 }
             });
@@ -190,7 +191,10 @@ export default function mySites() {
                         domain: site.domain
                     }
                 });
-                console.log("deleteSiteReq", deleteSiteReq);
+
+                if (deleteSiteReq.code = 200) {
+                    siteHTML.remove();
+                }
             }
         });
     }

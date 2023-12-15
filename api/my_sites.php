@@ -5,10 +5,12 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/db_connect.php';
 
-$title = isset($_POST['title']) ? $_POST['title'] : (isset($_GET['title']) ? $_GET['title'] : null);
-$domain = isset($_POST['domain']) ? $_POST['domain'] : (isset($_GET['domain']) ? $_GET['domain'] : null);
-$currentDateTime = date('Y-m-d H:i:s');
+$postdata = file_get_contents("php://input");
+$data = json_decode($postdata, true);
 
+$title = $data['title'] ?? $_GET['title'];
+$domain = $data['domain'] ?? $_GET['domain'];
+$currentDateTime = date('Y-m-d H:i:s');
 
 // добавление нового сайта
 if ($method === "POST") {
@@ -22,7 +24,12 @@ if ($method === "POST") {
         echo json_encode("Сайт с таким названием или доменом уже существует", JSON_UNESCAPED_UNICODE);
     } else {
         $query_create_site = $dbh->prepare("INSERT INTO `my_sites` SET `title` = :title, `domain` = :domain, `date_create` = :date_create, `activity` = :activity");
-        $query_create_site->execute(["title" => $title, "domain" => $domain, "date_create" => $currentDateTime, "activity" => "on"]);
+        $query_create_site->execute([
+            "title" => $title,
+            "domain" => $domain,
+            "date_create" => $currentDateTime,
+            "activity" => "on"
+        ]);
 
         $query_get_site = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title AND `domain` = :domain LIMIT 1");
         $query_get_site->execute(["title" => $title, "domain" => $domain]);

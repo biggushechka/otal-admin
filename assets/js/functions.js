@@ -237,21 +237,23 @@ function XMLHttpRequestAJAX(data) {
     var sendData = {
         url: (data.url != undefined && data.url != "") ? data.url : "",
         method: (data.method != undefined && data.method != "") ? data.method : "POST",
-        body: (data.body != undefined && data.body != "") ? new URLSearchParams(data.body).toString() : ""
+        body: (data.body != undefined && data.body != "") ? data.body : ""
     }
 
     var xhr = new XMLHttpRequest();
 
-    if (sendData.method === "GET" || sendData.method === "DELETE") {
-        xhr.open(sendData.method, sendData.url + "?" + sendData.body, false);
+    if (sendData.method === "GET" || sendData.method === "DELETE" || sendData.method === "UPDATE") {
+        xhr.open(sendData.method, sendData.url + "?" + new URLSearchParams(data.body).toString(), false);
     }
 
     if (sendData.method === "POST") {
-        xhr.open(sendData.method, sendData.url, false);
+        sendData.body = JSON.stringify(sendData.body);
+        xhr.open("POST", sendData.url, false);
     }
 
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+    xhr.setRequestHeader('Content-Type', 'text/plain');
 
     xhr.send(sendData.body);
 
@@ -415,12 +417,15 @@ function DateFormat(date, format) {
     }
 }
 
-function getDomainSite() {
-    var pathname = document.location.pathname,
-        paths = pathname.split('/'),
-        domain = paths[2];
-
-    return domain;
+function getSite(domain) {
+    var getSite = XMLHttpRequestAJAX({
+        url: "/api/site/project",
+        method: "GET",
+        body: {
+            domain: domain
+        }
+    });
+    return getSite;
 }
 
 function animationBtnSuccess(btn) {
@@ -428,4 +433,71 @@ function animationBtnSuccess(btn) {
     setTimeout(function () {
         btn.classList.remove("success-animation");
     }, 1500);
+}
+
+function generateRandomString(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}
+
+function generateRandomNumber(numDigits) {
+    const min = Math.pow(10, numDigits - 1);
+    const max = Math.pow(10, numDigits) - 1;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+function getUploadFiles(data, callback) {
+    var ext = (data.ext != undefined && (data.ext != "" || data.ext.length != 0)) ? data.ext : "all",
+        choice = (data.choice != undefined && data.choice != "") ? data.choice : "one",
+        arrayFiles = [];
+
+    var extGroup = {
+        "img": ["png", "jpg", "jpeg", "eps", "raw", "webp", "avif", "tiff", "bmp", "heic"],
+        "text": ["txt", "pdf", "doc", "docx", "rtf", "xls", "xlsx", "csv"]
+    }
+
+    if (typeof ext === "string") {
+        ext = extGroup[ext];
+        ext = ext.map(format => `.${format}`).join(', ');
+    }
+
+    var input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", ext);
+    if (choice === "multiple") input.setAttribute("multiple", "");
+
+    input.click();
+
+    input.addEventListener("change", function () {
+        var files = Array.from(this.files);
+
+        // Чтение файлов
+        files.forEach(function (file) {
+            var id_file = generateRandomNumber(10),
+                fileExtension = file.name.split(".").pop().toLowerCase(),
+                reader = new FileReader();
+
+            reader.onload = function () {
+                var dataFile = {
+                    id: id_file,
+                    name: file.name,
+                    size: file.size,
+                    ext: fileExtension,
+                    file: reader.result
+                };
+                arrayFiles.push(dataFile);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        callback(arrayFiles);
+    });
 }

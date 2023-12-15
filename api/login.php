@@ -5,8 +5,11 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/db_connect.php';
 
-$login = $_POST['login'];
-$password = hash('sha256', $_POST['password']);
+$postdata = file_get_contents("php://input");
+$data = json_decode($postdata, true);
+
+$login = $data['login'];
+$password = hash('sha256', $data['password']);
 
 if ($method === "POST") {
     $sth = $dbh->prepare("SELECT * FROM `users` WHERE `login` = :login LIMIT 1");
