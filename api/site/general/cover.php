@@ -53,8 +53,11 @@ if ($method === "POST") {
         if ($query_add_cover->rowCount() > 0) {
             saveFile($file, "api/media/cover");
 
-            $query_updateActivity = $dbh->prepare("UPDATE `project_general` SET `preview_photo` = :preview_photo WHERE `id_site` = :id_site");
-            $query_updateActivity->execute(["preview_photo" => $filePath, "id" => $id_site]);
+            $query_update_cover = $dbh->prepare("UPDATE `project_general` SET `preview_photo` = :preview_photo WHERE `id_site` = :id_site");
+            $query_update_cover->execute([
+                "preview_photo" => $filePath,
+                "id_site" => $id_site
+            ]);
 
             header("HTTP/1.1 200 OK");
             header('Content-Type: application/json; charset=UTF-8');
