@@ -32,6 +32,7 @@ if ($method === "POST") {
 
         echo $id_site . "<br>";
         echo $filePath . "<br>";
+        echo $currentDateTime . "<br>";
         print_r($file);
 
         return false;
