@@ -22,6 +22,7 @@ if ($method === "POST") {
     $findCover = $query_find_cover->fetch(PDO::FETCH_OBJ);
 
     if (!$findCover) {
+        echo "netuuuu";
         $webpImages = convertImagesToWebP($cover);
         $file = $webpImages[0];
         $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
@@ -63,7 +64,5 @@ if ($method === "POST") {
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode($filePath, JSON_UNESCAPED_UNICODE);
         }
-    } else {
-
     }
 }
