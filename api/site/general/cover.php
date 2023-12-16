@@ -25,6 +25,7 @@ if ($method === "POST") {
     $findCover = $query_find_cover->fetch(PDO::FETCH_OBJ);
 
     if (!$findCover) {
+        echo "net";
         $webpImages = convertImagesToWebP($cover);
         $file = $webpImages[0];
         $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
