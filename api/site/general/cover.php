@@ -35,13 +35,6 @@ if ($method === "POST") {
             "activity" => "on"
         ]);
 
-
-        if ($query_create_album) {
-            echo "add_album";
-        } else {
-            echo "NOTTTT_add_album";
-        }
-
         // получаем альбом
         $query_get_album = $dbh->prepare("SELECT * FROM `project_photos`  WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
         $query_get_album->execute([
@@ -49,6 +42,8 @@ if ($method === "POST") {
             "title" => "cover"
         ]);
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
+
+        echo $album->id_album;
 
 
         // добавляем фото в альбом
