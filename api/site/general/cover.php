@@ -14,5 +14,5 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // добавление
 if ($method === "POST") {
-    print_r($data);
+    print_r($_POST);
 }
