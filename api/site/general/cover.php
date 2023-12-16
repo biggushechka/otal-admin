@@ -45,6 +45,8 @@ if ($method === "POST") {
 
         echo $album['id_album'];
 
+        return false;
+
         if ($query_get_album) {
             echo "запрос выполнился";
         } else {
