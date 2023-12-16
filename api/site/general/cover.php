@@ -38,11 +38,17 @@ if ($method === "POST") {
         ]);
         $insert_id = $dbh->lastInsertId();
 
+        echo "insert_id: " . $insert_id . "<br>";
+
         // получаем альбом
-        $query_get_album = $dbh->prepare("SELECT * FROM `project_albums` WHERE id = :id LIMIT 1");
+        $query_get_album = $dbh->prepare("SELECT * FROM `project_albums` WHERE id = :id");
         $query_get_album->execute(["id" => $insert_id]);
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
         $album_id = $album->id_album;
+
+        echo "<pre>";
+        print_r($album);
+        echo "</pre>";
 
         echo "id_album: " . $album_id . "<br>";
         echo "id_site: " . $id_site . "<br>";
