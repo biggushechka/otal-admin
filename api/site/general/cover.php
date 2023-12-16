@@ -23,7 +23,6 @@ if ($method === "POST") {
         "title" => "cover_project"
     ]);
 
-
     if ($query_find_cover->rowCount() == 0) {
         $webpImages = convertImagesToWebP($cover);
         $file = $webpImages[0];
@@ -39,12 +38,12 @@ if ($method === "POST") {
         ]);
         $insert_id = $dbh->lastInsertId();
 
-        echo $insert_id;
-
         // получаем альбом
         $query_get_album = $dbh->prepare("SELECT `id_album` FROM `project_albums` WHERE `id` = :id");
         $query_get_album->execute(["id" => $insert_id]);
         $id_album = $query_get_album->fetch(PDO::FETCH_COLUMN);
+
+        echo $id_album;
 
         if ($query_get_album) {
             echo "запрос выполнился";
