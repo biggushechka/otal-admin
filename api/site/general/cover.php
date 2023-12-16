@@ -38,8 +38,6 @@ if ($method === "POST") {
         ]);
         $insert_id = $dbh->lastInsertId();
 
-        echo "insert_id: " . $insert_id . "<br>";
-
         // получаем альбом
         $query_get_album = $dbh->prepare("SELECT * FROM `project_albums` WHERE id = :id");
         $query_get_album->execute(["id" => $insert_id]);
