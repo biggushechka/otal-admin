@@ -37,34 +37,12 @@ if ($method === "POST") {
             "date_create" => $currentDateTime,
             "activity" => "on"
         ]);
-
-        if ($query_create_album) {
-            echo "создал альбом";
-        } else {
-            echo "НЕЕЕ!! создал альбом";
-        }
-
-        // получаем альбом
-        $query_get_album = $dbh->prepare("SELECT `id_album` FROM `project_albums` WHERE `id_site` = :id_site AND `title` = :title LIMIT 1");
-        $query_get_album->execute([
-            "id_site" => $id_site,
-            "title" => "cover_project"
-        ]);
-        $id_album = $query_get_album->fetch(PDO::FETCH_COLUMN);
-
-        if ($query_get_album) {
-            echo $id_album;
-            print_r($id_album);
-        } else {
-            echo "запрос НЕ выполнился";
-        }
-
-        return false;
+        $album_id = $dbh->lastInsertId();
 
         // добавляем фото в альбом
-        $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
+        $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id` = :id, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
         $query_add_cover->execute([
-            "id_album" => $id_album,
+            "id" => $album_id,
             "id_site" => $id_site,
             "title" => "cover_project",
             "extension" => $file['ext'],
