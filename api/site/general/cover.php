@@ -17,17 +17,14 @@ $currentDateTime = date('Y-m-d H:i:s');
 if ($method === "POST") {
     $filePath = "";
 
-    $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos` WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
+    $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos` WHERE `id_site` = :id_site AND `title` = :title LIMIT 1");
     $query_find_cover->execute([
         "id_site" => $id_site,
         "title" => "cover_project"
     ]);
     $findCover = $query_find_cover->fetch(PDO::FETCH_OBJ);
 
-    print_r($query_find_cover);
-    print_r($findCover);
-
-    if (!$findCover) {
+    if ($findCover->rowCount() == 0) {
         echo "net";
         $webpImages = convertImagesToWebP($cover);
         $file = $webpImages[0];
@@ -51,7 +48,7 @@ if ($method === "POST") {
         ]);
 
         // получаем альбом
-        $query_get_album = $dbh->prepare("SELECT * FROM `project_albums`  WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
+        $query_get_album = $dbh->prepare("SELECT * FROM `project_albums`  WHERE `id_site` = :id_site AND `title` = :title LIMIT 1");
         $query_get_album->execute([
             "id_site" => $id_site,
             "title" => "cover_project"
