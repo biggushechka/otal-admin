@@ -23,6 +23,7 @@ if ($method === "POST") {
         "title" => "cover_project"
     ]);
 
+
     if ($query_find_cover->rowCount() == 0) {
         echo "net";
         $webpImages = convertImagesToWebP($cover);
