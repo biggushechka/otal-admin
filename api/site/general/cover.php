@@ -42,7 +42,7 @@ if ($method === "POST") {
         $query_get_album = $dbh->prepare("SELECT * FROM `project_albums` WHERE id = :id");
         $query_get_album->execute(["id" => $insert_id]);
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
-        $album_id = $album['id_album'];
+//        $album_id = $album['id_album'];
 
         echo "<pre>";
         print_r($album);
