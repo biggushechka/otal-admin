@@ -477,27 +477,41 @@ function getUploadFiles(data, callback) {
     input.click();
 
     input.addEventListener("change", function () {
-        var files = Array.from(this.files);
+        var selectedFiles = Array.from(this.files);
+        var filesRead = 0;
+        var arrayFiles = [];
 
-        // Чтение файлов
-        files.forEach(function (file) {
-            var id_file = generateRandomNumber(10),
-                fileExtension = file.name.split(".").pop().toLowerCase(),
-                reader = new FileReader();
+        selectedFiles.forEach(function(file) {
+            var reader = new FileReader();
 
-            reader.onload = function () {
+            reader.onload = function() {
                 var dataFile = {
-                    id: id_file,
+                    id: 123,
                     name: file.name,
                     size: file.size,
-                    ext: fileExtension,
-                    file: reader.result
+                    base: reader.result
                 };
+
                 arrayFiles.push(dataFile);
+                filesRead++;
+
+                if (filesRead === selectedFiles.length) {
+                    if (arrayFiles.length !== 0) {
+                        callback(arrayFiles);
+                    }
+                }
             };
             reader.readAsDataURL(file);
         });
-
-        callback(arrayFiles);
     });
+}
+
+function ascaf() {
+    var input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.setAttribute("multiple", "");
+    input.click();
+
+
 }

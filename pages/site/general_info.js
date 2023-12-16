@@ -51,7 +51,8 @@ export default function general_info(project) {
             }, fileProcessing);
 
             function fileProcessing(files) {
-                // if (files.length == 0) return false;
+
+                if (files.length == 0) return false;
 
                 console.log("cover__", files)
 
