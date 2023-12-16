@@ -12,7 +12,6 @@ $id_site = $data["id_site"] ?? $_GET["id_site"];
 $cover = $data["cover"] ?? $_GET["cover"];
 $currentDateTime = date('Y-m-d H:i:s');
 
-
 // добавление
 if ($method === "POST") {
     print_r($_POST);
