@@ -73,6 +73,11 @@ function convertImagesToWebP($images) {
 }
 
 function saveFile($file, $uploadDir) {
+
+    echo "<pre>";
+    print_r($file);
+    echo "</pre>";
+
     $imageData = base64_decode($file['base']);
     $fileName = $file['name'] . "." . $file['ext'];
     $imageResource = imagecreatefromstring($imageData); // Создание изображения из данных в формате base64
