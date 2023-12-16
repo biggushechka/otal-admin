@@ -22,7 +22,6 @@ if ($method === "POST") {
     $findCover = $query_find_cover->fetch(PDO::FETCH_OBJ);
 
     if (!$findCover) {
-        echo "netuuuu";
         $webpImages = convertImagesToWebP($cover);
         $file = $webpImages[0];
         $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
@@ -35,6 +34,12 @@ if ($method === "POST") {
             "date_create" => $currentDateTime,
             "activity" => "on"
         ]);
+
+        if ($query_create_album) {
+            echo "add_album";
+        } else {
+            echo "NOTTTT_add_album";
+        }
 
         // получаем альбом
         $query_get_album = $dbh->prepare("SELECT * FROM `project_photos`  WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
