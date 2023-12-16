@@ -28,7 +28,7 @@ if ($method === "POST") {
         $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
 
         // создаем альбом
-        $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :domain, `date_create` = :date_create, `activity` = :activity");
+        $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :title, `date_create` = :date_create, `activity` = :activity");
         $query_create_album->execute([
             "id_site" => $id_site,
             "title" => "cover",
