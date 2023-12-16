@@ -30,7 +30,7 @@ if ($method === "POST") {
         $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :title, `date_create` = :date_create, `activity` = :activity");
         $query_create_album->execute([
             "id_site" => $id_site,
-            "title" => "cover",
+            "title" => "cover_project",
             "date_create" => $currentDateTime,
             "activity" => "on"
         ]);
@@ -39,7 +39,7 @@ if ($method === "POST") {
         $query_get_album = $dbh->prepare("SELECT * FROM `project_albums`  WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
         $query_get_album->execute([
             "id_site" => $id_site,
-            "title" => "cover"
+            "title" => "cover_project"
         ]);
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
 
@@ -48,7 +48,7 @@ if ($method === "POST") {
         $query_add_cover->execute([
             "id_album" => $album->id_album,
             "id_site" => $id_site,
-            "title" => "cover",
+            "title" => "cover_project",
             "extension" => $file['ext'],
             "image" => $filePath,
             "activity" => "on",
