@@ -48,7 +48,7 @@ if ($method === "POST") {
         print_r($album);
         echo "</pre>";
 
-        echo "id_album: " . $album_id . "<br>";
+//        echo "id_album: " . $album_id . "<br>";
         echo "id_site: " . $id_site . "<br>";
         echo "extension: " . $file['ext'] . "<br>";
         echo "date_create: " . $currentDateTime . "<br>";
