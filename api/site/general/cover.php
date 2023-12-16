@@ -38,6 +38,12 @@ if ($method === "POST") {
             "activity" => "on"
         ]);
 
+        if ($query_create_album) {
+            echo "создал альбом";
+        } else {
+            echo "НЕЕЕ!! создал альбом";
+        }
+
         // получаем альбом
         $query_get_album = $dbh->prepare("SELECT `id_album` FROM `project_albums` WHERE `id_site` = :id_site AND `title` = :title LIMIT 1");
         $query_get_album->execute([
