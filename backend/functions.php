@@ -81,9 +81,9 @@ function saveFile($file, $uploadDir) {
 
     if (!file_exists($localPathFolder)) {
         mkdir($localPathFolder, 0777, true);
-        echo "нет папки";
+        echo "no folder";
     } else {
-        echo "есть папка";
+        echo "yes folder";
     }
 
     echo "fileName: " . $fileName . "<br>";
