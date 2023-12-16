@@ -25,18 +25,9 @@ if ($method === "POST") {
 
 
     if ($query_find_cover->rowCount() == 0) {
-        echo "net";
         $webpImages = convertImagesToWebP($cover);
         $file = $webpImages[0];
         $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
-
-
-        echo $id_site . "<br>";
-        echo $filePath . "<br>";
-        echo $currentDateTime . "<br>";
-        print_r($file);
-
-        return false;
 
         // создаем альбом
         $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :title, `date_create` = :date_create, `activity` = :activity");
