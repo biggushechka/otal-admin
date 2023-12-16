@@ -46,8 +46,6 @@ if ($method === "POST") {
         ]);
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
 
-        echo $album->id_album;
-
         // добавляем фото в альбом
         $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
         $query_add_cover->execute([
@@ -57,7 +55,7 @@ if ($method === "POST") {
             "extension" => $file['ext'],
             "image" => $filePath,
             "activity" => "on",
-            "date_create" => $currentDateTime,
+            "date_create" => $currentDateTime
         ]);
 
         if ($query_add_cover) {
@@ -66,6 +64,8 @@ if ($method === "POST") {
             header("HTTP/1.1 200 OK");
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode($filePath, JSON_UNESCAPED_UNICODE);
+        } else {
+            echo "not_add_cover";
         }
     }
 }
