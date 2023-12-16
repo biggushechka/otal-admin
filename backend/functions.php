@@ -81,7 +81,14 @@ function saveFile($file, $uploadDir) {
 
     if (!file_exists($localPathFolder)) {
         mkdir($localPathFolder, 0777, true);
+        echo "нет папки";
+    } else {
+        echo "есть папка";
     }
+
+    echo "fileName: " . $fileName . "<br>";
+    echo "localPathFolder: " . $localPathFolder . "<br>";
+    echo "localPath: " . $localPath . "<br>";
 
     imagewebp($imageResource, $localPath);
     imagedestroy($imageResource); // Освобождение памяти
