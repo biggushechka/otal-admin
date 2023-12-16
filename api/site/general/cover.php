@@ -58,7 +58,7 @@ if ($method === "POST") {
             "date_create" => $currentDateTime
         ]);
 
-        if ($query_add_cover) {
+        if ($query_add_cover->rowCount() > 0) {
             saveFile($file, "api/media/cover");
 
             header("HTTP/1.1 200 OK");
