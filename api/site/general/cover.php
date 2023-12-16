@@ -48,6 +48,8 @@ if ($method === "POST") {
 
         print_r($album);
 
+        return false;
+
         // добавляем фото в альбом
         $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
         $query_add_cover->execute([
