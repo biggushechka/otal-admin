@@ -22,9 +22,8 @@ if ($method === "POST") {
         "id_site" => $id_site,
         "title" => "cover_project"
     ]);
-    $findCover = $query_find_cover->fetch(PDO::FETCH_OBJ);
 
-    if ($findCover->rowCount() == 0) {
+    if ($query_find_cover->rowCount() == 0) {
         echo "net";
         $webpImages = convertImagesToWebP($cover);
         $file = $webpImages[0];
