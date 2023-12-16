@@ -24,6 +24,9 @@ if ($method === "POST") {
     ]);
     $findCover = $query_find_cover->fetch(PDO::FETCH_OBJ);
 
+    print_r($query_find_cover);
+    print_r($findCover);
+
     if (!$findCover) {
         echo "net";
         $webpImages = convertImagesToWebP($cover);
