@@ -19,7 +19,7 @@ if ($method === "POST") {
 
     echo "POST";
 
-    $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos`  WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
+    $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos` WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
     $query_find_cover->execute([
         "id_site" => $id_site,
         "title" => "cover_project"
