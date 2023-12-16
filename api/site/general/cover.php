@@ -17,24 +17,53 @@ $currentDateTime = date('Y-m-d H:i:s');
 if ($method === "POST") {
     $filePath = "";
 
-    $query_find_cover = $dbh->prepare("SELECT * FROM `project_general`  WHERE `id_site` = :id_site LIMIT 1");
+    $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos`  WHERE `id_site` = :id_site LIMIT 1");
     $query_find_cover->execute(["id_site" => $id_site]);
     $findCover = $query_find_cover->fetch(PDO::FETCH_OBJ);
 
-    if ($findCover->preview_photo == "") {
-        echo "nettttt";
+    if (!$findCover) {
         $webpImages = convertImagesToWebP($cover);
         $file = $webpImages[0];
-
         $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
-        $query_update_general = $dbh->prepare("UPDATE `project_general` SET `preview_photo` = :preview_photo WHERE `id_site` = :id_site");
-        $query_update_general->execute(["preview_photo" => $filePath, "id_site" => $id_site]);
-        saveFile($file, "api/media/cover");
-    } else {
-        echo "yest";
-    }
 
-//    header("HTTP/1.1 200 OK");
-//    header('Content-Type: application/json; charset=UTF-8');
-//    echo json_encode($filePath, JSON_UNESCAPED_UNICODE);
+        // создаем альбом
+        $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :domain, `date_create` = :date_create, `activity` = :activity");
+        $query_create_album->execute([
+            "id_site" => $id_site,
+            "title" => "cover",
+            "date_create" => $currentDateTime,
+            "activity" => "on"
+        ]);
+
+        // получаем альбом
+        $query_get_album = $dbh->prepare("SELECT * FROM `project_photos`  WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
+        $query_get_album->execute([
+            "id_site" => $id_site,
+            "title" => "cover"
+        ]);
+        $album = $query_get_album->fetch(PDO::FETCH_OBJ);
+
+
+        // добавляем фото в альбом
+        $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
+        $query_add_cover->execute([
+            "id_album" => $album->id_album,
+            "id_site" => $id_site,
+            "title" => "cover",
+            "extension" => $file['ext'],
+            "image" => $filePath,
+            "activity" => "on",
+            "date_create" => $currentDateTime,
+        ]);
+
+        if ($query_add_cover) {
+            saveFile($file, "api/media/cover");
+
+            header("HTTP/1.1 200 OK");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode($filePath, JSON_UNESCAPED_UNICODE);
+        }
+    } else {
+
+    }
 }
