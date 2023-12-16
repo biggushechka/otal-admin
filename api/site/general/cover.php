@@ -47,6 +47,12 @@ if ($method === "POST") {
 
         echo $album->id_album;
 
+        if ($query_get_album) {
+            echo "yes";
+        } else {
+            echo "no";
+        }
+
         return false;
 
         if ($query_get_album) {
