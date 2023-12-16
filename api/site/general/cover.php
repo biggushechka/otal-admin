@@ -36,7 +36,7 @@ if ($method === "POST") {
         ]);
 
         // получаем альбом
-        $query_get_album = $dbh->prepare("SELECT * FROM `project_photos`  WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
+        $query_get_album = $dbh->prepare("SELECT * FROM `project_albums`  WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
         $query_get_album->execute([
             "id_site" => $id_site,
             "title" => "cover"
