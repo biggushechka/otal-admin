@@ -35,6 +35,7 @@ if ($method === "POST") {
             "activity" => "on"
         ]);
 
+
         if ($query_create_album) {
             echo "add_album";
         } else {
