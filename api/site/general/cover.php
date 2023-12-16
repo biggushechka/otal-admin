@@ -40,11 +40,8 @@ if ($method === "POST") {
         $insert_id = $dbh->lastInsertId();
 
         // получаем альбом
-        $query_get_album = $dbh->prepare("SELECT `id_album` FROM `project_albums` WHERE `id` = :id LIMIT 1");
-        $query_get_album->execute([
-            "id" => $insert_id,
-            "title" => "cover_project"
-        ]);
+        $query_get_album = $dbh->prepare("SELECT `id_album` FROM `project_albums` WHERE `id` = :id");
+        $query_get_album->execute(["id" => $insert_id]);
         $id_album = $query_get_album->fetch(PDO::FETCH_COLUMN);
 
         if ($query_get_album) {
