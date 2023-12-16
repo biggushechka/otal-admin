@@ -45,7 +45,7 @@ if ($method === "POST") {
         $query_get_album->execute(["id" => $insert_id]);
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
 
-        echo $album['id_album'];
+        echo $album->id_album;
 
         return false;
 
