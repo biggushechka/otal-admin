@@ -247,7 +247,7 @@ function XMLHttpRequestAJAX(data) {
     }
 
     if (sendData.method === "POST") {
-        // sendData.body = JSON.stringify(sendData.body);
+        sendData.body = JSON.stringify(sendData.body);
         xhr.open("POST", sendData.url, false);
     }
 
@@ -456,11 +456,11 @@ function generateRandomNumber(numDigits) {
 
 function getUploadFiles(data, callback) {
     var ext = (data.ext != undefined && (data.ext != "" || data.ext.length != 0)) ? data.ext : "all",
-        choice = (data.choice != undefined && data.choice != "") ? data.choice : "one",
+        multiple = (data.multiple != undefined && data.multiple != "") ? data.multiple : "false",
         arrayFiles = [];
 
     var extGroup = {
-        "img": ["png", "jpg", "jpeg", "eps", "raw", "webp", "avif", "tiff", "bmp", "heic"],
+        "img": ["png", "jpg", "jpeg", "webp", "avif", "tiff", "heic"],
         "text": ["txt", "pdf", "doc", "docx", "rtf", "xls", "xlsx", "csv"]
     }
 
@@ -472,7 +472,7 @@ function getUploadFiles(data, callback) {
     var input = document.createElement("input");
     input.setAttribute("type", "file");
     input.setAttribute("accept", ext);
-    if (choice === "multiple") input.setAttribute("multiple", "");
+    if (multiple === "true") input.setAttribute("multiple", "");
 
     input.click();
 
@@ -484,15 +484,17 @@ function getUploadFiles(data, callback) {
         selectedFiles.forEach(function(file) {
             var reader = new FileReader(),
                 id_file = generateRandomNumber(10),
-                fileExtension = file.name.split(".").pop().toLowerCase();
+                fileExtension = file.name.split(".").pop().toLowerCase(),
+                extensionIndex = file.name.lastIndexOf("."),
+                file_name = file.name.slice(0, extensionIndex) + "_" + id_file;
 
             reader.onload = function() {
                 var dataFile = {
                     id: id_file,
-                    name: file.name,
+                    name: file_name,
                     ext: fileExtension,
                     size: file.size,
-                    base: reader.result
+                    base: reader.result.split(',')[1]
                 };
 
                 arrayFiles.push(dataFile);
@@ -507,14 +509,4 @@ function getUploadFiles(data, callback) {
             reader.readAsDataURL(file);
         });
     });
-}
-
-function ascaf() {
-    var input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
-    input.setAttribute("multiple", "");
-    input.click();
-
-
 }

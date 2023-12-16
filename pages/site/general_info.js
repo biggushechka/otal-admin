@@ -23,52 +23,70 @@ export default function general_info(project) {
             }
         });
         var getValForm = getGeneralInfo.data;
+        console.log("getValForm", getValForm)
 
 
         // выводим верстку
         var formTAG = document.createElement("div");
         formTAG.classList.add("form-wrapper");
-        formTAG.innerHTML = `
-        <div class="preview-image-project">
-            <div class="upload-photo">
-                <span class="title">Обложка проекта</span>
-                <span class="desc">Вы можете загрузить обложку проекта, для визуального представления. <br>(к контенту сайта она не относится)</span>
-                <button type="button" class="btn btn-outline-primary btn-upload-photo">Добавить</button>
-            </div>
-<!--            <img src="https://s0.rbk.ru/v6_top_pics/media/img/7/72/756570268423727.jpg">-->
-        </div>
+        var formHTML = `
+        <div class="preview-image-project"></div>
         <form class="form-container"></form>
         <div class="footer-events">
             <button type="button" class="btn btn-primary btn-icon-left btn-save-form"><i class="ph ph-check-circle"></i>Сохранить</button>
         </div>`;
+        formTAG.innerHTML = formHTML;
         blockTAG.querySelector(".content-card").append(formTAG);
 
-        // загрузить обложку проекта
-        formTAG.querySelector(".btn-upload-photo").addEventListener("click", function () {
-            getUploadFiles({
-                ext: "img",
-                choice: "multiple"
-            }, fileProcessing);
+        coverProject();
 
-            function fileProcessing(files) {
+        // Обложка проекта
+        function coverProject() {
+            formTAG.querySelector(".preview-image-project").innerHTML = "";
 
-                if (files.length == 0) return false;
+            if (getValForm.preview_photo == "") {
+                var coverTAG = document.createElement("div");
+                coverTAG.classList.add("upload-photo");
+                coverTAG.innerHTML = `
+                <span class="title">Обложка проекта</span>
+                <span class="desc">Вы можете загрузить обложку проекта, для визуального представления. <br>(к контенту сайта она не относится)</span>
+                <button type="button" class="btn btn-outline-primary btn-upload-photo">Добавить</button>`;
+                formTAG.querySelector(".preview-image-project").append(coverTAG);
 
-                console.log("cover__", files)
+                coverTAG.querySelector(".btn-upload-photo").addEventListener("click", function () {
+                    getUploadFiles({
+                        ext: "img",
+                        multiple: "false"
+                    }, fileProcessing);
 
-                // получаем данные
-                var postCover = XMLHttpRequestAJAX({
-                    url: "/api/site/general/cover",
-                    method: "POST",
-                    body: {
-                        id_site: project.id,
-                        cover: files
+                    function fileProcessing(files) {
+
+                        if (files.length == 0) return false;
+
+                        // получаем данные
+                        var postCover = XMLHttpRequestAJAX({
+                            url: "/api/site/general/cover",
+                            method: "POST",
+                            body: {
+                                id_site: project.id,
+                                cover: files
+                            }
+                        });
+
+                        if (postCover.code === 200) {
+                            getValForm.preview_photo = postCover.data;
+                            coverProject();
+                        }
                     }
-                });
-                console.log("postCover", postCover);
-            }
 
-        });
+                });
+            } else {
+                var coverTAG = document.createElement("img");
+                coverTAG.classList.add("cover-photo");
+                coverTAG.setAttribute("src", getValForm.preview_photo);
+                formTAG.querySelector(".preview-image-project").append(coverTAG);
+            }
+        }
 
         // вставляем поля формы
         formTAG.querySelector("form").append(
