@@ -44,10 +44,10 @@ if ($method === "POST") {
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
         $album_id = $album->id_album;
 
-        echo "id_album: " . $album_id;
-        echo "id_site: " . $id_site;
-        echo "extension: " . $file['ext'];
-        echo "date_create: " . $currentDateTime;
+        echo "id_album: " . $album_id . "<br>";
+        echo "id_site: " . $id_site . "<br>";
+        echo "extension: " . $file['ext'] . "<br>";
+        echo "date_create: " . $currentDateTime . "<br>";
 
         // добавляем фото в альбом
         $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
