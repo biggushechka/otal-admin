@@ -36,29 +36,14 @@ if ($method === "POST") {
             "date_create" => $currentDateTime,
             "activity" => "on"
         ]);
-        $insert_id = $dbh->lastInsertId();
-
-        // получаем альбом
-        $query_get_album = $dbh->prepare("SELECT * FROM `project_albums` WHERE id = :id");
-        $query_get_album->execute(["id" => $insert_id]);
-        $album = $query_get_album->fetch(PDO::FETCH_OBJ);
-//        $album_id = $album['id_album'];
-
-        echo "<pre>";
-        print_r($album);
-        echo "</pre>";
-
-//        echo "id_album: " . $album_id . "<br>";
-        echo "id_site: " . $id_site . "<br>";
-        echo "extension: " . $file['ext'] . "<br>";
-        echo "date_create: " . $currentDateTime . "<br>";
+        $album_id = $dbh->lastInsertId();
 
         // добавляем фото в альбом
         $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
         $query_add_cover->execute([
             "id_album" => $album_id,
             "id_site" => $id_site,
-            "title" => "cover_project",
+            "title" => $file['name'] . "." . $file['ext'],
             "extension" => $file['ext'],
             "image" => $filePath,
             "activity" => "on",
