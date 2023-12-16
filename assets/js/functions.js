@@ -247,7 +247,7 @@ function XMLHttpRequestAJAX(data) {
     }
 
     if (sendData.method === "POST") {
-        sendData.body = JSON.stringify(sendData.body);
+        // sendData.body = JSON.stringify(sendData.body);
         xhr.open("POST", sendData.url, false);
     }
 
@@ -482,12 +482,15 @@ function getUploadFiles(data, callback) {
         var arrayFiles = [];
 
         selectedFiles.forEach(function(file) {
-            var reader = new FileReader();
+            var reader = new FileReader(),
+                id_file = generateRandomNumber(10),
+                fileExtension = file.name.split(".").pop().toLowerCase();
 
             reader.onload = function() {
                 var dataFile = {
-                    id: 123,
+                    id: id_file,
                     name: file.name,
+                    ext: fileExtension,
                     size: file.size,
                     base: reader.result
                 };
