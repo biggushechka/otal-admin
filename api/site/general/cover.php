@@ -17,6 +17,11 @@ $currentDateTime = date('Y-m-d H:i:s');
 if ($method === "POST") {
     $filePath = "";
 
+    echo $id_site . "<br>";
+    print_r($cover);
+
+    return false;
+
     $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos`  WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
     $query_find_cover->execute([
         "id_site" => $id_site,
@@ -45,10 +50,6 @@ if ($method === "POST") {
             "title" => "cover_project"
         ]);
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
-
-        print_r($album);
-
-        return false;
 
         // добавляем фото в альбом
         $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
