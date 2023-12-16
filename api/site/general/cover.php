@@ -17,8 +17,6 @@ $currentDateTime = date('Y-m-d H:i:s');
 if ($method === "POST") {
     $filePath = "";
 
-    echo "POST";
-
     $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos` WHERE `id_site` = :id_site, `title` = :title LIMIT 1");
     $query_find_cover->execute([
         "id_site" => $id_site,
