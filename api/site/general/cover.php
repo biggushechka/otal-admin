@@ -41,9 +41,9 @@ if ($method === "POST") {
         // получаем альбом
         $query_get_album = $dbh->prepare("SELECT `id_album` FROM `project_albums` WHERE `id` = :id");
         $query_get_album->execute(["id" => $insert_id]);
-        $id_album = $query_get_album->fetch(PDO::FETCH_COLUMN);
+        $id_album = $query_get_album->fetch();
 
-        echo $id_album;
+        echo $id_album['id_album'];
 
         if ($query_get_album) {
             echo "запрос выполнился";
