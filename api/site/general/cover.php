@@ -44,12 +44,9 @@ if ($method === "POST") {
             "id_site" => $id_site,
             "title" => "cover_project"
         ]);
-
-        if ($query_get_album) {
-            echo "not_get_album";
-        }
-
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
+
+        echo $album->id_album;
 
         // добавляем фото в альбом
         $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
