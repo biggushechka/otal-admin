@@ -44,27 +44,12 @@ if ($method === "POST") {
         $query_get_album = $dbh->prepare("SELECT * FROM `project_albums` WHERE id = :id LIMIT 1");
         $query_get_album->execute(["id" => $insert_id]);
         $album = $query_get_album->fetch(PDO::FETCH_OBJ);
-
-        echo $album->id_album;
-
-        if ($query_get_album) {
-            echo "yes";
-        } else {
-            echo "no";
-        }
-
-        return false;
-
-        if ($query_get_album) {
-            echo "запрос выполнился";
-        } else {
-            echo "запрос НЕ выполнился";
-        }
+        $album_id = $album->id_album;
 
         // добавляем фото в альбом
         $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
         $query_add_cover->execute([
-            "id_album" => $id_album,
+            "id_album" => $album_id,
             "id_site" => $id_site,
             "title" => "cover_project",
             "extension" => $file['ext'],
