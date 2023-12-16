@@ -22,6 +22,7 @@ if ($method === "POST") {
     $findCover = $query_find_cover->fetch(PDO::FETCH_OBJ);
 
     if ($findCover->preview_photo == "") {
+        echo "nettttt";
         $webpImages = convertImagesToWebP($cover);
         $file = $webpImages[0];
 
