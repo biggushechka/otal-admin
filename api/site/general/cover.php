@@ -69,8 +69,6 @@ if ($method === "POST") {
             echo "not_add_cover";
         }
     } else {
-        echo $photo['id'];
-
         $saveFileToFolder = saveFile($file, "api/media/cover");
         if ($saveFileToFolder = 0) return false;
 
