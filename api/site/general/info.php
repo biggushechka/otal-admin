@@ -5,15 +5,17 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/db_connect.php';
 
+$get_post_data = file_get_contents("php://input");
+$post = json_decode($get_post_data, true);
 
-$siteID = $_POST['id_site'] ?? $_GET['id_site'];
-$title_project = $_POST['title_project'] ?? $_GET['title_project'];
-$phone = $_POST['phone'] ?? $_GET['phone'];
-$email = $_POST['email'] ?? $_GET['email'];
-$telegram_phone = $_POST['telegram_phone'] ?? $_GET['telegram_phone'];
-$telegram_link = $_POST['telegram_link'] ?? $_GET['telegram_link'];
-$whatsapp_phone = $_POST['whatsapp_phone'] ?? $_GET['whatsapp_phone'];
-$whatsapp_link = $_POST['whatsapp_link'] ?? $_GET['whatsapp_link'];
+$siteID = $post['id_site'] ?? $_GET['id_site'];
+$title_project = $post['title_project'] ?? $_GET['title_project'];
+$phone = $post['phone'] ?? $_GET['phone'];
+$email = $post['email'] ?? $_GET['email'];
+$telegram_phone = $post['telegram_phone'] ?? $_GET['telegram_phone'];
+$telegram_link = $post['telegram_link'] ?? $_GET['telegram_link'];
+$whatsapp_phone = $post['whatsapp_phone'] ?? $_GET['whatsapp_phone'];
+$whatsapp_link = $post['whatsapp_link'] ?? $_GET['whatsapp_link'];
 $currentDateTime = date('Y-m-d H:i:s');
 
 // добавление
