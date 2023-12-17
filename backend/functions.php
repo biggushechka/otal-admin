@@ -83,7 +83,8 @@ function saveFile($file, $uploadDir) {
         mkdir($localPathFolder, 0777, true);
     }
 
-    file_put_contents($localPath, $imageResource);
+    imagewebp($imageResource, $localPath);
+    imagedestroy($imageResource); // Освобождение памяти
 
     // Сохранение изображения в формате WebP
     if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
