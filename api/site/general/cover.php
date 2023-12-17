@@ -36,9 +36,7 @@ if ($method === "POST") {
             "date_create" => $currentDateTime,
             "activity" => "on"
         ]);
-        $album = $query_create_album->fetch();
-
-        echo $album['id'];
+        $album_id = $dbh->lastInsertId();
 
         // добавляем фото в альбом
         if ($query_create_album->rowCount() > 0) {
@@ -48,8 +46,8 @@ if ($method === "POST") {
 
             $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
             $query_add_cover->execute([
-                "id_album" => $album['id'],
-                "name_album" => $album['title'],
+                "id_album" => $album_id,
+                "name_album" => "cover_project",
                 "id_site" => $id_site,
                 "title" => $file['name'] . "." . $file['ext'],
                 "extension" => $file['ext'],
