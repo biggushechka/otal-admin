@@ -39,21 +39,21 @@ if ($method === "POST") {
         $album_id = $dbh->lastInsertId();
 
         // добавляем фото в альбом
-        $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
-        $query_add_cover->execute([
-            "id_album" => $album_id,
-            "id_site" => $id_site,
-            "title" => $file['name'] . "." . $file['ext'],
-            "extension" => $file['ext'],
-            "image" => $filePath,
-            "activity" => "on",
-            "date_create" => $currentDateTime
-        ]);
-
-        if ($query_add_cover->rowCount() > 0) {
+        if ($query_create_album->rowCount() > 0) {
             $saveFileToFolder = saveFile($file, "api/media/cover");
 
             if ($saveFileToFolder = 0) return false;
+
+            $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
+            $query_add_cover->execute([
+                "id_album" => $album_id,
+                "id_site" => $id_site,
+                "title" => $file['name'] . "." . $file['ext'],
+                "extension" => $file['ext'],
+                "image" => $filePath,
+                "activity" => "on",
+                "date_create" => $currentDateTime
+            ]);
 
             $query_update_cover = $dbh->prepare("UPDATE `project_general` SET `preview_photo` = :preview_photo WHERE `id_site` = :id_site");
             $query_update_cover->execute([
