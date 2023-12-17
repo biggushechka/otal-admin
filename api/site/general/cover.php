@@ -36,18 +36,18 @@ if ($method === "POST") {
             "date_create" => $currentDateTime,
             "activity" => "on"
         ]);
-        $album_id = $dbh->lastInsertId();
+        $album = $query_find_cover->fetch();
 
         // добавляем фото в альбом
         if ($query_create_album->rowCount() > 0) {
-            $saveFileToFolder = saveFile($file, "api/media/cover");
 
+            $saveFileToFolder = saveFile($file, "api/media/cover");
             if ($saveFileToFolder = 0) return false;
 
-            $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
+            $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
             $query_add_cover->execute([
-                "id_album" => $album_id,
-                "name_album" => "cover_project",
+                "id_album" => $album['id'],
+                "name_album" => $album['title'],
                 "id_site" => $id_site,
                 "title" => $file['name'] . "." . $file['ext'],
                 "extension" => $file['ext'],
@@ -71,11 +71,13 @@ if ($method === "POST") {
     } else {
         echo $photo['id'];
 
+        $saveFileToFolder = saveFile($file, "api/media/cover");
+        if ($saveFileToFolder = 0) return false;
+
         // обновляем картинку в таблице "project_photos"
-        $query_add_cover = $dbh->prepare("UPDATE `project_photos` SET `title` = :title, `extension` = :extension, `image` = :image, `date_create` = :date_create WHERE id_site = :id_site AND name_album = :name_album");
+        $query_add_cover = $dbh->prepare("UPDATE `project_photos` SET `title` = :title, `extension` = :extension, `image` = :image, `date_create` = :date_create WHERE id = :id");
         $query_add_cover->execute([
-            "id_site" => $id_site,
-            "name_album" => "cover_project",
+            "id" => $photo['id'],
             "title" => $file['name'] . "." . $file['ext'],
             "extension" => $file['ext'],
             "image" => $filePath,
