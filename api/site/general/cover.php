@@ -51,7 +51,9 @@ if ($method === "POST") {
         ]);
 
         if ($query_add_cover->rowCount() > 0) {
-            saveFile($file, "api/media/cover");
+            $saveFileToFolder = saveFile($file, "api/media/cover");
+
+            if ($saveFileToFolder = 0) return false;
 
             $query_update_cover = $dbh->prepare("UPDATE `project_general` SET `preview_photo` = :preview_photo WHERE `id_site` = :id_site");
             $query_update_cover->execute([

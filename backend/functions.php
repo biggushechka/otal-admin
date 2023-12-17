@@ -83,7 +83,9 @@ function saveFile($file, $uploadDir) {
         mkdir($localPathFolder, 0777, true);
     }
 
-    imagewebp($imageResource, $localPath);
+    if (!imagewebp($imageResource, $localPath)) {
+        return 0;
+    }
 
     imagedestroy($imageResource); // Освобождение памяти
 
