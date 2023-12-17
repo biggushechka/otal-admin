@@ -20,10 +20,10 @@ if ($method === "POST") {
     $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
 
     // проверяем, есть в картинка в таблице "project_photos"
-    $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos` WHERE id_site = :id_site AND title = :title");
+    $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos` WHERE id_site = :id_site AND name_album = :name_album");
     $query_find_cover->execute([
         "id_site" => $id_site,
-        "title" => "cover_project"
+        "name_album" => "cover_project"
     ]);
 
     if ($query_find_cover->rowCount() == 0) {
@@ -46,6 +46,7 @@ if ($method === "POST") {
             $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
             $query_add_cover->execute([
                 "id_album" => $album_id,
+                "name_album" => "cover_project",
                 "id_site" => $id_site,
                 "title" => $file['name'] . "." . $file['ext'],
                 "extension" => $file['ext'],
