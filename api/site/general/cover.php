@@ -51,6 +51,7 @@ if ($method === "POST") {
                 "id_site" => $id_site,
                 "title" => $file['name'] . "." . $file['ext'],
                 "extension" => $file['ext'],
+                "weight" => $file['size'],
                 "image" => $filePath,
                 "activity" => "on",
                 "date_create" => $currentDateTime
@@ -78,6 +79,7 @@ if ($method === "POST") {
             "id" => $photo['id'],
             "title" => $file['name'] . "." . $file['ext'],
             "extension" => $file['ext'],
+            "weight" => $file['size'],
             "image" => $filePath,
             "date_create" => $currentDateTime
         ]);
