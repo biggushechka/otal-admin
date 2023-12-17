@@ -52,40 +52,42 @@ export default function general_info(project) {
                 <span class="desc">Вы можете загрузить обложку проекта, для визуального представления. <br>(к контенту сайта она не относится)</span>
                 <button type="button" class="btn btn-outline-primary btn-upload-photo">Добавить</button>`;
                 formTAG.querySelector(".preview-image-project").append(coverTAG);
-
-                coverTAG.querySelector(".btn-upload-photo").addEventListener("click", function () {
-                    getUploadFiles({
-                        ext: "img",
-                        multiple: "false"
-                    }, fileProcessing);
-
-                    function fileProcessing(files) {
-
-                        if (files.length == 0) return false;
-
-                        // получаем данные
-                        var postCover = XMLHttpRequestAJAX({
-                            url: "/api/site/general/cover",
-                            method: "POST",
-                            body: {
-                                id_site: project.id,
-                                cover: files
-                            }
-                        });
-
-                        if (postCover.code === 200) {
-                            getValForm.preview_photo = postCover.data;
-                            coverProject();
-                        }
-                    }
-
-                });
             } else {
-                var coverTAG = document.createElement("img");
+                var coverTAG = document.createElement("div");
                 coverTAG.classList.add("cover-photo");
-                coverTAG.setAttribute("src", getValForm.preview_photo);
+                coverTAG.innerHTML = `
+                <img src="${getValForm.preview_photo}" alt="cover_project">
+                <button type="button" class="btn btn-upload-photo">Изменить</button>`;
                 formTAG.querySelector(".preview-image-project").append(coverTAG);
             }
+
+            coverTAG.querySelector(".btn-upload-photo").addEventListener("click", function () {
+                getUploadFiles({
+                    ext: "img",
+                    multiple: "false"
+                }, fileProcessing);
+
+                function fileProcessing(files) {
+
+                    if (files.length == 0) return false;
+
+                    // получаем данные
+                    var postCover = XMLHttpRequestAJAX({
+                        url: "/api/site/general/cover",
+                        method: "POST",
+                        body: {
+                            id_site: project.id,
+                            cover: files
+                        }
+                    });
+
+                    if (postCover.code === 200) {
+                        getValForm.preview_photo = postCover.data;
+                        coverProject();
+                    }
+                }
+
+            });
         }
 
         // вставляем поля формы

@@ -22,7 +22,8 @@ if ($method === "UPDATE") {
     $query_update_general->execute([
         "id_site" => $siteID,
         "title_project" => $title_project,
-        "phone" => $phone, "email" => $email,
+        "phone" => $phone,
+        "email" => $email,
         "telegram_phone" => $telegram_phone,
         "telegram_link" => $telegram_link,
         "whatsapp_phone" => $whatsapp_phone,
