@@ -83,13 +83,7 @@ function saveFile($file, $uploadDir) {
         mkdir($localPathFolder, 0777, true);
     }
 
-    echo $localPath;
-
-    if (imagewebp($imageResource, $localPath)) {
-        echo "img upload";
-    } else {
-        echo "img not upload.";
-    }
+    imagewebp($imageResource, $localPath);
 
     imagedestroy($imageResource); // Освобождение памяти
 
