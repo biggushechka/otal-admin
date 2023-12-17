@@ -25,6 +25,7 @@ if ($method === "POST") {
         "id_site" => $id_site,
         "name_album" => "cover_project"
     ]);
+    $photo = $query_find_cover->fetch();
 
     if ($query_find_cover->rowCount() == 0) {
         // создаем альбом
@@ -68,6 +69,8 @@ if ($method === "POST") {
             echo "not_add_cover";
         }
     } else {
+        echo $photo['id'];
+
         // обновляем картинку в таблице "project_photos"
         $query_add_cover = $dbh->prepare("UPDATE `project_photos` SET `title` = :title, `extension` = :extension, `image` = :image, `date_create` = :date_create WHERE id_site = :id_site AND name_album = :name_album");
         $query_add_cover->execute([
