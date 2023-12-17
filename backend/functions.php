@@ -81,18 +81,9 @@ function saveFile($file, $uploadDir) {
 
     if (!file_exists($localPathFolder)) {
         mkdir($localPathFolder, 0777, true);
-        echo "no folder <br>";
-    } else {
-        echo "yes folder <br>";
     }
 
-    echo "fileName: " . $fileName . "<br>";
-    echo "localPathFolder: " . $localPathFolder . "<br>";
-    echo "localPath: " . $localPath . "<br>";
-    echo "imageData: " . $imageData . "<br>";
-
-    imagewebp($imageResource, $localPath);
-    imagedestroy($imageResource); // Освобождение памяти
+    file_put_contents($localPath, $imageData);
 
     // Сохранение изображения в формате WebP
     if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
