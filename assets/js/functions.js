@@ -243,7 +243,7 @@ function XMLHttpRequestAJAX(data) {
     var xhr = new XMLHttpRequest();
 
     if (sendData.method === "GET" || sendData.method === "DELETE" || sendData.method === "UPDATE") {
-        xhr.open(sendData.method, sendData.url + "?" + new URLSearchParams(data.body).toString(), false);
+        xhr.open(sendData.method, sendData.url + "?" + new URLSearchParams(sendData.body).toString(), false);
     }
 
     if (sendData.method === "POST") {
