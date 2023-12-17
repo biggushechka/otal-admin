@@ -38,6 +38,8 @@ if ($method === "POST") {
         ]);
         $album = $query_find_cover->fetch();
 
+        echo $album['id'];
+
         // добавляем фото в альбом
         if ($query_create_album->rowCount() > 0) {
 
