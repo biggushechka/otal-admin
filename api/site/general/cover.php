@@ -44,7 +44,7 @@ if ($method === "POST") {
             $saveFileToFolder = saveFile($file, "api/media/cover");
             if ($saveFileToFolder = 0) return false;
 
-            $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `image` = :image, `activity` = :activity, `date_create` = :date_create");
+            $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `weight` = :weight, `image` = :image, `activity` = :activity, `date_create` = :date_create");
             $query_add_cover->execute([
                 "id_album" => $album_id,
                 "name_album" => "cover_project",
@@ -74,7 +74,7 @@ if ($method === "POST") {
         if ($saveFileToFolder = 0) return false;
 
         // обновляем картинку в таблице "project_photos"
-        $query_add_cover = $dbh->prepare("UPDATE `project_photos` SET `title` = :title, `extension` = :extension, `image` = :image, `date_create` = :date_create WHERE id = :id");
+        $query_add_cover = $dbh->prepare("UPDATE `project_photos` SET `title` = :title, `extension` = :extension, `weight` = :weight, `image` = :image, `date_create` = :date_create WHERE id = :id");
         $query_add_cover->execute([
             "id" => $photo['id'],
             "title" => $file['name'] . "." . $file['ext'],
