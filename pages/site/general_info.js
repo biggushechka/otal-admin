@@ -113,7 +113,7 @@ export default function general_info(project) {
 
             var updateGeneralInfo = XMLHttpRequestAJAX({
                 url: "/api/site/general/info",
-                method: "UPDATE",
+                method: "POST",
                 body: getValuesForm.form
             });
 

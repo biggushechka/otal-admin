@@ -17,7 +17,7 @@ $whatsapp_link = $_POST['whatsapp_link'] ?? $_GET['whatsapp_link'];
 $currentDateTime = date('Y-m-d H:i:s');
 
 // добавление
-if ($method === "UPDATE") {
+if ($method === "POST") {
     echo $method;
 
     $query_update_general = $dbh->prepare("UPDATE `project_general` SET `title_project` = :title_project, `phone` = :phone, `email` = :email, `telegram_phone` = :telegram_phone, `telegram_link` = :telegram_link, `whatsapp_phone` = :whatsapp_phone, `whatsapp_link` = :whatsapp_link, `date_update` = :date_update WHERE `id_site` = :id_site");
