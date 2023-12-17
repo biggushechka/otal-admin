@@ -136,3 +136,12 @@ function deleteDirectory($directory) {
     // Удаляем саму папку
     rmdir($directory);
 }
+
+// Функция для удаления конкретного файла
+function deleteFile($filePath) {
+    if (is_file($filePath)) {
+        return unlink($filePath);
+    }
+
+    return false;
+}

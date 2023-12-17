@@ -73,6 +73,8 @@ if ($method === "POST") {
         $saveFileToFolder = saveFile($file, "api/media/cover");
         if ($saveFileToFolder = 0) return false;
 
+        deleteFile($rootPath . "/api/media/cover/" . $photo['title']);
+
         // обновляем картинку в таблице "project_photos"
         $query_add_cover = $dbh->prepare("UPDATE `project_photos` SET `title` = :title, `extension` = :extension, `weight` = :weight, `image` = :image, `date_create` = :date_create WHERE id = :id");
         $query_add_cover->execute([
