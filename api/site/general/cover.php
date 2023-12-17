@@ -87,5 +87,9 @@ if ($method === "POST") {
             "preview_photo" => $filePath,
             "id_site" => $id_site
         ]);
+
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode($filePath, JSON_UNESCAPED_UNICODE);
     }
 }
