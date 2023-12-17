@@ -15,8 +15,11 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // добавление
 if ($method === "POST") {
-    $filePath = "";
+    $webpImages = convertImagesToWebP($cover);
+    $file = $webpImages[0];
+    $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
 
+    // проверяем, есть в картинка в таблице "project_photos"
     $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos` WHERE id_site = :id_site AND title = :title");
     $query_find_cover->execute([
         "id_site" => $id_site,
@@ -24,10 +27,6 @@ if ($method === "POST") {
     ]);
 
     if ($query_find_cover->rowCount() == 0) {
-        $webpImages = convertImagesToWebP($cover);
-        $file = $webpImages[0];
-        $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
-
         // создаем альбом
         $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :title, `date_create` = :date_create, `activity` = :activity");
         $query_create_album->execute([
@@ -67,5 +66,22 @@ if ($method === "POST") {
         } else {
             echo "not_add_cover";
         }
+    } else {
+        // обновляем картинку в таблице "project_photos"
+        $query_add_cover = $dbh->prepare("UPDATE `project_photos` SET `title` = :title, `extension` = :extension, `image` = :image, `date_create` = :date_create WHERE id_site = :id_site AND name_album = :name_album");
+        $query_add_cover->execute([
+            "id_site" => $id_site,
+            "name_album" => "cover_project",
+            "title" => $file['name'] . "." . $file['ext'],
+            "extension" => $file['ext'],
+            "image" => $filePath,
+            "date_create" => $currentDateTime
+        ]);
+
+        $query_update_cover = $dbh->prepare("UPDATE `project_general` SET `preview_photo` = :preview_photo WHERE `id_site` = :id_site");
+        $query_update_cover->execute([
+            "preview_photo" => $filePath,
+            "id_site" => $id_site
+        ]);
     }
 }
