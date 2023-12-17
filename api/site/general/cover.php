@@ -36,7 +36,7 @@ if ($method === "POST") {
             "date_create" => $currentDateTime,
             "activity" => "on"
         ]);
-        $album = $query_find_cover->fetch();
+        $album = $query_create_album->fetch();
 
         echo $album['id'];
 
