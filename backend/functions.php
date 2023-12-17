@@ -73,11 +73,6 @@ function convertImagesToWebP($images) {
 }
 
 function saveFile($file, $uploadDir) {
-
-    echo "<pre>";
-    print_r($file);
-    echo "</pre>";
-
     $imageData = base64_decode($file['base']);
     $fileName = $file['name'] . "." . $file['ext'];
     $imageResource = imagecreatefromstring($imageData); // Создание изображения из данных в формате base64
@@ -87,6 +82,8 @@ function saveFile($file, $uploadDir) {
     if (!file_exists($localPathFolder)) {
         mkdir($localPathFolder, 0777, true);
     }
+
+    echo $localPath;
 
     if (imagewebp($imageResource, $localPath)) {
         echo "img upload";
