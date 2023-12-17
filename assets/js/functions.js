@@ -249,11 +249,11 @@ function XMLHttpRequestAJAX(data) {
     if (sendData.method === "POST") {
         sendData.body = JSON.stringify(sendData.body);
         xhr.open("POST", sendData.url, false);
+        xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+        xhr.setRequestHeader('Content-Type', 'text/plain');
     }
 
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.setRequestHeader('Content-Type', 'multipart/form-data');
-    xhr.setRequestHeader('Content-Type', 'text/plain');
 
     xhr.send(sendData.body);
 
