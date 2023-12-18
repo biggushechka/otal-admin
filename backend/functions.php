@@ -19,8 +19,9 @@ function connectServerFTP() {
     if ($connId && $loginResult) {
         if (!ftp_chdir($connId, $ftpPath)) {
             exit('Не удалось перейти по указанному пути на сервере');
+        } else {
+            return $connId;
         }
-        return $connId;
     } else {
         echo "Не удалось соединиться с удаленным сервером.";
     }
@@ -78,39 +79,53 @@ function saveFile($file, $uploadDir) {
     $imageResource = imagecreatefromstring($imageData); // Создание изображения из данных в формате base64
     $localPath = $_SERVER['DOCUMENT_ROOT'] . "/" . $uploadDir . "/" . $fileName;
     $localPathFolder = $_SERVER['DOCUMENT_ROOT'] . "/" . $uploadDir;
+    $isSaveFile = "";
 
+    // проверяем, есть ли в локальном проекте нужна папка, если нет - создаем
     if (!file_exists($localPathFolder)) {
         mkdir($localPathFolder, 0777, true);
     }
 
-    if (!imagewebp($imageResource, $localPath)) {
-        return 0;
+    // проверяем, сохранилось ли изображение
+    if (imagewebp($imageResource, $localPath)) {
+        $isSaveFile = "true";
+    } else {
+        $isSaveFile = "false";
     }
 
-    imagedestroy($imageResource); // Освобождение памяти
+    // Освобождение памяти
+    imagedestroy($imageResource);
 
-    // Сохранение изображения в формате WebP
+    // если файл не сохранился, останавливаем скрипт
+    if ($isSaveFile === "false") return false;
+
+    // Сохранение файл на сервер, если мы локально загрузили файл
     if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
         $serverConnect = connectServerFTP();
-        $remotePath = $uploadDir . "/" .$fileName;
+        $remotePath = $uploadDir . "/" . $fileName;
 
-        // проверяем сущ. ли папка "api/media/cover"
-        $fileList = ftp_nlist($serverConnect, $uploadDir);
+//        ftp_pasv($serverConnect, true);
 
-        // если такой нет, то создаем "api/media/cover"
-        if ($fileList === false) {
+        // Проверка существования папки
+        if (!ftp_chdir($serverConnect, $uploadDir)) {
             ftp_mkdir($serverConnect, $uploadDir);
         }
 
         // сохраняем файл на сервере
-        ftp_put($serverConnect, $remotePath, $localPath, FTP_BINARY);
+        if (!ftp_put($serverConnect, $remotePath, $localPath, FTP_ASCII) ) {
+            $isSaveFile = "false";
+        }
 
         // закрываем FTP
         ftp_close($serverConnect);
 
-        $localMediaFolder = $_SERVER['DOCUMENT_ROOT'] . "/api/media";
-        deleteDirectory($localMediaFolder);
+        // удаляем локальный файл
+//        $localMediaFolder = $_SERVER['DOCUMENT_ROOT'] . "/api/media";
+//        deleteDirectory($localMediaFolder);
     }
+
+    // если файл не сохранился, останавливаем скрипт
+    return $isSaveFile;
 }
 
 

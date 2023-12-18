@@ -27,6 +27,7 @@ if ($method === "POST") {
     ]);
     $photo = $query_find_cover->fetch();
 
+    // если обложки нет, то создаем для нее альбома и добавляем её в этот альбом
     if ($query_find_cover->rowCount() == 0) {
         // создаем альбом
         $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :title, `date_create` = :date_create, `activity` = :activity");
@@ -42,36 +43,52 @@ if ($method === "POST") {
         if ($query_create_album->rowCount() > 0) {
 
             $saveFileToFolder = saveFile($file, "api/media/cover");
-            if ($saveFileToFolder = 0) return false;
 
-            $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `weight` = :weight, `image` = :image, `activity` = :activity, `date_create` = :date_create");
-            $query_add_cover->execute([
-                "id_album" => $album_id,
-                "name_album" => "cover_project",
-                "id_site" => $id_site,
-                "title" => $file['name'] . "." . $file['ext'],
-                "extension" => $file['ext'],
-                "weight" => $file['size'],
-                "image" => $filePath,
-                "activity" => "on",
-                "date_create" => $currentDateTime
-            ]);
+            if ($saveFileToFolder == "false") {
+                header("HTTP/1.1 409 Conflict");
+                header('Content-Type: application/json; charset=UTF-8');
+                echo json_encode("Ошибка при сохранении файла", JSON_UNESCAPED_UNICODE);
+                return false;
+            } else {
+                $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `weight` = :weight, `image` = :image, `activity` = :activity, `date_create` = :date_create");
+                $query_add_cover->execute([
+                    "id_album" => $album_id,
+                    "name_album" => "cover_project",
+                    "id_site" => $id_site,
+                    "title" => $file['name'] . "." . $file['ext'],
+                    "extension" => $file['ext'],
+                    "weight" => $file['size'],
+                    "image" => $filePath,
+                    "activity" => "on",
+                    "date_create" => $currentDateTime
+                ]);
 
-            $query_update_cover = $dbh->prepare("UPDATE `project_general` SET `preview_photo` = :preview_photo WHERE `id_site` = :id_site");
-            $query_update_cover->execute([
-                "preview_photo" => $filePath,
-                "id_site" => $id_site
-            ]);
+                $query_update_cover = $dbh->prepare("UPDATE `project_general` SET `preview_photo` = :preview_photo WHERE `id_site` = :id_site");
+                $query_update_cover->execute([
+                    "preview_photo" => $filePath,
+                    "id_site" => $id_site
+                ]);
 
-            header("HTTP/1.1 200 OK");
-            header('Content-Type: application/json; charset=UTF-8');
-            echo json_encode($filePath, JSON_UNESCAPED_UNICODE);
+                header("HTTP/1.1 200 OK");
+                header('Content-Type: application/json; charset=UTF-8');
+                echo json_encode($filePath, JSON_UNESCAPED_UNICODE);
+            }
         } else {
-            echo "not_add_cover";
+            header("HTTP/1.1 409 Conflict");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode("Ошибка при сохранении альбома", JSON_UNESCAPED_UNICODE);
         }
     } else {
+
+        // обложка уже есть, то заменяем на новую
         $saveFileToFolder = saveFile($file, "api/media/cover");
-        if ($saveFileToFolder = 0) return false;
+
+        if ($saveFileToFolder == "false") {
+            header("HTTP/1.1 409 Conflict");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode("Ошибка при сохранении файла", JSON_UNESCAPED_UNICODE);
+            return false;
+        }
 
         deleteFile($rootPath . "/api/media/cover/" . $photo['title']);
 
