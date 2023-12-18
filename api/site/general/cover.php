@@ -19,6 +19,13 @@ if ($method === "POST") {
     $file = $webpImages[0];
     $filePath = "https://otal-estate.ru/api/media/cover/" . $file['name'] . "." . $file['ext'];
 
+    // проверяем, есть ли альбом для обложки
+    $query_find_album = $dbh->prepare("SELECT * FROM `project_albums` WHERE id_site = :id_site AND title = :title");
+    $query_find_album->execute([
+        "id_site" => $id_site,
+        "title" => "cover_project"
+    ]);
+
     // проверяем, есть в картинка в таблице "project_photos"
     $query_find_cover = $dbh->prepare("SELECT * FROM `project_photos` WHERE id_site = :id_site AND name_album = :name_album");
     $query_find_cover->execute([
@@ -29,7 +36,8 @@ if ($method === "POST") {
 
     // если обложки нет, то создаем для нее альбома и добавляем её в этот альбом
     if ($query_find_cover->rowCount() == 0) {
-        // создаем альбом
+
+        // если альбома нет, то создаем его
         $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :title, `date_create` = :date_create, `activity` = :activity");
         $query_create_album->execute([
             "id_site" => $id_site,

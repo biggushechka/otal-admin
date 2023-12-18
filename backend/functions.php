@@ -111,6 +111,11 @@ function saveFile($file, $uploadDir) {
             ftp_mkdir($serverConnect, $uploadDir);
         }
 
+        echo "<pre>";
+        print_r($remotePath);
+        print_r($localPath);
+        echo "</pre>";
+
         // сохраняем файл на сервере
         if (!ftp_put($serverConnect, $remotePath, $localPath, FTP_ASCII) ) {
             $isSaveFile = "false";
@@ -120,8 +125,8 @@ function saveFile($file, $uploadDir) {
         ftp_close($serverConnect);
 
         // удаляем локальный файл
-//        $localMediaFolder = $_SERVER['DOCUMENT_ROOT'] . "/api/media";
-//        deleteDirectory($localMediaFolder);
+        $localMediaFolder = $_SERVER['DOCUMENT_ROOT'] . "/api/media";
+        deleteDirectory($localMediaFolder);
     }
 
     // если файл не сохранился, останавливаем скрипт
