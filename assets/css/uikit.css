@@ -178,6 +178,15 @@ form .field-container {
 
 }
 
+form .two-fields {
+    display: flex;
+    grid-column-gap: 10px;
+}
+
+form .two-fields > .field-container {
+    flex: 1;
+}
+
 form .field-container[type="input-hidden"] {
     display: none !important;
 }
@@ -198,11 +207,12 @@ form .field-container input[type=text] {
 }
 
 form .field-container input[type=text]:hover {
-    border-color: #565656;
+    border-color: var(--global-primary);
 }
 
 form .field-container input[type=text]:focus {
     border-color: var(--global-primary);
+    box-shadow: 0 1px 4px 4px rgba(71, 120, 235, 0.14);
 }
 
 form .field-container .grid-fields-array {
@@ -299,6 +309,34 @@ form .field-container.error .grid-fields-array label .title {
 
 .G-switch-radio .row-container input[type="checkbox"]:checked + label:before {
     transform: translate(135%, -50%);
+}
+
+
+form .field-container .choices-select .choices__inner {
+    margin-top: 6px;
+}
+
+form .field-container .choices-select .choices__inner {
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    max-height: 38px;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #9a9a9a;
+    padding: 0 10px;
+}
+
+form .field-container .choices-select.is-open .choices__inner {
+    border-radius: 5px 5px 0 0 ;
+}
+
+form .field-container .choices-select > .choices__list--dropdown {
+    box-shadow: 0 15px 15px 5px rgba(0, 0, 0, 0.1);
+}
+
+form .field-container .choices-select > .choices__list--dropdown .choices__list .choices__item[aria-selected="true"] {
+    background-color: #f2f2f2;
 }
 
 /* end - form */

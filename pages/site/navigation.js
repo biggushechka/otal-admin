@@ -58,7 +58,7 @@ export default function navigation(data) {
 
 var navBtns = [
     {title: "Общая информация", tab: "general_info"},
-    {title: "Параметры", tab: "parametrs"},
+    {title: "Параметры", tab: "parameters"},
     {title: "Описание", tab: "desc"},
     {title: "Расположение", tab: "location"},
     {title: "Преимущества", tab: "advantages"},

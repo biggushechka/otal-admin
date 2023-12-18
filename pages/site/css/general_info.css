@@ -2,11 +2,8 @@
 
 }
 
-.P-general-info .form-wrapper {
 
-}
-
-.P-general-info .form-wrapper .preview-image-project {
+.P-general-info .preview-image-project {
     max-width: 544px;
     height: 230px;
     border-radius: 5px;
@@ -14,7 +11,7 @@
     margin-bottom: 20px;
 }
 
-.P-general-info .form-wrapper .preview-image-project .upload-photo {
+.P-general-info .preview-image-project .upload-photo {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,31 +23,31 @@
     border: 1px dashed var(--global-primary);
 }
 
-.P-general-info .form-wrapper .preview-image-project .upload-photo .title {
+.P-general-info .preview-image-project .upload-photo .title {
     font-weight: 600;
     font-size: 16px;
 }
 
-.P-general-info .form-wrapper .preview-image-project .upload-photo .desc {
+.P-general-info .preview-image-project .upload-photo .desc {
     font-size: 13px;
     margin-top: 10px;
     margin-bottom: 15px;
     color: #818181;
 }
 
-.P-general-info .form-wrapper .preview-image-project .cover-photo {
+.P-general-info .preview-image-project .cover-photo {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-.P-general-info .form-wrapper .preview-image-project .cover-photo img {
+.P-general-info .preview-image-project .cover-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.P-general-info .form-wrapper .preview-image-project .cover-photo .btn {
+.P-general-info .preview-image-project .cover-photo .btn {
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -59,6 +56,6 @@
     opacity: 0;
 }
 
-.P-general-info .form-wrapper .preview-image-project .cover-photo:hover .btn {
+.P-general-info .preview-image-project .cover-photo:hover .btn {
     opacity: 1;
 }

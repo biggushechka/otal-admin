@@ -1,12 +1,17 @@
 class FormFields {
 
-    /*
+    arraySelect = [];
 
+    /*
     modalHTML.append(formFields.inputText({label: "Домен", placeholder: "example.ru", name: "domain", validate: "true"}));
     modalHTML.append(formFields.radio({label: "Закрыто?", name: "close", value: {"yes": "Да", "no": "Нет", "unknow": "Не знаю"}, validate: "true"}));
     modalHTML.append(formFields.checkbox({label: "Закрыто?", name: "check", value: {"yes": "Да", "no": "Нет", "unknow": "Не знаю"}, validate: "true"}));
-
      */
+
+    constructor(props) {
+        this.maxmax = this.arraySelect;
+    }
+
 
     inputText(data) {
         var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
@@ -40,6 +45,13 @@ class FormFields {
                         input.value = "";
                     }
                 };
+            }
+            if (data.mask == "number") {
+                IMask(input, {mask: Number, radix: '.', thousandsSeparator: ' ', lazy: false});
+            }
+
+            if (data.mask == "date") {
+                IMask(input, {mask: Date, lazy: false});
             }
         }
 
@@ -152,6 +164,52 @@ class FormFields {
         return switchTAG;
     }
 
+    select(data) {
+        var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
+            name = (data.name != undefined && data.name != "") ? data.name : "",
+            options = (data.option != undefined && data.option.length != 0) ? data.option : [],
+            sort = (data.sort != undefined && data.sort != "" && data.sort == "true") ? true : false,
+            search = (data.search != undefined && data.search != "") ? true : false,
+            validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "";
+
+        var selectTAG = document.createElement("div");
+        selectTAG.classList.add("field-container");
+        selectTAG.setAttribute("type", "select");
+        if (data.field_class != undefined && data.field_class != "") selectTAG.classList.add(data.field_class);
+        var selectHTML = `
+        ${label}
+        <select name="${name}"></select>`;
+        selectTAG.innerHTML = selectHTML;
+
+        var select = selectTAG.querySelector("select");
+
+        if (options.length != 0) {
+            var arrayOptios = [];
+            for (var i in options) {
+                arrayOptios.push({value: i, label: options[i]})
+            }
+            options = arrayOptios;
+        }
+
+        var choices = new Choices(select, {
+            choices: options,
+            itemSelectText: 'Выбрать',
+            noResultsText: 'Результатов нет',
+            noChoicesText: 'Нет выбора, из которого можно было бы выбирать',
+            searchEnabled: search,
+            shouldSortItems: sort,
+            classNames: {
+                containerOuter: "choices choices-select"
+            }
+        });
+
+        choices.removeActiveItems();
+        choices.containerOuter.element.querySelector("select").innerHTML = "";
+        choices.containerOuter.element.querySelector(".choices__list.choices__list--single").innerHTML = "Выбрать...";
+
+        return selectTAG;
+    }
+
 
     // -------------------------------------------------------
 
@@ -167,6 +225,45 @@ class FormFields {
                     name = input.getAttribute("name");
 
                 input.value = values[name];
+            }
+
+            if (typeField === "input-radio") {
+                var radio = field.querySelector("input"),
+                    name = radio.getAttribute("name"),
+                    radioArray = field.querySelectorAll(".grid-fields-array input[type='radio']");
+
+                radioArray.forEach(function(radioItem) {
+                    var value = radioItem.getAttribute("value");
+                    if (value == values[name]) radioItem.checked = true;
+                });
+            }
+
+            if (typeField === "select") {
+                var select = field.querySelector("select"),
+                    name = select.getAttribute("name"),
+                    value = field.querySelector(".choices__list.choices__list--single"),
+                    list = field.querySelectorAll(".choices__list--dropdown > .choices__list .choices__item");
+
+                select.innerHTML = "";
+
+                if (values[name] == "") return false;
+
+                select.innerHTML = `<option value="">${values[name]}</option>`;
+                value.innerHTML = values[name];
+
+                list.forEach(function (option) {
+                    var nameOption = option.innerHTML;
+
+                    option.removeAttribute("aria-selected");
+                    option.classList.remove("is-highlighted");
+                    option.classList.remove("choices__item--selectable");
+
+                    if (nameOption == values[name]) {
+                        option.setAttribute("aria-selected", "true");
+                    };
+
+                })
+
             }
         });
     }
@@ -226,6 +323,15 @@ class FormFields {
                     }
                 });
             }
+
+            if (typeField === "select") {
+                var select = container.querySelector("select"),
+                    name = select.getAttribute("name"),
+                    value = select.options[0].text;
+
+                formData[name] = value;
+            }
+
         });
 
         var isValid = this.validate(form, fieldsValid, formData);

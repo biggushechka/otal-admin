@@ -8,6 +8,7 @@
 @import "./uikit.css";
 @import "./normalize.css";
 @import "/plugins/modal/modal.css";
+@import "/plugins/choices-select/choices.min.css";
 
 /* -------------------------- import Components -------------------------- */
 @import "/components/Navigation/Navigation.css";
