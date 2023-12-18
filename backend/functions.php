@@ -6,13 +6,14 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
 function connectServerFTP() {
     // Параметры FTP-соединения
-    $ftpHost = 'novato1v.beget.tech';
+    $hostname = 'novato1v.beget.tech';
+    $port = 21;
     $ftpUsername = 'novato1v';
     $ftpPassword = 'F8t5vkza';
     $ftpPath = "otal-estate.ru/public_html";
 
     // Создание подключения FTP
-    $connId = ftp_connect($ftpHost);
+    $connId = ftp_connect($hostname, $port);
     $loginResult = ftp_login($connId, $ftpUsername, $ftpPassword);
 
     // Проверка подключения и авторизации
@@ -79,6 +80,7 @@ function saveFile($file, $uploadDir) {
     $imageResource = imagecreatefromstring($imageData); // Создание изображения из данных в формате base64
     $localPath = $_SERVER['DOCUMENT_ROOT'] . "/" . $uploadDir . "/" . $fileName;
     $localPathFolder = $_SERVER['DOCUMENT_ROOT'] . "/" . $uploadDir;
+    $remotePath = $uploadDir . "/" . $fileName;
     $isSaveFile = "";
 
     // проверяем, есть ли в локальном проекте нужна папка, если нет - создаем
@@ -102,22 +104,19 @@ function saveFile($file, $uploadDir) {
     // Сохранение файл на сервер, если мы локально загрузили файл
     if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
         $serverConnect = connectServerFTP();
-        $remotePath = $uploadDir . "/" . $fileName;
 
-//        ftp_pasv($serverConnect, true);
+        ftp_pasv($serverConnect, true);
 
         // Проверка существования папки
-        if (!ftp_chdir($serverConnect, $uploadDir)) {
+        $isFolder = ftp_nlist($serverConnect, $uploadDir);
+
+        if ($isFolder === false) {
+            echo "нет";
             ftp_mkdir($serverConnect, $uploadDir);
         }
 
-        echo "<pre>";
-        print_r($remotePath);
-        print_r($localPath);
-        echo "</pre>";
-
         // сохраняем файл на сервере
-        if (!ftp_put($serverConnect, $remotePath, $localPath, FTP_ASCII) ) {
+        if (!ftp_put($serverConnect, $remotePath, $localPath, FTP_BINARY) ) {
             $isSaveFile = "false";
         }
 
