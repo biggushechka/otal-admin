@@ -20,8 +20,6 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // добавление
 if ($method === "POST") {
-    echo $method;
-
     $query_update_general = $dbh->prepare("UPDATE `project_general` SET `title_project` = :title_project, `phone` = :phone, `email` = :email, `telegram_phone` = :telegram_phone, `telegram_link` = :telegram_link, `whatsapp_phone` = :whatsapp_phone, `whatsapp_link` = :whatsapp_link, `date_update` = :date_update WHERE `id_site` = :id_site");
     $query_update_general->execute([
         "id_site" => $siteID,

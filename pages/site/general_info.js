@@ -84,6 +84,9 @@ export default function general_info(project) {
                     if (postCover.code === 200) {
                         getValForm.preview_photo = postCover.data;
                         coverProject();
+                        alertNotification({status: "success", text: "Обложка успешно обновлена", pos: "top-center"});
+                    } else {
+                        alertNotification({status: "error", text: "Ошибка при обновлении обложки", pos: "top-center"});
                     }
                 }
 

@@ -9,7 +9,7 @@ $postdata = file_get_contents("php://input");
 $data = json_decode($postdata, true);
 
 $title = $data['title'] ?? $_GET['title'];
-$domain = $data['domain'] ?? $_GET['domain'];
+$domain = $data['title'] ?? $_GET['domain'];
 $currentDateTime = date('Y-m-d H:i:s');
 
 // добавление нового сайта
