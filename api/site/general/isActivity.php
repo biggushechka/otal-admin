@@ -11,6 +11,9 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // изменяем активность сайта
 if ($method === "UPDATE") {
+
+    echo $_GET['activity'];
+
     $query_updateActivity = $dbh->prepare("UPDATE `my_sites` SET `activity` = :activity WHERE `id` = :id");
     $query_updateActivity->execute(["activity" => $changeActivity, "id" => $id_site]);
 
