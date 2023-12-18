@@ -16,7 +16,6 @@ class FormFields {
     inputText(data) {
         var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
             name = (data.name != undefined && data.name != "") ? data.name : "",
-            value = (data.value != undefined && data.value != "") ? data.value : "",
             placeholder = (data.placeholder != undefined && data.placeholder != "") ? `placeholder="${data.placeholder}"` : "",
             validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "";
 
@@ -26,7 +25,7 @@ class FormFields {
         if (data.field_class != undefined && data.field_class != "") fieldTAG.classList.add(data.field_class);
         var fieldHTML = `
         ${label}
-        <input type="text" name="${name}" value="${value}" ${placeholder} class="field-input" ${validate}>`;
+        <input type="text" name="${name}" value="" ${placeholder} class="field-input" ${validate}>`;
         fieldTAG.innerHTML = fieldHTML;
 
         if (data.mask != undefined) {
@@ -69,6 +68,25 @@ class FormFields {
         var fieldHTML = `
         ${label}
         <input type="text" name="${name}" value="${value}" class="field-input">`;
+        fieldTAG.innerHTML = fieldHTML;
+
+        return fieldTAG;
+    }
+
+
+    textarea(data) {
+        var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
+            name = (data.name != undefined && data.name != "") ? data.name : "",
+            placeholder = (data.placeholder != undefined && data.placeholder != "") ? `placeholder="${data.placeholder}"` : "",
+            validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "";
+
+        var fieldTAG = document.createElement("div");
+        fieldTAG.classList.add("field-container");
+        fieldTAG.setAttribute("type", "textarea");
+        if (data.field_class != undefined && data.field_class != "") fieldTAG.classList.add(data.field_class);
+        var fieldHTML = `
+        ${label}
+        <textarea name="${name}" ${placeholder} ${validate}></textarea>`;
         fieldTAG.innerHTML = fieldHTML;
 
         return fieldTAG;
@@ -213,6 +231,7 @@ class FormFields {
 
     // -------------------------------------------------------
 
+    // заполнение полей
     setValuesForm(form, values) {
         // Получение всех тегов "field-container"
         var fieldContainers = form.querySelectorAll(".field-container");
@@ -236,6 +255,13 @@ class FormFields {
                     var value = radioItem.getAttribute("value");
                     if (value == values[name]) radioItem.checked = true;
                 });
+            }
+
+            if (typeField === "textarea") {
+                var textarea = field.querySelector("textarea"),
+                    name = textarea.getAttribute("name");
+
+                textarea.innerText = values[name];
             }
 
             if (typeField === "select") {
@@ -268,6 +294,8 @@ class FormFields {
         });
     }
 
+
+    // получаем значение полей
     getValuesForm(form) {
         var formData = {},
             fieldsValid = [];
@@ -322,6 +350,16 @@ class FormFields {
                         formData[name].push(checkbox.value);
                     }
                 });
+            }
+
+            if (typeField === "textarea") {
+                var textarea = container.querySelector("textarea"),
+                    name = textarea.getAttribute("name"),
+                    value = textarea.value;
+
+                console.log("textarea", value)
+
+                formData[name] = value;
             }
 
             if (typeField === "select") {

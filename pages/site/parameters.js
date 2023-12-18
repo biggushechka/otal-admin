@@ -12,8 +12,6 @@ export default function parameters(project) {
     });
     getGeneralInfo = getGeneralInfo.data;
 
-    console.log("parameters", getGeneralInfo)
-
     var blockTAG = document.createElement("section");
     blockTAG.classList.add("P-parameters");
     blockTAG.innerHTML = `
@@ -98,7 +96,7 @@ export default function parameters(project) {
 
             var updateGeneralInfo = XMLHttpRequestAJAX({
                 url: "/api/site/parameters",
-                method: "POST",
+                method: "UPDATE",
                 body: getValuesForm.form
             });
 
