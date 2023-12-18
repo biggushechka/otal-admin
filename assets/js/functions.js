@@ -242,11 +242,11 @@ function XMLHttpRequestAJAX(data) {
 
     var xhr = new XMLHttpRequest();
 
-    if (sendData.method === "GET" || sendData.method === "DELETE" || sendData.method === "UPDATE") {
+    if (sendData.method === "GET" || sendData.method === "DELETE") {
         xhr.open(sendData.method, sendData.url + "?" + new URLSearchParams(sendData.body).toString(), false);
     }
 
-    if (sendData.method === "POST") {
+    if (sendData.method === "POST" || sendData.method === "UPDATE") {
         sendData.body = JSON.stringify(sendData.body);
         xhr.open("POST", sendData.url, false);
         xhr.setRequestHeader('Content-Type', 'multipart/form-data');

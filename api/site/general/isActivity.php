@@ -5,15 +5,15 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/db_connect.php';
 
-$id_site = $_GET['id_site'];
-$changeActivity = ($_GET['activity'] == "true") ? "on" : "off";
+$postdata = file_get_contents("php://input");
+$data = json_decode($postdata, true);
+
+$id_site = $data['id_site'];
+$changeActivity = ($data['activity'] == "true") ? "on" : "off";
 $currentDateTime = date('Y-m-d H:i:s');
 
 // изменяем активность сайта
-if ($method === "UPDATE") {
-
-    echo $_GET['activity'];
-
+if ($method === "POST") {
     $query_updateActivity = $dbh->prepare("UPDATE `my_sites` SET `activity` = :activity WHERE `id` = :id");
     $query_updateActivity->execute(["activity" => $changeActivity, "id" => $id_site]);
 
