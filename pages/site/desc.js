@@ -14,54 +14,29 @@ export default function desc(project) {
 
     var blockTAG = document.createElement("section");
     blockTAG.classList.add("P-desc");
-    blockTAG.innerHTML = `
-    <div class="card-body">
-        <div class="content-card">
-            <form class="form-container"></form>
-            <div class="footer-events">
-                <button type="button" class="btn btn-primary btn-icon-left btn-save-form"><i class="ph ph-check-circle"></i>Сохранить</button>
-            </div>
-        </div>
-    </div>`;
     document.getElementById("app").append(blockTAG);
 
-    initForm();
+    desc_about();
+    desc_territory();
 
-    function initForm() {
-        blockTAG.querySelector("form").append(
-            (() => {
-                const divElement = document.createElement("div");
-                divElement.classList.add("group-fields");
-                divElement.innerHTML = `<h4 class="title-group">Описание ЖК</h4>`;
-                divElement.append(
-                    formFields.inputText({label: "Заголовок", name: "title_jk", validate: "false"}),
-                    formFields.textarea({label: "Описание", name: "desc_jk", validate: "false"})
-                );
-                return divElement;
-            })(),
-            (() => {
-                const divElement = document.createElement("div");
-                divElement.classList.add("group-fields");
-                divElement.innerHTML = `<h4 class="title-group">Территория</h4>`;
-                divElement.append(
-                    formFields.inputText({label: "Заголовок", name: "title_territory", validate: "false"}),
-                    formFields.textarea({label: "Описание", name: "desc_territory", validate: "false"})
-                );
-                return divElement;
-            })(),
-            formFields.inputHidden({name: "id_site", value: project.id})
-        )
-        // заполняем поля формы из БД
-        formFields.setValuesForm(blockTAG.querySelector("form"), getGeneralInfo);
 
-        // Обновляем поля формы
-        blockTAG.querySelector(".footer-events .btn-save-form").addEventListener("click", function () {
+    // Обновляем поля формы
+
+    var allBtnSave = blockTAG.querySelectorAll(".btn-save-form");
+
+    allBtnSave.forEach(function (btn) {
+        btn.addEventListener("click", function () {
             var getBtnSave = this,
-                getValuesForm = formFields.getValuesForm(blockTAG.querySelector("form"));
+                getTarget = this.getAttribute("target"),
+                getForm = this.closest(".content-card").querySelector("form"),
+                getValuesForm = formFields.getValuesForm(getForm);
 
             if (getValuesForm.status == false) return false;
 
-            console.log("desc", getValuesForm.form);
+            getValuesForm.form.id_site = project.id;
+            getValuesForm.form.target = getTarget;
+
+            console.log("form", getValuesForm.form)
 
             var updateGeneralInfo = XMLHttpRequestAJAX({
                 url: "/api/site/desc",
@@ -77,5 +52,57 @@ export default function desc(project) {
                 console.log(updateGeneralInfo.data);
             }
         });
+    });
+
+
+    function desc_about() {
+        var cardTAG = document.createElement("div");
+        cardTAG.classList.add("card-body");
+        cardTAG.innerHTML = `
+        <div class="header-card-body">
+            <h4 class="title-card">О проекте</h4>
+        </div>
+        <div class="content-card">
+            <form class="form-container"></form>
+            <div class="footer-events">
+                <button type="button" class="btn btn-primary btn-icon-left btn-save-form" target="about"><i class="ph ph-check-circle"></i>Сохранить</button>
+            </div>
+        </div>`;
+        blockTAG.append(cardTAG);
+
+        // вставляем поля формы
+        cardTAG.querySelector("form").append(
+            formFields.inputText({label: "Заголовок", name: "title_jk", validate: "false"}),
+            formFields.textarea({label: "Описание", name: "desc_jk", validate: "false"})
+        );
+
+        // заполняем поля формы из БД
+        formFields.setValuesForm(cardTAG.querySelector("form"), getGeneralInfo);
+    }
+
+
+    function desc_territory() {
+        var cardTAG = document.createElement("div");
+        cardTAG.classList.add("card-body");
+        cardTAG.innerHTML = `
+        <div class="header-card-body">
+            <h4 class="title-card">Территория</h4>
+        </div>
+        <div class="content-card">
+            <form class="form-container"></form>
+            <div class="footer-events">
+                <button type="button" class="btn btn-primary btn-icon-left btn-save-form" target="territory"><i class="ph ph-check-circle"></i>Сохранить</button>
+            </div>
+        </div>`;
+        blockTAG.append(cardTAG);
+
+        // вставляем поля формы
+        cardTAG.querySelector("form").append(
+            formFields.inputText({label: "Заголовок", name: "title_territory", validate: "false"}),
+            formFields.textarea({label: "Описание", name: "desc_territory", validate: "false"})
+        );
+
+        // заполняем поля формы из БД
+        formFields.setValuesForm(cardTAG.querySelector("form"), getGeneralInfo);
     }
 }

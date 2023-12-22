@@ -175,7 +175,7 @@ form {
 }
 
 form .field-container {
-
+    flex: 1;
 }
 
 form .two-fields {
@@ -239,6 +239,7 @@ form .field-container textarea {
     border: 1px solid #9a9a9a;
     margin-top: 6px;
     padding: 10px;
+    white-space: pre-line;
     resize: vertical;
 }
 

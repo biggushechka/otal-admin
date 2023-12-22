@@ -261,7 +261,7 @@ class FormFields {
                 var textarea = field.querySelector("textarea"),
                     name = textarea.getAttribute("name");
 
-                textarea.innerText = values[name];
+                textarea.innerHTML = values[name];
             }
 
             if (typeField === "select") {

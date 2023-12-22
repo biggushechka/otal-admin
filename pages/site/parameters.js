@@ -3,14 +3,14 @@ export default function parameters(project) {
     var formFields = new FormFields();
 
     // получаем данные
-    var getGeneralInfo = XMLHttpRequestAJAX({
+    var getParameters = XMLHttpRequestAJAX({
         url: "/api/site/parameters",
         method: "GET",
         body: {
             id_site: project.id
         }
     });
-    getGeneralInfo = getGeneralInfo.data;
+    getParameters = getParameters.data;
 
     var blockTAG = document.createElement("section");
     blockTAG.classList.add("P-parameters");
@@ -85,7 +85,7 @@ export default function parameters(project) {
             formFields.inputHidden({name: "id_site", value: project.id})
         );
         // заполняем поля формы из БД
-        formFields.setValuesForm(blockTAG.querySelector("form"), getGeneralInfo);
+        formFields.setValuesForm(blockTAG.querySelector("form"), getParameters);
 
         // Обновляем поля формы
         blockTAG.querySelector(".footer-events .btn-save-form").addEventListener("click", function () {
@@ -93,6 +93,8 @@ export default function parameters(project) {
                 getValuesForm = formFields.getValuesForm(blockTAG.querySelector("form"));
 
             if (getValuesForm.status == false) return false;
+
+            console.log("getValuesForm.form", getValuesForm.form)
 
             var updateGeneralInfo = XMLHttpRequestAJAX({
                 url: "/api/site/parameters",
@@ -104,7 +106,7 @@ export default function parameters(project) {
                 animationBtnSuccess(getBtnSave);
                 alertNotification({status: "success", text: "Данные успешно обновлены", pos: "top-center"});
             } else {
-                alertNotification({status: "success", text: "Ошибка при сохранении данных", pos: "top-center"});
+                alertNotification({status: "alert", text: "Обновите данные в форме на новые", pos: "top-center"});
                 console.log(updateGeneralInfo.data);
             }
         });

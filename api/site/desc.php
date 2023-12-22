@@ -9,6 +9,7 @@ $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
 
 $id_site = $POST['id_site'] ?? $_GET['id_site'];
+$target = $POST['target'] ?? $_GET['target'];
 $title_jk = $POST['title_jk'] ?? $_GET['title_jk'];
 $desc_jk = $POST['desc_jk'] ?? $_GET['desc_jk'];
 $title_territory = $POST['title_territory'] ?? $_GET['title_territory'];
@@ -33,22 +34,7 @@ if ($method === "GET") {
 }
 
 if ($method === "POST") {
-    $query_update_desc = $dbh->prepare("UPDATE `project_description` SET  
-    `title_jk` = :title_jk, 
-    `desc_jk` = :desc_jk, 
-    `title_territory` = :title_territory, 
-    `desc_territory` = :desc_territory,
-    `date_update` = :date_update 
-    WHERE `id_site` = :id_site");
-
-    $query_update_desc->execute([
-        "id_site" => $id_site,
-        "title_jk" => $title_jk,
-        "desc_jk" => $desc_jk,
-        "title_territory" => $title_territory,
-        "desc_territory" => $desc_territory,
-        "date_update" => $currentDateTime
-    ]);
+    $query_update_desc = typeDesc($target);
     $rowCount = $query_update_desc->rowCount();
 
     if ($rowCount > 0) {
@@ -60,4 +46,44 @@ if ($method === "POST") {
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Ошибка при обновлении данных", JSON_UNESCAPED_UNICODE);
     }
+}
+
+function typeDesc($target) {
+    global $dbh, $id_site, $title_jk, $desc_jk, $title_territory, $desc_territory, $currentDateTime;
+    $query = "";
+
+    switch ($target) {
+        case "about":
+            $query = $dbh->prepare("UPDATE `project_description` SET  
+            `title_jk` = :title_jk, 
+            `desc_jk` = :desc_jk, 
+            `date_update` = :date_update 
+            WHERE `id_site` = :id_site");
+
+            $query->execute([
+                "id_site" => $id_site,
+                "title_jk" => $title_jk,
+                "desc_jk" => $desc_jk,
+                "date_update" => $currentDateTime
+            ]);
+
+            break;
+        case "territory":
+            $query = $dbh->prepare("UPDATE `project_description` SET  
+            `title_territory` = :title_territory, 
+            `desc_territory` = :desc_territory,
+            `date_update` = :date_update 
+            WHERE `id_site` = :id_site");
+
+            $query->execute([
+                "id_site" => $id_site,
+                "title_territory" => $title_territory,
+                "desc_territory" => $desc_territory,
+                "date_update" => $currentDateTime
+            ]);
+
+            break;
+    }
+
+    return $query;
 }

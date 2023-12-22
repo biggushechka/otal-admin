@@ -42,7 +42,7 @@ if ($method === "GET") {
 }
 
 if ($method === "POST") {
-    $query_update_general = $dbh->prepare("UPDATE `project_parameters` SET 
+    $query_update = $dbh->prepare("UPDATE `project_parameters` SET 
     `id_site` = :id_site, 
     `class` = :class, 
     `material_house` = :material_house, 
@@ -60,7 +60,7 @@ if ($method === "POST") {
     `date_end_construction` = :date_end_construction 
     WHERE `id_site` = :id_site");
 
-    $query_update_general->execute([
+    $query_update->execute([
         "id_site" => $siteID,
         "class" => $class,
         "material_house" => $material_house,
@@ -78,7 +78,7 @@ if ($method === "POST") {
         "date_end_construction" => $date_end_construction
     ]);
 
-    $rowCount = $query_update_general->rowCount();
+    $rowCount = $query_update->rowCount();
 
     if ($rowCount > 0) {
         header("HTTP/1.1 200 OK");
