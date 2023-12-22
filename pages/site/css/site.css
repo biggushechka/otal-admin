@@ -1,5 +1,7 @@
 @import "./navigation.css";
 @import "./general_info.css";
+@import "./location.css";
+@import "./advantages.css";
 
 #app {
     padding-top: 150px;
@@ -19,7 +21,7 @@
     min-width: 600px;
 }
 
-#app > section > .card-body .footer-events {
+#app section .card-body .footer-events {
     display: flex;
     align-items: center;
     grid-gap: 20px;

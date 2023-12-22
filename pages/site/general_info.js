@@ -113,7 +113,7 @@ export default function general_info(project) {
                 animationBtnSuccess(getBtnSave);
                 alertNotification({status: "success", text: "Данные успешно обновлены", pos: "top-center"});
             } else {
-                alertNotification({status: "success", text: "Ошибка при сохранении данных", pos: "top-center"});
+                alertNotification({status: "error", text: "Ошибка при сохранении данных", pos: "top-center"});
                 console.log(updateGeneralInfo.data);
             }
         });

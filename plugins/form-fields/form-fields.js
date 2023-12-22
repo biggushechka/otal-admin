@@ -355,9 +355,10 @@ class FormFields {
             if (typeField === "textarea") {
                 var textarea = container.querySelector("textarea"),
                     name = textarea.getAttribute("name"),
-                    value = textarea.value;
+                    value = textarea.value,
+                    validate = textarea.getAttribute("validate");
 
-                console.log("textarea", value)
+                if (validate != null && validate === "true") fieldsValid.push(name);
 
                 formData[name] = value;
             }
@@ -387,7 +388,7 @@ class FormFields {
         fieldsValid.forEach(function (field) {
             if (formData[field] == "" || formData[field].length == 0) {
                 isValid = 1;
-                form.querySelector("input[name='"+field+"']").closest(".field-container").classList.add("error");
+                form.querySelector("*[name='"+field+"']").closest(".field-container").classList.add("error");
             }
         });
 

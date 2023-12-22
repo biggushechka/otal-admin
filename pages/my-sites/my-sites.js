@@ -139,7 +139,6 @@ export default function mySites() {
         siteHTML.querySelector(".cell-activity").append(switchActivity);
 
 
-
         // изменение активности сайта
         function isActivitySite(status) {
             var isActivity = XMLHttpRequestAJAX({
