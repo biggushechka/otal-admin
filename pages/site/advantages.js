@@ -1,5 +1,15 @@
-export default function advantages() {
+export default function advantages(project) {
     var formFields = new FormFields();
+
+    // получаем данные
+    var getAdvantages = XMLHttpRequestAJAX({
+        url: "/api/site/advantages",
+        method: "GET",
+        body: {
+            id_site: project.id
+        }
+    });
+    console.log("getAdvantages", getAdvantages)
 
     var blockTAG = document.createElement("section");
     blockTAG.classList.add("P-advantages");
@@ -62,7 +72,7 @@ export default function advantages() {
         blockTAG.append(advIndexHTML);
 
         initTable();
-        rowAdvTable();
+        getAllAdv();
 
         function initTable() {
             tableHTML = document.createElement("table");
@@ -93,19 +103,27 @@ export default function advantages() {
             });
         }
 
-        function rowAdvTable() {
+        function getAllAdv() {
+            if (getAdvantages.code === 200) {
+                for (var i in getAdvantages.data) {
+                    rowAdvTable(getAdvantages.data[i]);
+                }
+            }
+        }
+
+        function rowAdvTable(adv) {
             var rowHTML = document.createElement("tr");
             rowHTML.classList.add("row-adv");
             rowHTML.innerHTML = `
-            <td class="col-id">id</td>
+            <td class="col-id">${adv.id}</td>
             <td class="col-photo">
-                <img src="" class="photo-adv">
+                <img src="${adv.photo}" class="photo-adv">
             </td>
             <td class="col-title">
-                <span class="title">Особенности проекта</span>
-                <span class="desc">Тут любой текст с описанием проекта и тд.</span>
+                <span class="title">${adv.title}</span>
+                <span class="desc">${adv.description}</span>
             </td>
-            <td class="col-date">14 Декабря, чт (13:02)</td>
+            <td class="col-date">${DateFormat(adv.date_create, "d Month, N (H:i)")}</td>
             <td class="col-status"></td>
             <td class="col-events">
                 <div class="row-container">
@@ -116,7 +134,7 @@ export default function advantages() {
             tableHTML.querySelector("tbody .add-new-item").before(rowHTML);
 
             // вставляем switch активности сайта
-            var switchActivity = formFields.switchRadio({name: "activity", checked: "on", callback: isActivitySite})
+            var switchActivity = formFields.switchRadio({name: "activity", checked: adv.activity, callback: isActivitySite})
             rowHTML.querySelector(".col-status").append(switchActivity);
 
             // изменение активности сайта
@@ -137,24 +155,45 @@ export default function advantages() {
                 //
                 // return isActivity.data.activity
             }
+
+            // удаление записи
+            rowHTML.querySelector(".btn-delete").addEventListener("click", function () {
+                modalAlert({
+                    type: "delete",
+                    title: adv.title,
+                    callback: deleteSite,
+                });
+
+                // запрос на удаление записи
+                function deleteSite() {
+                    var deleteAdv = XMLHttpRequestAJAX({
+                        url: "/api/site/advantages",
+                        method: "DELETE",
+                        body: adv
+                    });
+
+                    if (deleteAdv.code === 200) {
+                        rowHTML.remove();
+                        alertNotification({status: "success", text: "Запись успешно удалена", pos: "top-center"});
+                    } else {
+                        alertNotification({status: "error", text: "Ошибка при удалении записи", pos: "top-center"});
+                    }
+                }
+            });
         }
 
         function modalItemAdv() {
-            var form = document.createElement("form"),
-                uploadPhotoHTML,
-                previewPhotoHTML,
-                photoAdv = [];
+            var form = document.createElement("form");
 
             // добавляем поля
             form.append(
                 formFields.inputText({label: "Заголовок", name: "title", validate: "true"}),
                 formFields.textarea({label: "Описание", name: "description", validate: "true"}),
+                formFields.photos({label: "Прикрепить фотографию", name: "photos", ext: "img", multiple: "false", validate: "true"}),
+                formFields.inputHidden({label: "id_site", name: "id_site", value: project.id})
             );
 
-            // добавляем кнопку, для загрузки фото
-            btnUploadPhoto();
-
-            var modalNewAddress = new Modal({
+            var modal = new Modal({
                 title: "Добавить запись",
                 classModal: 'P-modal-add-adv',
                 content: form,
@@ -174,27 +213,27 @@ export default function advantages() {
                 }
             });
 
-            // добавляем кнопку, для загрузки фото
-            function btnUploadPhoto() {
-                uploadPhotoHTML = document.createElement("div");
-                uploadPhotoHTML.classList.add("upload-photo");
-                uploadPhotoHTML.innerHTML = `<span class="title"><i class="ph ph-image"></i>Загрузить фотографию</span>`;
-                form.append(uploadPhotoHTML);
-
-
-
-            }
-
-            // добавляем кнопку, для загрузки фото
-
-
             function sendFormAdv() {
                 var getValuesForm = formFields.getValuesForm(form);
 
                 if (getValuesForm.status == false) return false;
 
-                getValuesForm.form.photo = photoAdv;
-                console.log("getValuesForm", getValuesForm)
+                console.log("getValuesForm.form", getValuesForm.form)
+
+                // отправляем данные
+                var sendAdvantages = XMLHttpRequestAJAX({
+                    url: "/api/site/advantages",
+                    method: "POST",
+                    body: getValuesForm.form
+                });
+
+                if (sendAdvantages.code === 200) {
+                    rowAdvTable(sendAdvantages.data);
+                    modal.closeModal();
+                    alertNotification({status: "success", text: "Запись успешно добавлена", pos: "top-center"});
+                } else {
+                    alertNotification({status: "error", text: "Ошибка при добавлении записи", pos: "top-center"});
+                }
             }
         }
     }

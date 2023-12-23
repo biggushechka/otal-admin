@@ -1,7 +1,5 @@
 <?php
 
-global $rootPath;
-
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
 function connectServerFTP() {
@@ -30,6 +28,7 @@ function connectServerFTP() {
 
 
 function convertImagesToWebP($images) {
+
     $convertedImages = [];
 
     foreach ($images as &$image) {
@@ -95,9 +94,6 @@ function saveFile($file, $uploadDir) {
         $isSaveFile = "false";
     }
 
-    // Освобождение памяти
-    imagedestroy($imageResource);
-
     // если файл не сохранился, останавливаем скрипт
     if ($isSaveFile === "false") return false;
 
@@ -110,8 +106,8 @@ function saveFile($file, $uploadDir) {
         // Проверка существования папки
         $isFolder = ftp_nlist($serverConnect, $uploadDir);
 
-        if ($isFolder === false) {
-            echo "нет";
+        // Проверка существования папки
+        if (empty($isFolder)) {
             ftp_mkdir($serverConnect, $uploadDir);
         }
 
@@ -122,13 +118,15 @@ function saveFile($file, $uploadDir) {
 
         // закрываем FTP
         ftp_close($serverConnect);
-
-        // удаляем локальный файл
-        $localMediaFolder = $_SERVER['DOCUMENT_ROOT'] . "/api/media";
-        deleteDirectory($localMediaFolder);
     }
 
-    // если файл не сохранился, останавливаем скрипт
+    // удаляем локальный файл
+    $localMediaFolder = $_SERVER['DOCUMENT_ROOT'] . "/api/media";
+    deleteDirectory($localMediaFolder);
+
+    // Освобождение памяти
+    imagedestroy($imageResource);
+
     return $isSaveFile;
 }
 
@@ -158,9 +156,37 @@ function deleteDirectory($directory) {
 
 // Функция для удаления конкретного файла
 function deleteFile($filePath) {
-    if (is_file($filePath)) {
-        return unlink($filePath);
+    global $rootPath;
+    $localPath = $rootPath . $filePath;
+    $detele_file = "false";
+
+    if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
+        $serverConnect = connectServerFTP();
+
+        ftp_pasv($serverConnect, true);
+
+        // Проверяем наличие файла на FTP сервере
+        if (ftp_size($serverConnect, $filePath) != -1) {
+            // Файл существует, удаляем его
+            if (ftp_delete($serverConnect, $filePath)) {
+                $detele_file = "true";
+                echo 'Файл успешно удален';
+            } else {
+                $detele_file = "false";
+                echo 'Не удалось удалить файл';
+            }
+        } else {
+            echo 'Файл не существует';
+        }
+
+        // закрываем FTP
+        ftp_close($serverConnect);
+    } else {
+        if (is_file($localPath)) {
+            $detele_file = "true";
+            unlink($localPath);
+        }
     }
 
-    return false;
+    return $detele_file;
 }

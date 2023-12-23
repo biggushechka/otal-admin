@@ -218,6 +218,8 @@ class FormFields {
     photos(data) {
         var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
             name = (data.name != undefined && data.name != "") ? data.name : "",
+            ext = (data.ext != undefined && data.ext != "") ? data.ext : "ext",
+            multiple = (data.multiple != undefined && data.multiple != "") ? data.multiple : "false",
             validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "",
             photoAdv = [];
 
@@ -227,25 +229,73 @@ class FormFields {
         if (data.field_class != undefined && data.field_class != "") fieldTAG.classList.add(data.field_class);
         var fieldHTML = `
         ${label}
-        <div class="upload-photo" name="${name}" ${validate}>
+        <div class="upload-photo">
             <span class="title"><i class="ph ph-image"></i>Загрузить фотографию</span>
+            <input name="${name}" ${validate} hidden>
         </div>`;
         fieldTAG.innerHTML = fieldHTML;
 
-        fieldTAG.addEventListener("click", function () {
-            photoAdv = [];
+        fieldTAG.querySelector(".upload-photo").addEventListener("click", function () {
+            var blockUploadPhoto = fieldTAG.querySelector(".upload-photo"),
+                input = fieldTAG.querySelector(".upload-photo input");
 
             getUploadFiles({
-                ext: "img",
-                multiple: "false"
+                ext: ext,
+                multiple: multiple
             }, fileProcessing);
 
-            function fileProcessing(files) {
-                if (files.length == 0) return false;
+            function fileProcessing(photos) {
+                if (photos.length == 0) return false;
 
-                previewUploadPhoto(files[0]);
+                if (multiple == "false") blockUploadPhoto.classList.add("hidden");
+
+                previewUploadPhoto();
+
+                for (var i in photos) {
+                    var photo = photos[i];
+                    photoAdv.push(photo);
+                    photoItem(photo)
+                }
+
+                input.value = JSON.stringify(photoAdv);
+            }
+
+            function previewUploadPhoto() {
+                var resultList = fieldTAG.querySelector(".preview-photo");
+                if (resultList) return false;
+
+                var previewPhoto = document.createElement("div");
+                previewPhoto.classList.add("preview-photo");
+                fieldTAG.append(previewPhoto);
+            }
+
+            function photoItem(photo) {
+                var photoHTML = document.createElement("div");
+                photoHTML.classList.add("photo-item");
+                photoHTML.innerHTML = `
+                <img src="data:image/png;base64,${photo.base}" alt="photo">
+                <button type="button" class="btn btn-square btn-delete-photo"><i class="ph ph-x"></i></button>`;
+                fieldTAG.querySelector(".preview-photo").append(photoHTML);
+
+                photoHTML.querySelector(".btn-delete-photo").addEventListener("click", function () {
+                    var deletePhoto = photoAdv.findIndex(function(photoItem) {
+                        return photoItem.id === photo.id;
+                    });
+
+                    // удаляем фото из массива
+                    if (deletePhoto !== -1) {
+                        photoAdv.splice(deletePhoto, 1);
+                        photoHTML.remove();
+                        input.value = JSON.stringify(photoAdv);
+                    }
+
+                    // если все фото удалены, то показываем кнопку "загрузить фото"
+                    if (photoAdv.length == 0) blockUploadPhoto.classList.remove("hidden");
+                })
             }
         });
+
+        return fieldTAG;
     }
 
 
@@ -387,6 +437,14 @@ class FormFields {
                 var select = container.querySelector("select"),
                     name = select.getAttribute("name"),
                     value = select.options[0].text;
+
+                formData[name] = value;
+            }
+
+            if (typeField === "photos") {
+                var input = container.querySelector("input"),
+                    name = input.getAttribute("name"),
+                    value = JSON.parse(input.value);
 
                 formData[name] = value;
             }

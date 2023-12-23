@@ -43,7 +43,6 @@
     width: 60px;
     height: 60px;
     object-fit: contain;
-    background: #ccc;
 }
 
 .P-advantages .P-adv-index .P-table-adv tbody .col-title .title {
@@ -86,54 +85,4 @@
 
 }
 
-.P-modal-add-adv .upload-photo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100px;
-    border-radius: 5px;
-    color: var(--global-primary);
-    border: 1px dashed var(--global-primary);
-}
-
-.P-modal-add-adv .upload-photo .title {
-    display: flex;
-    align-items: center;
-}
-
-.P-modal-add-adv .upload-photo i {
-    margin-right: 10px;
-    font-size: 30px;
-}
-
-.P-modal-add-adv .upload-photo:hover {
-    background: rgba(30, 135, 240, 0.12);
-    cursor: pointer;
-}
-
-.P-modal-add-adv .preview-upload-photo {
-    position: relative;
-}
-
-.P-modal-add-adv .preview-upload-photo img {
-    width: 100%;
-    height: 300px;
-    border: 1px solid #ccc;
-    object-fit: contain;
-}
-
-.P-modal-add-adv .preview-upload-photo .btn-delete-photo {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    background: var(--danger);
-}
-
-.P-modal-add-adv .preview-upload-photo .btn-delete-photo i {
-    color: #fff;
-}
 /* end - modal */

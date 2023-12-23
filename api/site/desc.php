@@ -33,6 +33,7 @@ if ($method === "GET") {
     }
 }
 
+// отправить
 if ($method === "POST") {
     $query_update_desc = typeDesc($target);
     $rowCount = $query_update_desc->rowCount();
