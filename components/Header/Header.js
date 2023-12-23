@@ -17,7 +17,7 @@ var headerHTML = `
     </div>
     <div class="right-col">
         <div class="user-container">
-            <img src="https://otal-estate.ru/api/media/admin.jpg" class="photo">
+            <img src="https://otal-estate.ru/api/media/users/admin.jpg" class="photo">
             <span class="name">${getUser.name}</span>
         </div>
         <div class="event-buttons-container">
