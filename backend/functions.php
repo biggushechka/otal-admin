@@ -118,11 +118,11 @@ function saveFile($file, $uploadDir) {
 
         // закрываем FTP
         ftp_close($serverConnect);
-    }
 
-    // удаляем локальный файл
-    $localMediaFolder = $_SERVER['DOCUMENT_ROOT'] . "/api/media";
-    deleteDirectory($localMediaFolder);
+        // удаляем локальный файл
+        $localMediaFolder = $_SERVER['DOCUMENT_ROOT'] . "/api/media";
+        deleteDirectory($localMediaFolder);
+    }
 
     // Освобождение памяти
     imagedestroy($imageResource);
