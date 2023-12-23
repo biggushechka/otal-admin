@@ -182,39 +182,11 @@ export default function advantages() {
                 form.append(uploadPhotoHTML);
 
 
-                uploadPhotoHTML.addEventListener("click", function () {
-                    photoAdv = [];
 
-                    getUploadFiles({
-                        ext: "img",
-                        multiple: "false"
-                    }, fileProcessing);
-
-                    function fileProcessing(files) {
-                        if (files.length == 0) return false;
-
-                        previewUploadPhoto(files[0]);
-                    }
-                });
             }
 
             // добавляем кнопку, для загрузки фото
-            function previewUploadPhoto(photo) {
-                uploadPhotoHTML.remove();
-                photoAdv.push(photo);
 
-                previewPhotoHTML = document.createElement("div");
-                previewPhotoHTML.classList.add("preview-upload-photo");
-                previewPhotoHTML.innerHTML = `
-                <img src="data:image/jpeg;base64,${photo.base}">
-                <button type="button" class="btn btn-delete-photo"><i class="ph ph-x"></i></button>`;
-                form.append(previewPhotoHTML);
-
-                previewPhotoHTML.querySelector(".btn-delete-photo").addEventListener("click", function () {
-                    btnUploadPhoto();
-                    previewPhotoHTML.remove();
-                });
-            }
 
             function sendFormAdv() {
                 var getValuesForm = formFields.getValuesForm(form);

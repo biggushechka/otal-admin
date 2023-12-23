@@ -1,18 +1,5 @@
 class FormFields {
 
-    arraySelect = [];
-
-    /*
-    modalHTML.append(formFields.inputText({label: "Домен", placeholder: "example.ru", name: "domain", validate: "true"}));
-    modalHTML.append(formFields.radio({label: "Закрыто?", name: "close", value: {"yes": "Да", "no": "Нет", "unknow": "Не знаю"}, validate: "true"}));
-    modalHTML.append(formFields.checkbox({label: "Закрыто?", name: "check", value: {"yes": "Да", "no": "Нет", "unknow": "Не знаю"}, validate: "true"}));
-     */
-
-    constructor(props) {
-        this.maxmax = this.arraySelect;
-    }
-
-
     inputText(data) {
         var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
             name = (data.name != undefined && data.name != "") ? data.name : "",
@@ -226,6 +213,39 @@ class FormFields {
         choices.containerOuter.element.querySelector(".choices__list.choices__list--single").innerHTML = "Выбрать...";
 
         return selectTAG;
+    }
+
+    photos(data) {
+        var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
+            name = (data.name != undefined && data.name != "") ? data.name : "",
+            validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "",
+            photoAdv = [];
+
+        var fieldTAG = document.createElement("div");
+        fieldTAG.classList.add("field-container");
+        fieldTAG.setAttribute("type", "photos");
+        if (data.field_class != undefined && data.field_class != "") fieldTAG.classList.add(data.field_class);
+        var fieldHTML = `
+        ${label}
+        <div class="upload-photo" name="${name}" ${validate}>
+            <span class="title"><i class="ph ph-image"></i>Загрузить фотографию</span>
+        </div>`;
+        fieldTAG.innerHTML = fieldHTML;
+
+        fieldTAG.addEventListener("click", function () {
+            photoAdv = [];
+
+            getUploadFiles({
+                ext: "img",
+                multiple: "false"
+            }, fileProcessing);
+
+            function fileProcessing(files) {
+                if (files.length == 0) return false;
+
+                previewUploadPhoto(files[0]);
+            }
+        });
     }
 
 
