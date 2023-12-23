@@ -138,6 +138,7 @@ if ($method === "DELETE") {
 
     // удаляем файл на сервере
     $delete_file = deleteFile($pathFile);
+
     if ($delete_file == "false") return false;
 
     // удаляем запись из таблицы "project_advantages"

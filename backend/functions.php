@@ -157,7 +157,7 @@ function deleteDirectory($directory) {
 // Функция для удаления конкретного файла
 function deleteFile($filePath) {
     global $rootPath;
-    $localPath = $rootPath . $filePath;
+    $localPath = $rootPath . "/" . $filePath;
     $detele_file = "false";
 
     if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
