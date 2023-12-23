@@ -19,7 +19,7 @@ require_once $root . '/backend/template.php';
     <link rel="mask-icon" href="/static/favicon.png">
 
     <!-- Style -->
-    <link rel="stylesheet" href="/assets/css/global.css">
+    <link rel="stylesheet" href="/assets/css/global.css?v=<?=$version?>">
 
 </head>
 <body>
