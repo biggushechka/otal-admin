@@ -226,6 +226,7 @@ export default function advantages(project) {
                     method: "POST",
                     body: getValuesForm.form
                 });
+                console.log(sendAdvantages);
 
                 if (sendAdvantages.code === 200) {
                     rowAdvTable(sendAdvantages.data);

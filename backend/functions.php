@@ -26,6 +26,19 @@ function connectServerFTP() {
     }
 }
 
+// Поверка директории
+function ftp_directory_exists($conn_id, $dir) {
+    $isFolder = "false";
+    $origin = ftp_pwd($conn_id);
+
+    if (@ftp_chdir($conn_id, $dir)) {
+        ftp_chdir($conn_id, $origin);
+        $isFolder = "true";
+    }
+
+    return $isFolder;
+}
+
 
 function convertImagesToWebP($images) {
 
@@ -104,11 +117,8 @@ function saveFile($file, $uploadDir) {
         ftp_pasv($serverConnect, true);
 
         // Проверка существования папки
-        $isFolder = ftp_nlist($serverConnect, $uploadDir);
-
-        // Проверка существования папки
-        if (empty($isFolder)) {
-            ftp_mkdir($serverConnect, $uploadDir);
+        if (ftp_directory_exists($serverConnect, $uploadDir) == "false") {
+            if (!ftp_mkdir($serverConnect, $uploadDir)) $isSaveFile = "false";
         }
 
         // сохраняем файл на сервере
@@ -170,13 +180,11 @@ function deleteFile($filePath) {
             // Файл существует, удаляем его
             if (ftp_delete($serverConnect, $filePath)) {
                 $detele_file = "true";
-                echo 'Файл успешно удален';
             } else {
                 $detele_file = "false";
-                echo 'Не удалось удалить файл';
             }
         } else {
-            echo 'Файл не существует';
+            $detele_file = "true";
         }
 
         // закрываем FTP
