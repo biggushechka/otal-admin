@@ -151,22 +151,6 @@ function updateRow() {
         "date_create" => $currentDateTime
     ]);
 
-    if ($query->rowCount() > 0) {
-        $query_get_update_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
-        $query_get_update_row->execute(["id" => $id]);
-        $adv = $query_get_update_row->fetch(PDO::FETCH_OBJ);
-
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($adv, JSON_UNESCAPED_UNICODE);
-    } else {
-        header("HTTP/1.1 409 Conflict");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Ошибка при обновлении", JSON_UNESCAPED_UNICODE);
-    }
-
-
-
     if ($photos != "") {
         // получаем все данные "преимущества"
         $query_get_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
@@ -244,6 +228,20 @@ function updateRow() {
                 echo json_encode("Ошибка при сохранении файла", JSON_UNESCAPED_UNICODE);
                 return false;
             }
+        }
+    } else {
+        if ($query->rowCount() > 0) {
+            $query_get_update_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+            $query_get_update_row->execute(["id" => $id]);
+            $adv = $query_get_update_row->fetch(PDO::FETCH_OBJ);
+
+            header("HTTP/1.1 200 OK");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode($adv, JSON_UNESCAPED_UNICODE);
+        } else {
+            header("HTTP/1.1 409 Conflict");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode("Ошибка при обновлении", JSON_UNESCAPED_UNICODE);
         }
     }
 }
