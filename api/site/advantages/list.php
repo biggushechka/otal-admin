@@ -137,7 +137,6 @@ if ($method === "POST") {
 // обновление записи
 function updateRow() {
     global $dbh, $id, $id_site, $photos, $title, $description, $currentDateTime, $titleAlbum;
-    $album_id = "";
 
     $query = $dbh->prepare("UPDATE `project_advantages` SET  
         `title` = :title, 
@@ -151,6 +150,20 @@ function updateRow() {
         "description" => $description,
         "date_create" => $currentDateTime
     ]);
+
+    if ($query->rowCount() > 0) {
+        $query_get_update_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+        $query_get_update_row->execute(["id" => $id]);
+        $adv = $query_get_update_row->fetch(PDO::FETCH_OBJ);
+
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode($adv, JSON_UNESCAPED_UNICODE);
+    } else {
+        header("HTTP/1.1 409 Conflict");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode("Ошибка при обновлении", JSON_UNESCAPED_UNICODE);
+    }
 
 
 
@@ -181,7 +194,6 @@ function updateRow() {
         // удаляем фото из таблицы "project_photos"
         $query_delete_photo = $dbh->prepare("DELETE FROM `project_photos` WHERE `id` = :id");
         $query_delete_photo->execute(["id" => $find_photo["id"]]);
-
 
         // ковертируем фото в webp
         $webpImages = convertImagesToWebP($photos);
