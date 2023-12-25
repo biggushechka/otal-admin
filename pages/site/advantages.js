@@ -1,16 +1,6 @@
 export default function advantages(project) {
     var formFields = new FormFields();
 
-    // получаем данные
-    var getAdvantages = XMLHttpRequestAJAX({
-        url: "/api/site/advantages",
-        method: "GET",
-        body: {
-            id_site: project.id
-        }
-    });
-    console.log("getAdvantages", getAdvantages)
-
     var blockTAG = document.createElement("section");
     blockTAG.classList.add("P-advantages");
     document.getElementById("app").append(blockTAG);
@@ -45,19 +35,23 @@ export default function advantages(project) {
                     if (!element.classList.contains("P-advantages-tabs")) element.remove();
                 });
 
-
-                if (target == "index") {
-                    advantages_index();
-                }
-
-                if (target == "numbers") {
-                    advantages_numbers();
-                }
+                if (target == "index") advantages_index();
+                if (target == "numbers") advantages_numbers();
             });
         });
     }
 
     function advantages_index() {
+        // получаем данные
+        var getAdvantages = XMLHttpRequestAJAX({
+            url: "/api/site/advantages/list",
+            method: "GET",
+            body: {
+                id_site: project.id
+            }
+        });
+        console.log("getAdvantages", getAdvantages);
+
         var tableHTML;
 
         var advIndexHTML = document.createElement("div");
@@ -114,6 +108,7 @@ export default function advantages(project) {
         function rowAdvTable(adv) {
             var rowHTML = document.createElement("tr");
             rowHTML.classList.add("row-adv");
+            rowHTML.setAttribute("data-id", adv.id)
             rowHTML.innerHTML = `
             <td class="col-id">${adv.id}</td>
             <td class="col-photo">
@@ -139,22 +134,27 @@ export default function advantages(project) {
 
             // изменение активности сайта
             function isActivitySite(status) {
-                // var isActivity = XMLHttpRequestAJAX({
-                //     url: "/api/site/general/isActivity2",
-                //     method: "UPDATE",
-                //     body: {
-                //         id_site: site.id,
-                //         activity: status
-                //     }
-                // });
-                //
-                // if (isActivity.code === 200) {
-                //     var status = (isActivity.data.activity == "off") ? "выключен" : "включен";
-                //     alertNotification({status: "success", text: `Cайт ${site.domain} - ${status}`, pos: "top-center"});
-                // }
-                //
-                // return isActivity.data.activity
+                var isActivity = XMLHttpRequestAJAX({
+                    url: "/api/site/advantages/isActivity",
+                    method: "POST",
+                    body: {
+                        id_site: adv.id,
+                        activity: status
+                    }
+                });
+
+                if (isActivity.code === 200) {
+                    var status = (isActivity.data.activity == "off") ? "выключена" : "активна";
+                    alertNotification({status: "success", text: `Запись ${status}`, pos: "top-center"});
+                }
+
+                return isActivity.data.activity
             }
+
+            // редактирование записи
+            rowHTML.querySelector(".btn-edit").addEventListener("click", function () {
+                modalItemAdv(adv);
+            });
 
             // удаление записи
             rowHTML.querySelector(".btn-delete").addEventListener("click", function () {
@@ -167,7 +167,7 @@ export default function advantages(project) {
                 // запрос на удаление записи
                 function deleteSite() {
                     var deleteAdv = XMLHttpRequestAJAX({
-                        url: "/api/site/advantages",
+                        url: "/api/site/advantages/list",
                         method: "DELETE",
                         body: adv
                     });
@@ -182,19 +182,24 @@ export default function advantages(project) {
             });
         }
 
-        function modalItemAdv() {
-            var form = document.createElement("form");
+        function modalItemAdv(data) {
+            var form = document.createElement("form"),
+                titleModal = (data == undefined) ? "Добавить запись" : "Редактирование записи #"+data.id;
 
             // добавляем поля
             form.append(
                 formFields.inputText({label: "Заголовок", name: "title", validate: "true"}),
                 formFields.textarea({label: "Описание", name: "description", validate: "true"}),
-                formFields.photos({label: "Прикрепить фотографию", name: "photos", ext: "img", multiple: "false", validate: "true"}),
+                formFields.photos({label: "Прикрепить фотографию", name: "photo", ext: "img", multiple: "false", validate: "true"}),
+                formFields.inputHidden({label: "id_row", name: "id", value: (data != undefined) ? data.id : ""}),
                 formFields.inputHidden({label: "id_site", name: "id_site", value: project.id})
             );
 
+            // заполняем поля формы из БД
+            if (data != undefined) formFields.setValuesForm(form, data);
+
             var modal = new Modal({
-                title: "Добавить запись",
+                title: titleModal,
                 classModal: 'P-modal-add-adv',
                 content: form,
                 mode: 'center',
@@ -214,32 +219,151 @@ export default function advantages(project) {
             });
 
             function sendFormAdv() {
-                var getValuesForm = formFields.getValuesForm(form);
+                var getValuesForm = formFields.getValuesForm(form),
+                    method = (data == undefined) ? "POST" : "UPDATE";
+
+                console.log("method", method)
 
                 if (getValuesForm.status == false) return false;
 
-                console.log("getValuesForm.form", getValuesForm.form)
+                console.log("form", getValuesForm.form);
 
                 // отправляем данные
                 var sendAdvantages = XMLHttpRequestAJAX({
-                    url: "/api/site/advantages",
-                    method: "POST",
+                    url: "/api/site/advantages/list",
+                    method: method,
                     body: getValuesForm.form
                 });
                 console.log(sendAdvantages);
 
-                if (sendAdvantages.code === 200) {
-                    rowAdvTable(sendAdvantages.data);
-                    modal.closeModal();
-                    alertNotification({status: "success", text: "Запись успешно добавлена", pos: "top-center"});
+                if (data == undefined) {
+                    if (sendAdvantages.code === 200) {
+                        rowAdvTable(sendAdvantages.data);
+                        modal.closeModal();
+                        alertNotification({status: "success", text: "Запись успешно добавлена", pos: "top-center"});
+                    } else {
+                        alertNotification({status: "error", text: "Ошибка при добавлении записи", pos: "top-center"});
+                    }
                 } else {
-                    alertNotification({status: "error", text: "Ошибка при добавлении записи", pos: "top-center"});
+                    if (sendAdvantages.code === 200) {
+                        rowAdvTable(sendAdvantages.data)
+
+                        var listContainer = tableHTML.querySelector("tbody"),
+                            replaceableItem = tableHTML.querySelector(".row-adv[data-id='"+data.id+"']"),
+                            allItem = tableHTML.querySelectorAll(".row-adv"),
+                            newItem = allItem[allItem.length - 1];
+
+                        listContainer.replaceChild(newItem, replaceableItem);
+                        modal.closeModal();
+                        alertNotification({status: "success", text: "Запись успешно обновлена", pos: "top-center"});
+                    } else {
+                        alertNotification({status: "error", text: "Ошибка при обновлении записи", pos: "top-center"});
+                    }
                 }
             }
+
         }
     }
 
     function advantages_numbers() {
-        console.log("numbers");
+        // получаем данные
+        var getAdv_num = XMLHttpRequestAJAX({
+            url: "/api/site/advantages/numbers",
+            method: "GET",
+            body: {id_site: project.id}
+        });
+        console.log("getAdv_num", getAdv_num)
+
+        var advNumbersHTML = document.createElement("div");
+        advNumbersHTML.classList.add("P-adv-index");
+        advNumbersHTML.innerHTML = `
+        <div class="card-body">
+            <div class="header-card-body">
+                <h4 class="title-card">В цифрах</h4>
+            </div>
+            <div class="content-card">
+                <div class="footer-events">
+                    <button type="button" class="btn btn-primary btn-icon-left btn-save-form" target="about"><i class="ph ph-check-circle"></i>Сохранить</button>
+                </div>
+            </div>
+        </div>`;
+        blockTAG.append(advNumbersHTML);
+
+        initForm();
+
+        function initForm() {
+            var form = document.createElement("form");
+            advNumbersHTML.querySelector(".content-card").prepend(form);
+
+            form.append(
+                (() => {
+                    const divElement = document.createElement("div");
+                    divElement.classList.add("two-fields");
+                    divElement.append(
+                        formFields.inputText({label: "Число", name: "number_1", mask: 'number', validate: "true"}),
+                        formFields.inputText({label: "Значение", name: "value_1", validate: "true"}),
+                        formFields.inputText({label: "Описание", name: "description_1", validate: "true"})
+                    );
+                    return divElement;
+                })(),
+                (() => {
+                    const divElement = document.createElement("div");
+                    divElement.classList.add("two-fields");
+                    divElement.append(
+                        formFields.inputText({label: "Число", name: "number_2", mask: 'number', validate: "true"}),
+                        formFields.inputText({label: "Значение", name: "value_2", validate: "true"}),
+                        formFields.inputText({label: "Описание", name: "description_2", validate: "true"})
+                    );
+                    return divElement;
+                })(),
+                (() => {
+                    const divElement = document.createElement("div");
+                    divElement.classList.add("two-fields");
+                    divElement.append(
+                        formFields.inputText({label: "Число", name: "number_3", mask: 'number', validate: "true"}),
+                        formFields.inputText({label: "Значение", name: "value_3", validate: "true"}),
+                        formFields.inputText({label: "Описание", name: "description_3", validate: "true"})
+                    );
+                    return divElement;
+                })(),
+                (() => {
+                    const divElement = document.createElement("div");
+                    divElement.classList.add("two-fields");
+                    divElement.append(
+                        formFields.inputText({label: "Число", name: "number_4", mask: 'number', validate: "true"}),
+                        formFields.inputText({label: "Значение", name: "value_4", validate: "true"}),
+                        formFields.inputText({label: "Описание", name: "description_4", validate: "true"})
+                    );
+                    return divElement;
+                })()
+            );
+            // заполняем поля формы из БД
+            if (getAdv_num.code === 200) {
+                formFields.setValuesForm(form, getAdv_num.data);
+            }
+
+            advNumbersHTML.querySelector(".btn-save-form").addEventListener("click", function () {
+                var getBtnSave = this,
+                    getValuesForm = formFields.getValuesForm(form);
+
+                if (getValuesForm.status == false) return false;
+
+                getValuesForm.form.id_site = project.id;
+
+                var updateGeneralInfo = XMLHttpRequestAJAX({
+                    url: "/api/site/advantages/numbers",
+                    method: "POST",
+                    body: getValuesForm.form
+                });
+
+                if (updateGeneralInfo.code === 200) {
+                    animationBtnSuccess(getBtnSave);
+                    alertNotification({status: "success", text: "Данные успешно обновлены", pos: "top-center"});
+                } else {
+                    alertNotification({status: "error", text: "Ошибка при сохранении данных", pos: "top-center"});
+                    console.log(updateGeneralInfo.data);
+                }
+            });
+        }
     }
 }

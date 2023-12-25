@@ -510,15 +510,3 @@ function getUploadFiles(data, callback) {
         });
     });
 }
-
-// загружаем скрипт для Яндекс Карт
-function loadYandexMapScript() {
-    var scriptTAG = document.head.querySelector("script[id='ya-map']");
-    if (scriptTAG) return false;
-
-    const script = document.createElement('script');
-    script.id = "ya-map";
-    script.src = 'https://api-maps.yandex.ru/2.1/?apikey=ac7c6d4c-48ca-4019-af05-4911f2b78b9b&lang=ru_RU';
-    script.async = true;
-    document.head.appendChild(script);
-}

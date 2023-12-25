@@ -220,8 +220,7 @@ class FormFields {
             name = (data.name != undefined && data.name != "") ? data.name : "",
             ext = (data.ext != undefined && data.ext != "") ? data.ext : "ext",
             multiple = (data.multiple != undefined && data.multiple != "") ? data.multiple : "false",
-            validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "",
-            photoAdv = [];
+            validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "";
 
         var fieldTAG = document.createElement("div");
         fieldTAG.classList.add("field-container");
@@ -231,71 +230,85 @@ class FormFields {
         ${label}
         <div class="upload-photo">
             <span class="title"><i class="ph ph-image"></i>Загрузить фотографию</span>
-            <input name="${name}" ${validate} hidden>
+            <input name="${name}" ext="${ext}" multiple="${multiple}" ${validate} hidden>
         </div>`;
         fieldTAG.innerHTML = fieldHTML;
 
         fieldTAG.querySelector(".upload-photo").addEventListener("click", function () {
-            var blockUploadPhoto = fieldTAG.querySelector(".upload-photo"),
-                input = fieldTAG.querySelector(".upload-photo input");
-
             getUploadFiles({
                 ext: ext,
                 multiple: multiple
-            }, fileProcessing);
-
-            function fileProcessing(photos) {
-                if (photos.length == 0) return false;
-
-                if (multiple == "false") blockUploadPhoto.classList.add("hidden");
-
-                previewUploadPhoto();
-
-                for (var i in photos) {
-                    var photo = photos[i];
-                    photoAdv.push(photo);
-                    photoItem(photo)
-                }
-
-                input.value = JSON.stringify(photoAdv);
-            }
-
-            function previewUploadPhoto() {
-                var resultList = fieldTAG.querySelector(".preview-photo");
-                if (resultList) return false;
-
-                var previewPhoto = document.createElement("div");
-                previewPhoto.classList.add("preview-photo");
-                fieldTAG.append(previewPhoto);
-            }
-
-            function photoItem(photo) {
-                var photoHTML = document.createElement("div");
-                photoHTML.classList.add("photo-item");
-                photoHTML.innerHTML = `
-                <img src="data:image/png;base64,${photo.base}" alt="photo">
-                <button type="button" class="btn btn-square btn-delete-photo"><i class="ph ph-x"></i></button>`;
-                fieldTAG.querySelector(".preview-photo").append(photoHTML);
-
-                photoHTML.querySelector(".btn-delete-photo").addEventListener("click", function () {
-                    var deletePhoto = photoAdv.findIndex(function(photoItem) {
-                        return photoItem.id === photo.id;
-                    });
-
-                    // удаляем фото из массива
-                    if (deletePhoto !== -1) {
-                        photoAdv.splice(deletePhoto, 1);
-                        photoHTML.remove();
-                        input.value = JSON.stringify(photoAdv);
-                    }
-
-                    // если все фото удалены, то показываем кнопку "загрузить фото"
-                    if (photoAdv.length == 0) blockUploadPhoto.classList.remove("hidden");
-                })
-            }
+            }, previewPhotos);
         });
 
+        var previewPhotos = (data) => {
+            this.photos_preview(data, fieldTAG);
+        }
+
         return fieldTAG;
+    }
+
+    photos_preview(photos, fieldTAG) {
+        var blockUploadPhoto = fieldTAG.querySelector(".upload-photo"),
+            input = fieldTAG.querySelector(".upload-photo input"),
+            ext = input.getAttribute("ext"),
+            multiple = input.getAttribute("multiple"),
+            photoAdv = [];
+
+        if (multiple == "false") blockUploadPhoto.classList.add("hidden");
+
+        previewUploadPhoto();
+
+        if (typeof photos == "string") {
+            if (photos == "") return false;
+            photoItem(photos);
+        } else {
+            if (photos.length == 0) return false;
+            for (var i in photos) {
+                var photo = photos[i];
+                photoAdv.push(photo);
+                photoItem(photo);
+                input.value = JSON.stringify(photoAdv);
+            }
+        }
+
+        function previewUploadPhoto() {
+            var resultList = fieldTAG.querySelector(".preview-photo");
+            if (resultList) return false;
+
+            var previewPhoto = document.createElement("div");
+            previewPhoto.classList.add("preview-photo");
+            fieldTAG.append(previewPhoto);
+        }
+
+        function photoItem(photo) {
+
+            photo = (typeof photo == "object") ? "data:image/png;base64,"+photo.base : photo;
+
+            var photoHTML = document.createElement("div");
+            photoHTML.classList.add("photo-item");
+            photoHTML.innerHTML = `
+            <img src="${photo}" alt="photo">
+            <button type="button" class="btn btn-square btn-delete-photo"><i class="ph ph-x"></i></button>`;
+            fieldTAG.querySelector(".preview-photo").append(photoHTML);
+
+            photoHTML.querySelector(".btn-delete-photo").addEventListener("click", function () {
+                var deletePhoto = photoAdv.findIndex(function(photoItem) {
+                    return photoItem.id === photo.id;
+                });
+
+                // удаляем фото из массива
+                if (deletePhoto !== -1) {
+                    photoAdv.splice(deletePhoto, 1);
+                }
+
+                photoHTML.remove();
+                input.value = JSON.stringify(photoAdv);
+
+                // если все фото удалены, то показываем кнопку "загрузить фото"
+                if (photoAdv.length == 0) blockUploadPhoto.classList.remove("hidden");
+            })
+        }
     }
 
 
@@ -306,7 +319,7 @@ class FormFields {
         // Получение всех тегов "field-container"
         var fieldContainers = form.querySelectorAll(".field-container");
 
-        fieldContainers.forEach(function(field) {
+        fieldContainers.forEach((field) => {
             var typeField = field.getAttribute("type");
 
             if (typeField === "input-text" || typeField === "input-hidden") {
@@ -358,9 +371,17 @@ class FormFields {
                         option.setAttribute("aria-selected", "true");
                     };
 
-                })
-
+                });
             }
+
+            if (typeField === "photos") {
+                var input = field.querySelector(".upload-photo input"),
+                    name = input.getAttribute("name"),
+                    photos = values[name];
+
+                this.photos_preview(photos, field);
+            }
+
         });
     }
 
@@ -442,9 +463,10 @@ class FormFields {
             }
 
             if (typeField === "photos") {
-                var input = container.querySelector("input"),
+                console.log("input.value", container)
+                var input = container.querySelector(".upload-photo input"),
                     name = input.getAttribute("name"),
-                    value = JSON.parse(input.value);
+                    value = (input.value == "") ? "" : JSON.parse(input.value);
 
                 formData[name] = value;
             }
