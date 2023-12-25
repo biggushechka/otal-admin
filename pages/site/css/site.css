@@ -2,6 +2,8 @@
 @import "./general_info.css";
 @import "./location.css";
 @import "./advantages.css";
+@import "./infrastructure.css";
+@import "./gallery.css";
 
 #app {
     padding-top: 150px;

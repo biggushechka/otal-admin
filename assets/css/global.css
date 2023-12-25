@@ -172,6 +172,10 @@ img[src=''] {
 
 
 /* notification-message */
+.uk-notification {
+    z-index: 99999999;
+}
+
 .uk-notification-message {
     background: transparent !important;
     padding: 0 !important;

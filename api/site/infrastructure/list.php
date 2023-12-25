@@ -15,18 +15,18 @@ $photos = $POST['photo'] ?? $_GET['photo'];
 $title = $POST['title'] ?? $_GET['title'];
 $description = $POST['description'] ?? $_GET['description'];
 $currentDateTime = date('Y-m-d H:i:s');
-$titleAlbum = "advantages";
+$titleAlbum = "infrastructure";
 
 // Получение
 if ($method === "GET") {
-    $query_get_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE `id_site` = :id_site");
+    $query_get_row = $dbh->prepare("SELECT * FROM `project_Infrastructure` WHERE `id_site` = :id_site");
     $query_get_row->execute(["id_site" => $id_site]);
-    $advantages = $query_get_row->fetchAll(PDO::FETCH_ASSOC);
+    $infrastructure = $query_get_row->fetchAll(PDO::FETCH_ASSOC);
 
     if ($query_get_row->rowCount() != 0) {
         header("HTTP/1.1 200 OK");
         header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($advantages, JSON_UNESCAPED_UNICODE);
+        echo json_encode($infrastructure, JSON_UNESCAPED_UNICODE);
     } else {
         header("HTTP/1.1 204 Not Found");
         header('Content-Type: application/json; charset=UTF-8');
@@ -52,7 +52,7 @@ if ($method === "POST") {
     $album = $query_find_album->fetch(PDO::FETCH_ASSOC);
     $album_id = $album['id'];
 
-    // если альбома "advantages" нет, то создаем его
+    // если альбома "infrastructure" нет, то создаем его
     if ($query_find_album->rowCount() == 0) {
         $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :title, `date_create` = :date_create, `activity` = :activity");
         $query_create_album->execute([
@@ -91,8 +91,8 @@ if ($method === "POST") {
                 "date_create" => $currentDateTime
             ]);
 
-            // добавляем запись в таблицу "project_advantages"
-            $query_add_adv = $dbh->prepare("INSERT INTO `project_advantages` SET
+            // добавляем запись в таблицу "project_Infrastructure"
+            $query_add = $dbh->prepare("INSERT INTO `project_Infrastructure` SET
                 `id_site` = :id_site,
                 `photo` = :photo,
                 `title` = :title,
@@ -101,7 +101,7 @@ if ($method === "POST") {
                 `date_create` = :date_create
              ");
 
-            $query_add_adv->execute([
+            $query_add->execute([
                 "id_site" => $id_site,
                 "photo" => $filePath,
                 "title" => $title,
@@ -111,15 +111,15 @@ if ($method === "POST") {
             ]);
             $new_row_id = $dbh->lastInsertId();
 
-            if ($query_add_adv->rowCount() != 0) {
+            if ($query_add->rowCount() != 0) {
                 // получаем данные по добавленной записи
-                $query_get_new_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+                $query_get_new_row = $dbh->prepare("SELECT * FROM `project_Infrastructure` WHERE id = :id");
                 $query_get_new_row->execute(["id" => $new_row_id]);
-                $adv = $query_get_new_row->fetch(PDO::FETCH_OBJ);
+                $data = $query_get_new_row->fetch(PDO::FETCH_OBJ);
 
                 header("HTTP/1.1 200 OK");
                 header('Content-Type: application/json; charset=UTF-8');
-                echo json_encode($adv, JSON_UNESCAPED_UNICODE);
+                echo json_encode($data, JSON_UNESCAPED_UNICODE);
             } else {
                 header("HTTP/1.1 409 Conflict");
                 header('Content-Type: application/json; charset=UTF-8');
@@ -135,10 +135,11 @@ if ($method === "POST") {
 }
 
 // обновление записи
+// обновление записи
 function updateRow() {
     global $dbh, $id, $id_site, $photos, $title, $description, $currentDateTime, $titleAlbum;
 
-    $query = $dbh->prepare("UPDATE `project_advantages` SET  
+    $query = $dbh->prepare("UPDATE `project_Infrastructure` SET  
         `title` = :title, 
         `description` = :description, 
         `date_create` = :date_create 
@@ -153,7 +154,7 @@ function updateRow() {
 
     if ($photos != "") {
         // получаем все данные "преимущества"
-        $query_get_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+        $query_get_row = $dbh->prepare("SELECT * FROM `project_Infrastructure` WHERE id = :id");
         $query_get_row->execute(["id" => $id]);
         $row = $query_get_row->fetch(PDO::FETCH_ASSOC);
 
@@ -204,12 +205,12 @@ function updateRow() {
                     "date_create" => $currentDateTime
                 ]);
 
-                // добавляем запись в таблицу "project_advantages"
-                $query_uppdate_row = $dbh->prepare("UPDATE `project_advantages` SET `photo` = :photo WHERE `id` = :id");
+                // добавляем запись в таблицу "project_Infrastructure"
+                $query_uppdate_row = $dbh->prepare("UPDATE `project_Infrastructure` SET `photo` = :photo WHERE `id` = :id");
                 $query_uppdate_row->execute(["id" => $id, "photo" => $filePath]);
 
                 if ($query_uppdate_row->rowCount() > 0) {
-                    $query_get_update_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+                    $query_get_update_row = $dbh->prepare("SELECT * FROM `project_Infrastructure` WHERE id = :id");
                     $query_get_update_row->execute(["id" => $id]);
                     $adv = $query_get_update_row->fetch(PDO::FETCH_OBJ);
 
@@ -231,7 +232,7 @@ function updateRow() {
         }
     } else {
         if ($query->rowCount() > 0) {
-            $query_get_update_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+            $query_get_update_row = $dbh->prepare("SELECT * FROM `project_Infrastructure` WHERE id = :id");
             $query_get_update_row->execute(["id" => $id]);
             $adv = $query_get_update_row->fetch(PDO::FETCH_OBJ);
 
@@ -246,6 +247,7 @@ function updateRow() {
     }
 }
 
+
 // удаление записи
 if ($method === "DELETE") {
     $photo = $POST['photo'] ?? $_GET['photo'];
@@ -259,7 +261,7 @@ if ($method === "DELETE") {
     if ($delete_file == "false") return false;
 
     // удаляем запись из таблицы "project_advantages"
-    $query_delete_adv = $dbh->prepare("DELETE FROM `project_advantages` WHERE `id` = :id");
+    $query_delete_adv = $dbh->prepare("DELETE FROM `project_Infrastructure` WHERE `id` = :id");
     $query_delete_adv->execute(["id" => $id]);
 
     // удаляем фото из таблицы "project_photos"

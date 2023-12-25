@@ -64,10 +64,10 @@ var navBtns = [
     {title: "Преимущества", tab: "advantages"},
     {title: "Инфраструктура", tab: "infrastructure"},
     {title: "Галерея", tab: "gallery"},
-    {title: "График стройки", tab: "construction"},
-    {title: "Новости", tab: "news"},
+    // {title: "График стройки", tab: "construction"},
+    // {title: "Новости", tab: "news"},
     {title: "Банки", tab: "banks"},
-    {title: "Документы", tab: "docs"},
+    // {title: "Документы", tab: "docs"},
     {title: "Квиз", tab: "kviz"},
     {title: "Meta Tags", tab: "meta"},
     {title: "Заявки", tab: "orders"}

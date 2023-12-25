@@ -19,7 +19,7 @@ if ($method === "GET") {
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode($isSite, JSON_UNESCAPED_UNICODE);
     } else {
-        header("HTTP/1.1 404 Not found");
+        header("HTTP/1.1 204 Not found");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Такого сайта не существует", JSON_UNESCAPED_UNICODE);
     }
