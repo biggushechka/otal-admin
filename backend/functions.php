@@ -77,8 +77,12 @@ function convertImagesToWebP($images) {
         // Кодируем данные в формат base64
         $base64Webp = base64_encode($webpData);
 
+        // Получаем новый вес изображения в байтах
+        $newWeightInBytes = strlen($webpData);
+
         $image['ext'] = "webp";
         $image['base'] = $base64Webp;
+        $image['size'] = $newWeightInBytes;
 
         $convertedImages[] = $image;
     }

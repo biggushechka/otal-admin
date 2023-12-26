@@ -1,9 +1,4 @@
-.P-gallery {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.P-other-gallery {
+.P-item-album {
     max-width: 1000px;
     margin: 20px auto 0;
 }
@@ -30,8 +25,4 @@
 .btn-add-container .btn {
     color: var(--global-primary);
     font-size: 14px;
-}
-
-.P-other-gallery {
-
 }

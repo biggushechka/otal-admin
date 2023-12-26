@@ -510,3 +510,21 @@ function getUploadFiles(data, callback) {
         });
     });
 }
+
+function convertFileSize(sizeInBytes) {
+    var unit,
+        total;
+
+    if (sizeInBytes >= 0 && sizeInBytes < 1048576) {
+        unit = "КБ";
+        total = sizeInBytes / Math.pow(1024, 1);
+    } else if (sizeInBytes >=  1048576 && sizeInBytes < 1073741824) {
+        unit = "МБ";
+        total = sizeInBytes / Math.pow(1024, 2);
+    } else if (sizeInBytes >=  1073741824 && sizeInBytes < 1099511627776) {
+        unit = "ГБ";
+        total = sizeInBytes / Math.pow(1024, 2);
+    }
+
+    return total.toFixed(1) + " " + unit;
+}
