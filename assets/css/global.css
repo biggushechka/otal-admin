@@ -132,7 +132,7 @@ img[src=''] {
     grid-column-gap: 30px;
     grid-row-gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
 }
 
 .card-body .header-card-body .title-card {

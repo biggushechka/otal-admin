@@ -3,6 +3,33 @@
     margin: 20px auto 0;
 }
 
+.P-item-album .events-album {
+    display: flex;
+    align-items: center;
+}
+
+.P-item-album .events-album .btn {
+    opacity: 0;
+}
+
+.P-item-album .events-album .btn-rename-album {
+    background: transparent;
+    color: var(--global-primary);
+}
+
+.P-item-album .events-album .btn-delete-album {
+    background: transparent;
+    color: var(--danger);
+}
+
+.P-item-album:hover .events-album .btn {
+    opacity: 0.5;
+}
+
+.P-item-album:hover .events-album .btn:hover {
+    opacity: 1;
+}
+
 .btn-add-container {
     display: flex;
     align-items: center;

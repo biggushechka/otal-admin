@@ -38,13 +38,22 @@ export default function gallery(project) {
         var albumItemHTML = document.createElement("div");
         albumItemHTML.classList.add("P-item-album");
         albumItemHTML.setAttribute("id-album", album.id);
-        albumItemHTML.innerHTML = `
+        var html = `
         <div class="card-body">
             <div class="header-card-body">
-                <h4 class="title-card">${album.title}</h4>
-            </div>
+                <h4 class="title-card">${album.title}</h4>`;
+                if (album.title != "Основной альбом") {
+                    html += `
+                    <div class="events-album">
+                        <button type="button" class="btn btn-rename-album">переименовать альбом</button>
+                        <button type="button" class="btn btn-delete-album">удалить альбом</button>
+                    </div>`;
+                }
+                html += `
+                </div>
             <div class="content-card"></div>
         </div>`;
+        albumItemHTML.innerHTML = html;
         document.querySelector(".btn-add-container").before(albumItemHTML);
 
         // вставляем таблицу
@@ -59,6 +68,93 @@ export default function gallery(project) {
                 var getImage = itemImage(dataImage);
                 getTable.querySelector("tbody .add-new-item").before(getImage);
             }
+        }
+
+        if (album.title != "Основной альбом") {
+            albumItemHTML.querySelector(".events-album .btn-rename-album").addEventListener("click", function () {
+                var form = document.createElement("form"),
+                    nameAlbum = albumItemHTML.querySelector(".title-card");
+
+                form.append(
+                    formFields.inputText({label: "Название альбома", name: "title", validate: "true"}),
+                    formFields.inputHidden({name: "id"}),
+                    formFields.inputHidden({name: "id_site", value: project.id})
+                );
+
+                // заполняем поля формы из БД
+                formFields.setValuesForm(form, album);
+
+                var modal = new Modal({
+                    title: "Переименовать альбом",
+                    classModal: 'P-modal-add-album',
+                    content: form,
+                    mode: 'center',
+                    width: '540px',
+                    footerEvents: {
+                        cancel: {
+                            active: true,
+                        },
+                        submit: {
+                            active: true,
+                            title: "Переименовать",
+                            callback: function () {
+                                renameAlbum();
+                            }
+                        },
+                    }
+                });
+
+                function renameAlbum() {
+                    var getValuesForm = formFields.getValuesForm(form);
+
+                    if (getValuesForm.status == false) return false;
+
+                    var renameAlbum = XMLHttpRequestAJAX({
+                        url: "/api/site/gallery/album",
+                        method: "UPDATE",
+                        body: getValuesForm.form
+                    });
+
+                    if (renameAlbum.code === 200) {
+                        nameAlbum.innerHTML = renameAlbum.data;
+                        modal.closeModal();
+                        alertNotification({status: "success", text: "Название изменено", pos: "top-center"});
+                    } else {
+                        alertNotification({status: "error", text: renameAlbum.data, pos: "top-center"});
+                        console.log(renameAlbum.data);
+                    }
+                }
+            });
+        }
+
+        if (album.title != "Основной альбом") {
+            albumItemHTML.querySelector(".events-album .btn-delete-album").addEventListener("click", function () {
+                modalAlert({
+                    type: "delete",
+                    title: album.title,
+                    callback: deleteAlbum,
+                });
+
+                // запрос на удаление записи
+                function deleteAlbum() {
+
+                    var resDelete = XMLHttpRequestAJAX({
+                        url: "/api/site/gallery/album",
+                        method: "DELETE",
+                        body: {
+                            id_album: album.id,
+                            id_site: project.id
+                        }
+                    });
+
+                    if (resDelete.code === 200) {
+                        albumItemHTML.remove();
+                        alertNotification({status: "success", text: "Запись успешно удалена", pos: "top-center"});
+                    } else {
+                        alertNotification({status: "error", text: "Ошибка при удалении записи", pos: "top-center"});
+                    }
+                }
+            });
         }
     }
 

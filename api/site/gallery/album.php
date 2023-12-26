@@ -4,6 +4,7 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/db_connect.php';
+require_once $rootPath . '/backend/functions.php';
 
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
@@ -100,6 +101,76 @@ if ($method === "POST") {
 }
 
 // Удаление
-if ($method === "DELETE") {
+if ($method === "UPDATE") {
+    $new_name_album = $_GET['title'];
+    $id_album = $_GET['id'];
 
+    $query_find_album = $dbh->prepare("SELECT * FROM `project_gallery_album` WHERE id_site = :id_site AND title = :title");
+    $query_find_album->execute([
+        "id_site" => $id_site,
+        "title" => $new_name_album
+    ]);
+
+    if ($query_find_album->rowCount() == 0) {
+        $query_get_album = $dbh->prepare("UPDATE `project_gallery_album` SET `title` = :title WHERE `id` = :id");
+        $query_get_album->execute(["title" => $new_name_album, "id" => $id_album]);
+
+        if ($query_get_album->rowCount() > 0) {
+            header("HTTP/1.1 200 UPDATE");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode($new_name_album, JSON_UNESCAPED_UNICODE);
+        } else {
+            header("HTTP/1.1 409 Conflict");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode("error", JSON_UNESCAPED_UNICODE);
+        }
+    } else {
+        header("HTTP/1.1 409 Conflict");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode("Альбом с таким названием уже существует", JSON_UNESCAPED_UNICODE);
+    }
+}
+
+// Удаление
+if ($method === "DELETE") {
+    $id_album = $_GET['id_album'];
+    $deleteCount = 0;
+
+    $query_find_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE id_site = :id_site AND id_album = :id_album");
+    $query_find_images->execute([
+        "id_site" => $id_site,
+        "id_album" => $id_album
+    ]);
+    $allImages = $query_find_images->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($allImages as &$image) {
+        $parsed_url = parse_url($image['image']);
+        $pathFile = $parsed_url['path'];
+        $pathFile = ltrim($pathFile, '/');
+
+        // удаляем файл на сервере
+        $delete_file = deleteFile($pathFile);
+
+        if ($delete_file != "false") {
+            $query_delete_row = $dbh->prepare("DELETE FROM `project_gallery_image` WHERE `id` = :id");
+            $query_delete_row->execute(["id" => $image['id']]);
+
+            if ($query_delete_row->rowCount() > 0) {
+                $deleteCount++;
+            }
+        }
+    }
+
+    if ($deleteCount == count($allImages)) {
+        $query_delete_album = $dbh->prepare("DELETE FROM `project_gallery_album` WHERE `id` = :id");
+        $query_delete_album->execute(["id" => $id_album]);
+
+        if ($query_delete_album->rowCount() > 0) {
+            header("HTTP/1.1 200 UPDATE");
+            header('Content-Type: application/json; charset=UTF-8');
+        } else {
+            header("HTTP/1.1 409 Conflict");
+            header('Content-Type: application/json; charset=UTF-8');
+        }
+    }
 }
