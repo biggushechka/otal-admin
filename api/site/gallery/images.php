@@ -13,6 +13,7 @@ $id_site = $POST['id_site'] ?? $_GET['id_site'];
 $id_album = $POST['id_album'] ?? $_GET['id_album'];
 $name_album = $POST['name_album'] ?? $_GET['name_album'];
 $images = $POST['photos'] ?? $_GET['photos'];
+$activity = $POST['activity'] ?? $_GET['activity'];
 $currentDateTime = date('Y-m-d H:i:s');
 
 // получение
@@ -96,5 +97,32 @@ if ($method === "POST") {
 
 // Удаление
 if ($method === "DELETE") {
+    $id_image = $POST['id_image'] ?? $_GET['id_image'];
 
+    $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id` = :id");
+    $query_get_images->execute(["id" => $id_image]);
+    $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
+
+
+    $parsed_url = parse_url($getImages->image);
+    $pathFile = $parsed_url['path'];
+    $pathFile = ltrim($pathFile, '/');
+
+    // удаляем файл на сервере
+    $delete_file = deleteFile($pathFile);
+
+    if ($delete_file == "false") return false;
+
+    $query_delete = $dbh->prepare("DELETE FROM `project_gallery_image` WHERE `id` = :id");
+    $query_delete->execute(["id" => $getImages->id]);
+
+    if ($query_delete->rowCount() > 0) {
+        header("HTTP/1.1 200 DELETE");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode("Запись успешно удалена", JSON_UNESCAPED_UNICODE);
+    } else {
+        header("HTTP/1.1 409 Conflict");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode("Ошибка при удалении записи", JSON_UNESCAPED_UNICODE);
+    }
 }

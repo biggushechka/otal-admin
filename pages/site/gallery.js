@@ -177,12 +177,11 @@ export default function gallery(project) {
 
         // изменение активности сайта
         function isActivitySite(status) {
-            return false;
             var isActivity = XMLHttpRequestAJAX({
-                url: "/api/site/advantages/isActivity",
+                url: "/api/site/gallery/image_is_activity",
                 method: "POST",
                 body: {
-                    id_site: adv.id,
+                    id_image: image.id,
                     activity: status
                 }
             });
@@ -201,29 +200,30 @@ export default function gallery(project) {
         // });
 
         // удаление записи
-        // rowHTML.querySelector(".btn-delete").addEventListener("click", function () {
-        //     modalAlert({
-        //         type: "delete",
-        //         title: adv.title,
-        //         callback: deleteSite,
-        //     });
-        //
-        //     // запрос на удаление записи
-        //     function deleteSite() {
-        //         var deleteAdv = XMLHttpRequestAJAX({
-        //             url: "/api/site/advantages/list",
-        //             method: "DELETE",
-        //             body: adv
-        //         });
-        //
-        //         if (deleteAdv.code === 200) {
-        //             rowHTML.remove();
-        //             alertNotification({status: "success", text: "Запись успешно удалена", pos: "top-center"});
-        //         } else {
-        //             alertNotification({status: "error", text: "Ошибка при удалении записи", pos: "top-center"});
-        //         }
-        //     }
-        // });
+        rowHTML.querySelector(".btn-delete").addEventListener("click", function () {
+            modalAlert({
+                type: "delete",
+                title: image.title,
+                callback: deleteImage,
+            });
+
+            // запрос на удаление записи
+            function deleteImage() {
+                console.log("image", image)
+                var deleteImage = XMLHttpRequestAJAX({
+                    url: "/api/site/gallery/images",
+                    method: "DELETE",
+                    body: {id_image: image.id}
+                });
+
+                if (deleteImage.code === 200) {
+                    rowHTML.remove();
+                    alertNotification({status: "success", text: "Запись успешно удалена", pos: "top-center"});
+                } else {
+                    alertNotification({status: "error", text: "Ошибка при удалении записи", pos: "top-center"});
+                }
+            }
+        });
 
         return rowHTML;
     }
