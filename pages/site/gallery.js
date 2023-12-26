@@ -153,9 +153,6 @@ export default function gallery(project) {
     }
 
     function itemImage(image) {
-
-        console.log("image", image);
-
         var rowHTML = document.createElement("tr");
         rowHTML.classList.add("row-image");
         rowHTML.setAttribute("data-id", image.id)
@@ -277,6 +274,7 @@ export default function gallery(project) {
 
             if (sendImagesToAlbum.code === 200) {
                 var getAlbum = document.querySelector(".P-item-album[id-album='"+album.id+"'] .P-table-album");
+
                 for (var i in sendImagesToAlbum.data) {
                     var dataImage = sendImagesToAlbum.data[i];
                     var getImage = itemImage(dataImage);

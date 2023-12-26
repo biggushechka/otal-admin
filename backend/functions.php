@@ -63,7 +63,7 @@ function convertImagesToWebP($images) {
         $stream = fopen('php://temp', 'r+');
 
         // Сохраняем новое изображение в поток формата WebP
-        imagewebp($newImage, $stream, 100);
+        imagewebp($newImage, $stream, 80);
 
         // Перемещаем указатель потока в начало
         rewind($stream);
@@ -77,12 +77,11 @@ function convertImagesToWebP($images) {
         // Кодируем данные в формат base64
         $base64Webp = base64_encode($webpData);
 
-        // Получаем новый вес изображения в байтах
-        $newWeightInBytes = strlen($webpData);
+        $imageSizeInBytes = strlen($webpData);
 
         $image['ext'] = "webp";
         $image['base'] = $base64Webp;
-        $image['size'] = $newWeightInBytes;
+        $image['size'] = $imageSizeInBytes;
 
         $convertedImages[] = $image;
     }
@@ -105,7 +104,7 @@ function saveFile($file, $uploadDir) {
     }
 
     // проверяем, сохранилось ли изображение
-    if (imagewebp($imageResource, $localPath)) {
+    if (imagewebp($imageResource, $localPath, 80)) {
         $isSaveFile = "true";
     } else {
         $isSaveFile = "false";

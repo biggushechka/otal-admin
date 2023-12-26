@@ -38,6 +38,7 @@ if ($method === "POST") {
 
     // ковертируем фото в webp
     $webpImages = convertImagesToWebP($images);
+    $addedPhotos = [];
 
     // добавляем фото в альбом
     foreach ($webpImages as &$image) {
@@ -70,6 +71,16 @@ if ($method === "POST") {
                 "activity" => "on",
                 "date_create" => $currentDateTime
             ]);
+            $id_new_row_photo = $dbh->lastInsertId();
+
+            $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id` = :id");
+            $query_get_images->execute(["id" => $id_new_row_photo]);
+            $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
+
+
+            if ($query_get_images->rowCount() != 0) {
+                $addedPhotos[] = $getImages;
+            }
         } else {
             header("HTTP/1.1 409 Conflict");
             header('Content-Type: application/json; charset=UTF-8');
@@ -78,18 +89,9 @@ if ($method === "POST") {
         }
     }
 
-    $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id_site` = :id_site AND `id_album` = :id_album");
-    $query_get_images->execute(["id_site" => $id_site, "id_album" => $id_album]);
-    $getImages = $query_get_images->fetchAll(PDO::FETCH_ASSOC);
-
-    if ($query_get_images->rowCount() != 0) {
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($getImages, JSON_UNESCAPED_UNICODE);
-    } else {
-        header("HTTP/1.1 204 Not Found");
-        header('Content-Type: application/json; charset=UTF-8');
-    }
+    header("HTTP/1.1 200 OK");
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode($addedPhotos, JSON_UNESCAPED_UNICODE);
 }
 
 // Удаление

@@ -29,12 +29,6 @@
 
 }
 
-.P-advantages .P-adv-index .P-table-adv tbody .row-adv .photo-adv {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-}
-
 .P-advantages .P-adv-index .P-table-adv tbody .col-title .title {
     font-size: 15px;
     font-weight: 600;

@@ -217,6 +217,12 @@
     color: #fff;
 }
 
+.G-table tbody .col-photo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
 /* end - table */
 
 
