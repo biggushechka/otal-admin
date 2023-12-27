@@ -9,7 +9,7 @@ $allowedOrigins = [
     'http://odal'
 ];
 
-file_put_contents("origin.txt", in_array($origin, $allowedOrigins));
+echo $origin;
 
 if (in_array($origin, $allowedOrigins)) {
     header("Access-Control-Allow-Origin: " . $origin);
