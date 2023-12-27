@@ -49,6 +49,14 @@ if ($method === "GET") {
     $sth->execute();
     $my_sites = $sth->fetchAll(PDO::FETCH_ASSOC);
 
+    $allowedOrigins = [];
+    foreach ($my_sites as $site) {
+        $allowedOrigins[] = $site['domain'];
+    }
+    $jsonString = json_encode($allowedOrigins);
+    file_put_contents($rootPath . "/api/allowed-origins.txt", $jsonString);
+
+
     header("HTTP/1.1 200 OK");
     header('Content-Type: application/json; charset=UTF-8');
     echo json_encode($my_sites, JSON_UNESCAPED_UNICODE);
