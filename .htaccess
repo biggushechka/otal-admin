@@ -9,5 +9,6 @@ RewriteCond %{REQUEST_URI} !^/api/
 RewriteRule . index.php [L]
 
 # Правило для путей, где есть папка "api"
+Header set Access-Control-Allow-Headers "Content-Type"
 RewriteCond %{REQUEST_URI} ^/api/
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
