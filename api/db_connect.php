@@ -1,8 +1,12 @@
 <?php
 
-// Устанавливаем возможность отправлять ответ для любого домена
-header('Access-Control-Allow-Origin: *');
+$rootPath = $_SERVER['DOCUMENT_ROOT'];
 
+require_once $rootPath . '/api/setting.php';
+
+global $allowAccess;
+
+if ($allowAccess == "false") exit("Доступ запрещен ((");
 
 $dbhost = "novato1v.beget.tech";
 $dbuser = "novato1v_otales";
