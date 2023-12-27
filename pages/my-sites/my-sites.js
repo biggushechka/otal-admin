@@ -144,7 +144,7 @@ export default function mySites() {
         function isActivitySite(status) {
             var isActivity = XMLHttpRequestAJAX({
                 url: "/api/site/general/isActivity",
-                method: "UPDATE",
+                method: "POST",
                 body: {
                     id_site: site.id,
                     activity: status
