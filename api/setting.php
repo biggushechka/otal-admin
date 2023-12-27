@@ -4,6 +4,7 @@ $origin = $_SERVER['HTTP_ORIGIN'];
 
 // разрешенные домены
 $allowedOrigins = [
+    'http://otal-estate',
     'http://odal'
 ];
 
