@@ -4,7 +4,6 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/db_connect.php';
-//require_once $rootPath . '/backend/functions.php';
 
 global $dbh;
 

@@ -10,24 +10,26 @@ global $dbh;
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
 
-$id_site = $POST['album'];
+$id_site = $POST['id_site'];
 $album = $POST['album'];
 
 if ($method === "POST") {
-    if ($id_site == "" || $album == "") {
-        return false;
-    }
+    if ($id_site == "" || $album == "") return false;
 
     if ($album === "main") {
-        $query_get_album = $dbh->prepare("SELECT * FROM `project_gallery_album` WHERE `id_site` = :id_site AND `title` = :title");
+        $query_get_album = $dbh->prepare("SELECT * FROM `project_gallery_album` WHERE `id_site` = :id_site AND `title` = :title LIMIT 1");
         $query_get_album->execute(["id_site" => $id_site, "title" => "Основной альбом"]);
 
         if ($query_get_album->rowCount() > 0) {
             $get_album = $query_get_album->fetch(PDO::FETCH_OBJ);
             $id_album = $get_album->id;
 
-            $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id_album` = :id_album");
-            $query_get_images->execute(["id_album" => $id_album]);
+            $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id_album` = :id_album AND `id_site` = :id_site AND `activity` = :activity");
+            $query_get_images->execute([
+                "id_album" => $id_album,
+                "id_site" => $id_site,
+                "activity" => "on"
+            ]);
 
             if ($query_get_images->rowCount() > 0) {
                 $data_images = $query_get_images->fetchAll(PDO::FETCH_ASSOC);
