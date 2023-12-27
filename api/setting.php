@@ -1,14 +1,14 @@
 <?php
 
-// Устанавливаем возможность отправлять ответ для некоторых доменов
-$allowAccess = "";
 $origin = $_SERVER['HTTP_ORIGIN'];
 
+// разрешенные домены
 $allowedOrigins = [
     '',
     'http://odal'
 ];
 
+// Устанавливаем возможность отправлять ответ для разрешенных доменов
 if (in_array($origin, $allowedOrigins)) {
     header("Access-Control-Allow-Origin: " . $origin);
     header("Access-Control-Allow-Credentials: true");
