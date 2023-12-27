@@ -16,7 +16,7 @@ export default function site() {
         title: get_site.data.domain,
         breadcrumbs: [
             {title: "Мои сайты", link: "/my-sites"},
-            {title: get_site.data.domain, link: ""},
+            {title: domain, link: ""},
         ]
     });
 

@@ -25,7 +25,6 @@ if ($method === "POST") {
 
     // собираем дату
     $generalInfo->id_site = $id_site;
-    $generalInfo->title = $get_site->title;
     $generalInfo->domain = $get_site->domain;
     $generalInfo->activity = $get_site->activity;
     // end - собираем дату
@@ -41,10 +40,10 @@ if ($method === "POST") {
         if ($query_get_general->rowCount() > 0) {
             unset($data_general->id);
             unset($data_general->id_site);
-            unset($data_general->title_project);
             unset($data_general->preview_photo);
             unset($data_general->date_update);
 
+            $generalInfo->title = $data_general->title_project;
             $generalInfo->contacts = $data_general;
         }
 
