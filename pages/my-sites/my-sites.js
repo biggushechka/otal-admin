@@ -115,15 +115,16 @@ export default function mySites() {
 
     // выводим один сайт
     function getItemSite(site) {
-        var linkEDIT = `/my-sites/${site.domain}`,
-            linkTOSITE = `https://${site.domain}/`;
+        var domain = site.domain.replace(/^https?:\/\//, ""),
+            linkEDIT = `/my-sites/${domain}`,
+            linkTOSITE = `${site.domain}/`;
 
         siteHTML = document.createElement("tr");
 
         var siteTMPL = `
         <td class="cell-id">${site.id}</td>
         <td class="cell-title"><a href="${linkEDIT}" class="link-to-site"><i class="ph-fill ph-folder-simple"></i>${site.title}</a></td>
-        <td class="cell-domain"><a href="${linkTOSITE}" target="_blank" uk-tooltip="Перейти на сайт">${site.domain}</a></td>
+        <td class="cell-domain"><a href="${linkTOSITE}" target="_blank" uk-tooltip="Перейти на сайт">${domain}</a></td>
         <td class="cell-dc">${DateFormat(site.date_create, "d Month, N (H:i)")}</td>
         <td class="cell-activity"></td>
         <td class="cell-events">

@@ -418,6 +418,8 @@ function DateFormat(date, format) {
 }
 
 function getSite(domain) {
+    domain = "https://"+domain
+
     var getSite = XMLHttpRequestAJAX({
         url: "/api/site/project",
         method: "GET",

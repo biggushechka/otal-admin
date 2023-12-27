@@ -10,7 +10,6 @@ $allowedOrigins = [
 ];
 
 // Устанавливаем возможность отправлять ответ для разрешенных доменов
-
 if ($origin != "") {
     if (in_array($origin, $allowedOrigins)) {
         header("Access-Control-Allow-Origin: " . $origin);
