@@ -28,8 +28,8 @@ if ($method === "POST") {
             $get_album = $query_get_album->fetch(PDO::FETCH_OBJ);
             $id_album = $get_album->id;
 
-            $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id_site` = :id_site AND `id_album` = :id_album");
-            $query_get_images->execute(["id_site" => $id_site, "id_album" => $id_album]);
+            $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id_album` = :id_album");
+            $query_get_images->execute(["id_album" => $id_album]);
 
             if ($query_get_images->rowCount() > 0) {
                 $data_images = $query_get_images->fetchAll(PDO::FETCH_ASSOC);
