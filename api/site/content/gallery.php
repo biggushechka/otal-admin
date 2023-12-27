@@ -32,7 +32,7 @@ if ($method === "POST") {
             $query_get_images->execute(["id_site" => $id_site, "id_album" => $id_album]);
 
             if ($query_get_images->rowCount() > 0) {
-                $data_images = $query_get_images->fetchAll(PDO::FETCH_OBJ);
+                $data_images = $query_get_images->fetchAll(PDO::FETCH_ASSOC);
 
                 header("HTTP/1.1 200 OK");
                 header('Content-Type: application/json; charset=UTF-8');
