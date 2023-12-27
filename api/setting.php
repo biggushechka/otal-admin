@@ -6,7 +6,8 @@ $origin = $_SERVER['HTTP_ORIGIN'];
 $allowedOrigins = [
     'http://otal-estate',
     'https://otal-estate.ru',
-    'http://odal'
+    'http://odal',
+    'https://ayu-dag.ru'
 ];
 
 // Устанавливаем возможность отправлять ответ для разрешенных доменов
