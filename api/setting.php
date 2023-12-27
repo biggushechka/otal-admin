@@ -3,21 +3,23 @@
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $origin = $_SERVER['HTTP_ORIGIN'];
 
-// разрешенные домены
+// разрешенные домены для подключения по API
 $allowedOrigins = [
     'http://otal-estate',
     'https://otal-estate.ru',
     'http://odal'
 ];
 
+// получаем все сайты из бд, которое есть в админке
 $get_allowedOrigins = file_get_contents($rootPath . "/api/allowed-origins.txt");
-$ao_json = json_decode($get_allowedOrigins);
 
+// добавляем в разрешенные домены сайты, которые есть в админке
+$ao_json = json_decode($get_allowedOrigins);
 foreach ($ao_json as $itemDomain) {
     $allowedOrigins[] = $itemDomain;
 }
 
-// Устанавливаем возможность отправлять ответ для разрешенных доменов
+// разрешаем подключаться к API разрешенным доменам
 if ($origin != "") {
     if (in_array($origin, $allowedOrigins)) {
         header("Access-Control-Allow-Origin: " . $origin);
