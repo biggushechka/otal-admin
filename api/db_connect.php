@@ -1,5 +1,9 @@
 <?php
 
+// Устанавливаем возможность отправлять ответ для любого домена
+header('Access-Control-Allow-Origin: *');
+
+
 $dbhost = "novato1v.beget.tech";
 $dbuser = "novato1v_otales";
 $dbpass = "7HASCI&w";
