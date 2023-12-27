@@ -39,8 +39,9 @@ if ($method === "POST") {
                 echo json_encode($data_images, JSON_UNESCAPED_UNICODE);
             } else {
                 header("HTTP/1.1 204 Not Found");
-                header('Content-Type: application/json; charset=UTF-8');
             }
+        } else {
+            header("HTTP/1.1 404 Not Found");
         }
     }
 
