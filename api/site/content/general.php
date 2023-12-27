@@ -11,7 +11,7 @@ $POST = json_decode($get_post_data, true);
 
 $id = $POST['id'] ?? $_GET['id'];
 
-if ($method === "GET") {
+if ($method === "POST") {
     header("HTTP/1.1 200 OK");
     header('Content-Type: application/json; charset=UTF-8');
     echo json_encode("YES", JSON_UNESCAPED_UNICODE);
