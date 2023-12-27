@@ -44,7 +44,7 @@ export default function advantages(project) {
     function advantages_index() {
         // получаем данные
         var getAdvantages = XMLHttpRequestAJAX({
-            url: "/api/site/advantages/list",
+            url: "https://otal-estate.ru/api/site/advantages/list",
             method: "GET",
             body: {
                 id_site: project.id
