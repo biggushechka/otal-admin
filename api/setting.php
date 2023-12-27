@@ -4,7 +4,7 @@ $origin = $_SERVER['HTTP_ORIGIN'];
 
 // разрешенные домены
 $allowedOrigins = [
-    'http://odal'
+    'http://odal-new'
 ];
 
 // Устанавливаем возможность отправлять ответ для разрешенных доменов
