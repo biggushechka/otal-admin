@@ -5,7 +5,8 @@ $allowAccess = "";
 $origin = $_SERVER['HTTP_ORIGIN'];
 
 $allowedOrigins = [
-    'http://otal-estate'
+    'http://otal-estate',
+    'http://odal'
 ];
 
 if (in_array($origin, $allowedOrigins)) {
