@@ -5,11 +5,8 @@ $allowAccess = "";
 $origin = $_SERVER['HTTP_ORIGIN'];
 
 $allowedOrigins = [
-    'http://otal-estate',
-    'http://odal'
+    'http://otal-estate'
 ];
-
-file_put_contents("origin.txt", $origin);
 
 if (in_array($origin, $allowedOrigins)) {
     header("Access-Control-Allow-Origin: " . $origin);
