@@ -14,8 +14,6 @@ $id_site = $POST['album'];
 $album = $POST['album'];
 
 if ($method === "POST") {
-    $id_site = 0;
-
     if ($id_site == "" || $album == "") {
         return false;
     }
