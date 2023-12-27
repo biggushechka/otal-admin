@@ -5,7 +5,7 @@ $allowAccess = "";
 $origin = $_SERVER['HTTP_ORIGIN'];
 
 $allowedOrigins = [
-    'https://otal-estate.ru',
+    '',
     'http://odal'
 ];
 
