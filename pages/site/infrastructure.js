@@ -10,7 +10,6 @@ export default function infrastructure(project) {
             id_site: project.id
         }
     });
-    console.log("getInfrastructure", getInfrastructure);
 
     var infrastructureHTML = document.createElement("div");
     infrastructureHTML.classList.add("P-infrastructure");
@@ -73,7 +72,7 @@ export default function infrastructure(project) {
                 <img src="${data.photo}" class="photo-adv">
             </td>
             <td class="col-title">
-                <span class="title">${data.title}</span>
+                <span class="title"><b>${data.title}</b></span>
                 <span class="desc">${data.description}</span>
             </td>
             <td class="col-date">${DateFormat(data.date_create, "d Month, N (H:i)")}</td>
@@ -87,16 +86,17 @@ export default function infrastructure(project) {
         tableHTML.querySelector("tbody .add-new-item").before(rowHTML);
 
         // вставляем switch активности сайта
-        // var switchActivity = formFields.switchRadio({name: "activity", checked: adv.activity, callback: isActivitySite})
-        // rowHTML.querySelector(".col-status").append(switchActivity);
+        var switchActivity = formFields.switchRadio({name: "activity", checked: data.activity, callback: isActivitySite})
+        rowHTML.querySelector(".col-status").append(switchActivity);
 
         // изменение активности сайта
         function isActivitySite(status) {
             var isActivity = XMLHttpRequestAJAX({
-                url: "/api/site/advantages/isActivity",
+                url: "/api/site/infrastructure/isActivity",
                 method: "POST",
                 body: {
-                    id_site: adv.id,
+                    id_adv: data.id,
+                    id_site: project.id,
                     activity: status
                 }
             });
@@ -142,7 +142,8 @@ export default function infrastructure(project) {
 
     function modalItem(data) {
         var form = document.createElement("form"),
-            titleModal = (data == undefined) ? "Добавить запись" : "Редактирование записи #"+data.id;
+            titleModal = (data == undefined) ? "Добавить запись" : "Редактирование записи #"+data.id,
+            titleBtn = (data == undefined) ? "Добавить" : "Готово";
 
         // добавляем поля
         form.append(
@@ -168,7 +169,7 @@ export default function infrastructure(project) {
                 },
                 submit: {
                     active: true,
-                    title: "Создать",
+                    title: titleBtn,
                     callback: function() {
                         sendFormAdv();
                     }
@@ -177,19 +178,14 @@ export default function infrastructure(project) {
         });
 
         function sendFormAdv() {
-            var getValuesForm = formFields.getValuesForm(form),
-                method = (data == undefined) ? "POST" : "UPDATE";
-
-            console.log("method", method)
+            var getValuesForm = formFields.getValuesForm(form);
 
             if (getValuesForm.status == false) return false;
-
-            console.log("form", getValuesForm.form);
 
             // отправляем данные
             var sendInfrastructure = XMLHttpRequestAJAX({
                 url: "/api/site/infrastructure/list",
-                method: method,
+                method: "POST",
                 body: getValuesForm.form
             });
             console.log(sendInfrastructure);

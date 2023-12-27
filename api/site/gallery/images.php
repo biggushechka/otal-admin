@@ -14,6 +14,8 @@ $id_album = $POST['id_album'] ?? $_GET['id_album'];
 $name_album = $POST['name_album'] ?? $_GET['name_album'];
 $images = $POST['photos'] ?? $_GET['photos'];
 $activity = $POST['activity'] ?? $_GET['activity'];
+$replacement = $POST['replacement'];
+$titleAlbum = "gallery";
 $currentDateTime = date('Y-m-d H:i:s');
 
 // получение
@@ -34,8 +36,13 @@ if ($method === "GET") {
 
 // Запись
 if ($method === "POST") {
+
+    if ($replacement === "true") {
+        photoReplacement();
+        return false;
+    }
+
     $album_id = "";
-    $titleAlbum = "gallery";
 
     // ковертируем фото в webp
     $webpImages = convertImagesToWebP($images);
@@ -94,6 +101,90 @@ if ($method === "POST") {
     header('Content-Type: application/json; charset=UTF-8');
     echo json_encode($addedPhotos, JSON_UNESCAPED_UNICODE);
 }
+
+// замена фотографии в записи
+function photoReplacement() {
+    global $POST, $dbh, $images, $titleAlbum, $currentDateTime;
+
+    $id_image = $POST['id_image'];
+
+    $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id` = :id");
+    $query_get_images->execute(["id" => $id_image]);
+    $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
+
+    if ($query_get_images->rowCount() != 0) {
+        $parsed_url = parse_url($getImages->image);
+        $pathFile = $parsed_url['path'];
+        $pathFile = ltrim($pathFile, '/');
+
+        // удаляем файл на сервере
+        $delete_file = deleteFile($pathFile);
+
+        if ($delete_file == "false") {
+            header("HTTP/1.1 409 Conflict");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode("Ошибка при сохранении файла", JSON_UNESCAPED_UNICODE);
+            return false;
+        }
+    }
+
+    $webpImages = convertImagesToWebP($images);
+    $replaceCount = 0;
+
+    // сохраняем новое фото и редактируем запись
+    foreach ($webpImages as &$image) {
+        $saveImgPath = "api/media/" . $titleAlbum;
+        $titleImg = $image['name'] . "." . $image['ext'];
+        $saveImg = saveFile($image, $saveImgPath);
+        $filePath = "https://otal-estate.ru/" . $saveImgPath . "/" . $titleImg;
+
+        if ($saveImg != "false") {
+
+            // обновляем запись (фото) в таблице "project_photos"
+            $query_add_image = $dbh->prepare("UPDATE `project_gallery_image` SET
+                `title` = :title,
+                `extension` = :extension,
+                `weight` = :weight,
+                `image` = :image,
+                `date_create` = :date_create
+                WHERE `id` = :id
+            ");
+            $query_add_image->execute([
+                "id" => $id_image,
+                "title" => $titleImg,
+                "extension" => $image['ext'],
+                "weight" => $image['size'],
+                "image" => $filePath,
+                "date_create" => $currentDateTime
+            ]);
+
+            if ($query_add_image->rowCount() != 0) {
+                $replaceCount++;
+            }
+        } else {
+            header("HTTP/1.1 409 Conflict");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode("Ошибка при сохранении файла", JSON_UNESCAPED_UNICODE);
+            return false;
+        }
+    }
+
+    if ($replaceCount == count($webpImages)) {
+        $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id` = :id");
+        $query_get_images->execute(["id" => $id_image]);
+        $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
+
+        if ($query_get_images->rowCount() > 0) {
+            header("HTTP/1.1 200 OK");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode($getImages, JSON_UNESCAPED_UNICODE);
+        } else {
+            header("HTTP/1.1 409 Conflict");
+            header('Content-Type: application/json; charset=UTF-8');
+        }
+    }
+}
+
 
 // Удаление
 if ($method === "DELETE") {

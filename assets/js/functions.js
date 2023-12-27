@@ -456,8 +456,7 @@ function generateRandomNumber(numDigits) {
 
 function getUploadFiles(data, callback) {
     var ext = (data.ext != undefined && (data.ext != "" || data.ext.length != 0)) ? data.ext : "all",
-        multiple = (data.multiple != undefined && data.multiple != "") ? data.multiple : "false",
-        arrayFiles = [];
+        multiple = (data.multiple != undefined && data.multiple != "") ? data.multiple : "false";
 
     var extGroup = {
         "img": ["png", "jpg", "jpeg", "webp", "avif", "tiff", "heic"],

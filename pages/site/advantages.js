@@ -219,19 +219,14 @@ export default function advantages(project) {
             });
 
             function sendFormAdv() {
-                var getValuesForm = formFields.getValuesForm(form),
-                    method = (data == undefined) ? "POST" : "UPDATE";
-
-                console.log("method", method)
+                var getValuesForm = formFields.getValuesForm(form);
 
                 if (getValuesForm.status == false) return false;
-
-                console.log("form", getValuesForm.form);
 
                 // отправляем данные
                 var sendAdvantages = XMLHttpRequestAJAX({
                     url: "/api/site/advantages/list",
-                    method: method,
+                    method: "POST",
                     body: getValuesForm.form
                 });
                 console.log(sendAdvantages);

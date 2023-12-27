@@ -77,7 +77,6 @@ export default function general_info(project) {
                     alertNotification({status: "error", text: "Ошибка при обновлении обложки", pos: "top-center"});
                 }
             }
-
         });
     }
 

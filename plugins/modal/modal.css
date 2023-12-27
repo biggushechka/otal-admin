@@ -126,6 +126,7 @@
     font-size: 20px;
     line-height: 24px;
     color: var(--text-primary);
+    white-space: pre-wrap;
 }
 
 .mr-modal .container-body .modal-header .header-info .desc {

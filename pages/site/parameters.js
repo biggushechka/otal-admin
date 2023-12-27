@@ -98,7 +98,7 @@ export default function parameters(project) {
 
             var updateGeneralInfo = XMLHttpRequestAJAX({
                 url: "/api/site/parameters",
-                method: "UPDATE",
+                method: "POST",
                 body: getValuesForm.form
             });
 

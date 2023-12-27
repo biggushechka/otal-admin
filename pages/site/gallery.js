@@ -14,7 +14,6 @@ export default function gallery(project) {
                 album: "all"
             }
         });
-        console.log(getAllAlbum)
 
         if (getAllAlbum.code === 200) {
             for (var i in getAllAlbum.data) {
@@ -33,7 +32,6 @@ export default function gallery(project) {
                 id_album: album.id
             }
         });
-        console.log(album.title, getImages);
 
         var albumItemHTML = document.createElement("div");
         albumItemHTML.classList.add("P-item-album");
@@ -74,6 +72,8 @@ export default function gallery(project) {
             albumItemHTML.querySelector(".events-album .btn-rename-album").addEventListener("click", function () {
                 var form = document.createElement("form"),
                     nameAlbum = albumItemHTML.querySelector(".title-card");
+
+                album.title = nameAlbum.innerHTML;
 
                 form.append(
                     formFields.inputText({label: "Название альбома", name: "title", validate: "true"}),
@@ -162,7 +162,7 @@ export default function gallery(project) {
         var btnAddGroupHTML = document.createElement("div");
         btnAddGroupHTML.classList.add("btn-add-container");
         btnAddGroupHTML.innerHTML = `
-        <button type="button" class="btn btn-icon-left btn-add-item_full"><i class="ph ph-plus-circle"></i>Добавить альбом</button>`;
+        <button type="button" class="btn btn-icon-left btn-add-item_full"><i class="ph ph-plus-circle"></i>Создать новый альбом</button>`;
         document.getElementById("app").append(btnAddGroupHTML);
 
         btnAddGroupHTML.addEventListener("click", function () {
@@ -236,7 +236,7 @@ export default function gallery(project) {
         <tbody>
             <tr class="add-new-item">
                 <td colspan="8">
-                    <button type="button" class="btn btn-add-item btn-icon-left"><i class="ph ph-plus-circle"></i>Добавить запись</button>
+                    <button type="button" class="btn btn-add-item btn-icon-left"><i class="ph ph-plus-circle"></i>Загрузить изображение</button>
                 </td>
             </tr>
         </tbody>`;
@@ -291,9 +291,46 @@ export default function gallery(project) {
         }
 
         // редактирование записи
-        // rowHTML.querySelector(".btn-edit").addEventListener("click", function () {
-        //     modalItemAdv(adv);
-        // });
+        rowHTML.querySelector(".btn-edit").addEventListener("click", function () {
+            getUploadFiles({
+                ext: "img",
+                multiple: "false"
+            }, fileProcessing);
+
+            function fileProcessing(files) {
+
+                if (files.length == 0) return false;
+
+                // получаем данные
+                var resReplacement = XMLHttpRequestAJAX({
+                    url: "/api/site/gallery/images",
+                    method: "POST",
+                    body: {
+                        id_site: project.id,
+                        id_image: image.id,
+                        photos: files,
+                        replacement: "true"
+                    }
+                });
+                console.log("resReplacement", resReplacement);
+
+                if (resReplacement.code === 200) {
+                    var listContainer = document.querySelector(".P-item-album[id-album='"+image.id_album+"'] table tbody"),
+                        pastUpdateRow = listContainer.append(itemImage(resReplacement.data)),
+                        replaceableItem = rowHTML,
+                        allItem = listContainer.querySelectorAll(".row-image"),
+                        newItem = allItem[allItem.length - 1];
+
+                    console.log("pastUpdateRow", pastUpdateRow)
+
+                    listContainer.replaceChild(newItem, replaceableItem);
+
+                    alertNotification({status: "success", text: "Обложка успешно обновлена", pos: "top-center"});
+                } else {
+                    alertNotification({status: "error", text: "Ошибка при обновлении обложки", pos: "top-center"});
+                }
+            }
+        });
 
         // удаление записи
         rowHTML.querySelector(".btn-delete").addEventListener("click", function () {
@@ -336,7 +373,7 @@ export default function gallery(project) {
         );
 
         var modal = new Modal({
-            title: "Загрузка изображений в альбом",
+            title: 'Загрузка изображений в альбом \n"' + album.title + '"',
             classModal: 'P-modal-add-image-album',
             content: form,
             mode: 'center',
@@ -347,7 +384,7 @@ export default function gallery(project) {
                 },
                 submit: {
                     active: true,
-                    title: "Создать",
+                    title: "Загрузить",
                     callback: function() {
                         sendFormAdv();
                     }
@@ -358,7 +395,10 @@ export default function gallery(project) {
         function sendFormAdv() {
             var getValuesForm = formFields.getValuesForm(form);
 
-            if (getValuesForm.status == false) return false;
+            if (getValuesForm.status == false || getValuesForm.form.photos == "") {
+                alertNotification({status: "alert", text: "Выберите изображения для загрузки", pos: "top-center"});
+                return false;
+            }
 
             // отправляем данные
             var sendImagesToAlbum = XMLHttpRequestAJAX({

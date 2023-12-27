@@ -266,8 +266,13 @@ class FormFields {
             if (photos.length == 0) return false;
             for (var i in photos) {
                 var photo = photos[i];
+
+                if (input.value != "") photoAdv = JSON.parse(input.value);
+
                 photoAdv.push(photo);
+
                 photoItem(photo);
+
                 input.value = JSON.stringify(photoAdv);
             }
         }
@@ -282,25 +287,20 @@ class FormFields {
         }
 
         function photoItem(photo) {
-
-            photo = (typeof photo == "object") ? "data:image/png;base64,"+photo.base : photo;
+            var image_src = (typeof photo == "object") ? "data:image/png;base64,"+photo.base : photo;
 
             var photoHTML = document.createElement("div");
             photoHTML.classList.add("photo-item");
             photoHTML.innerHTML = `
-            <img src="${photo}" alt="photo">
+            <img src="${image_src}" alt="photo">
             <button type="button" class="btn btn-square btn-delete-photo"><i class="ph ph-x"></i></button>`;
             fieldTAG.querySelector(".preview-photo").append(photoHTML);
 
             photoHTML.querySelector(".btn-delete-photo").addEventListener("click", function () {
-                var deletePhoto = photoAdv.findIndex(function(photoItem) {
-                    return photoItem.id === photo.id;
-                });
+                const deletePhoto = photoAdv.findIndex(obj => obj.id === photo.id);
 
                 // удаляем фото из массива
-                if (deletePhoto !== -1) {
-                    photoAdv.splice(deletePhoto, 1);
-                }
+                if (deletePhoto != "-1") photoAdv.splice(deletePhoto, 1);
 
                 photoHTML.remove();
                 input.value = JSON.stringify(photoAdv);
@@ -463,10 +463,13 @@ class FormFields {
             }
 
             if (typeField === "photos") {
-                console.log("input.value", container)
                 var input = container.querySelector(".upload-photo input"),
                     name = input.getAttribute("name"),
-                    value = (input.value == "") ? "" : JSON.parse(input.value);
+                    value = (input.value == "") ? "" : JSON.parse(input.value),
+                    isUploadPhoto = container.querySelector(".preview-photo");
+                    validate = input.getAttribute("validate");
+
+                if (!isUploadPhoto) fieldsValid.push(name);
 
                 formData[name] = value;
             }
@@ -485,6 +488,7 @@ class FormFields {
 
     validate(form, fieldsValid, formData) {
         var isValid = 0;
+
         fieldsValid.forEach(function (field) {
             if (formData[field] == "" || formData[field].length == 0) {
                 isValid = 1;

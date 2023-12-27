@@ -135,7 +135,6 @@ if ($method === "POST") {
 }
 
 // обновление записи
-// обновление записи
 function updateRow() {
     global $dbh, $id, $id_site, $photos, $title, $description, $currentDateTime, $titleAlbum;
 
