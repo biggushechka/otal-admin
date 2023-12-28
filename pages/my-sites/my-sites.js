@@ -3,17 +3,6 @@ export default function mySites() {
         title: "Мои сайты"
     });
 
-    const sliderGallery = XMLHttpRequestAJAX({
-        url: "/api/site/content/gallery",
-        method: "POST",
-        body: {
-            id_site: "54",
-            album: "main"
-        }
-    });
-    console.log("sliderGallery", sliderGallery);
-
-
     var sitesHTML,
         tableHTML,
         siteHTML,

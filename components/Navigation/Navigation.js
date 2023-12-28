@@ -55,7 +55,13 @@ findActivePage();
 
 // Выделяем цветом ссылку в меню, исходя из того, на какой стр. мы находимся
 function findActivePage() {
-    const currentPath = window.location.pathname;
+    const currentPath = window.location.pathname,
+        paths = pathname.split('/'),
+        domain = "/"+paths[1];
+
+    console.log("paths", paths)
+
+
     const menuLinks = navigation.querySelectorAll('.link-item');
 
     // Перебираем каждую ссылку и проверяем, соответствует ли ее href текущему пути
@@ -63,7 +69,7 @@ function findActivePage() {
         const linkPath = link.getAttribute('href');
 
         // Сравниваем текущий путь с href ссылки и добавляем класс "visited", если они совпадают
-        if (linkPath === currentPath) {
+        if (linkPath === domain) {
             link.classList.add('visited');
         }
     });
