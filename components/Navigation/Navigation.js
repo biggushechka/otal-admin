@@ -61,7 +61,6 @@ function findActivePage() {
 
     console.log("paths", paths)
 
-
     const menuLinks = navigation.querySelectorAll('.link-item');
 
     // Перебираем каждую ссылку и проверяем, соответствует ли ее href текущему пути
