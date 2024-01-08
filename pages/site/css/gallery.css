@@ -1,0 +1,55 @@
+.P-item-album {
+    max-width: 1000px;
+    margin: 20px auto 0;
+}
+
+.P-item-album .events-album {
+    display: flex;
+    align-items: center;
+}
+
+.P-item-album .events-album .btn {
+    opacity: 0;
+}
+
+.P-item-album .events-album .btn-rename-album {
+    background: transparent;
+    color: var(--global-primary);
+}
+
+.P-item-album .events-album .btn-delete-album {
+    background: transparent;
+    color: var(--danger);
+}
+
+.P-item-album:hover .events-album .btn {
+    opacity: 0.5;
+}
+
+.P-item-album:hover .events-album .btn:hover {
+    opacity: 1;
+}
+
+.btn-add-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 100%;
+    height: 80px;
+    background: #E4EBFC;
+    border: 1px dashed var(--global-primary);
+    border-radius: 12px;
+}
+
+.btn-add-container:hover {
+    background: #d8e2ff;
+    cursor: pointer;
+}
+
+.btn-add-container .btn {
+    color: var(--global-primary);
+    font-size: 14px;
+}

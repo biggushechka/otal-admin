@@ -35,7 +35,7 @@ jobs:
           script: |
             cd ${{env.SERVER_PATH}};
             git checkout master;
-            git stash;
+            git reset --hard
             git pull origin master;
             cd backend
             

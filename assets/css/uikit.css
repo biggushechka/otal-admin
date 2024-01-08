@@ -1,0 +1,275 @@
+@charset "UTF-8";
+
+/* кнопки */
+.btn {
+    font-family: "Ubuntu", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: max-content;
+    border-radius: 5px;
+    padding: 9px 15px;
+
+    font-size: 13px;
+    font-style: normal;
+    text-align: center;
+    text-decoration: none;
+
+    width: max-content;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+/* primary */
+.btn.btn-primary {
+    color: var(--text-constant);
+    background: var(--global-primary);
+}
+
+.btn.btn-primary:hover {
+    background: #3f6ad2;
+}
+
+.btn.btn-primary:active {
+    background: #466fd2;
+}
+
+.btn.btn-primary[disabled] {
+    background: #ccc;
+}
+
+
+/* secondary */
+.btn.btn-secondary {
+    color: var(--text-primary);
+    background: var(--text-constant);
+}
+
+.btn.btn-secondary:hover {
+    color: #000;
+    background: var(--button-secondary-light);
+}
+
+.btn.btn-secondary:active {
+    color: var(--text-secondary);
+    background: var(--button-secondary-light);
+}
+
+.btn.btn-secondary[disabled] {
+    color: var(--text-secondary);
+    background: var(--button-secondary-light);
+}
+
+/* outline-primary */
+.btn.btn-outline-primary {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+.btn.btn-outline-primary:hover {
+    color: var(--global-primary);
+    background: rgba(0, 75, 255, 0.06);
+    border-color: var(--global-primary);
+}
+
+.btn.btn-outline-primary:active {
+    color: var(--text-constant);
+    background: var(--global-primary);
+    border-color: transparent;
+}
+
+.btn.btn-outline-primary[disabled] {
+    color: var(--text-thirdly);
+    background: var(--text-thirdly);
+}
+
+/* link */
+.btn.btn-link {
+    background: transparent;
+    padding: 0;
+    color: var(--global-primary);
+    border-color: transparent;
+}
+
+.btn.btn-link:hover {
+    color: var(--text-constant);
+    background: var(--button-secondary-light-2);
+    border-color: transparent;
+}
+
+.btn.btn-link:active {
+    color: var(--text-constant);
+    background: var(--global-primary);
+    border-color: transparent;
+}
+
+.btn.btn-link[disabled] {
+    color: var(--text-thirdly);
+    background: var(--text-thirdly);
+}
+
+.btn.btn-icon-left i {
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.btn.btn-icon-right i {
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+.btn.btn-square {
+    width: 38px;
+    padding: 0;
+    aspect-ratio: 1 / 1;
+}
+
+.btn.btn-square i {
+    font-size: 150%;
+}
+
+/* table */
+.G-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ccc;
+}
+
+.G-table thead tr {
+
+}
+
+.G-table thead tr th {
+    color: #767676;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.G-table td,
+.G-table th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.G-table tbody tr:hover {
+    background: rgba(30, 135, 240, 0.12);
+}
+
+.G-table tbody .add-new-item td {
+    padding: 0;
+}
+
+.G-table tbody .add-new-item td .btn {
+    width: 100%;
+    height: 50px;
+    color: var(--global-primary);
+}
+
+.G-table tbody .col-events .row-container {
+    display: flex;
+    align-items: center;
+    grid-column-gap: 8px;
+}
+
+.G-table tbody .col-events .row-container .btn-square {
+    width: 34px;
+}
+
+.G-table tbody .col-events .row-container .btn-edit {
+    border-color: var(--global-primary);
+}
+
+.G-table tbody .col-events .row-container .btn-edit i {
+    color: var(--global-primary);
+}
+
+.G-table tbody .col-events .row-container .btn-edit:hover {
+    background: var(--global-primary);
+    border-color: transparent;
+}
+.G-table tbody .col-events .row-container .btn-edit:hover i {
+    color: #fff;
+}
+
+.G-table tbody .col-events .row-container .btn-delete {
+    border-color: var(--danger);
+}
+
+.G-table tbody .col-events .row-container .btn-delete i {
+    color: var(--danger);
+}
+
+.G-table tbody .col-events .row-container .btn-delete:hover {
+    background: var(--danger);
+    border-color: transparent;
+}
+.G-table tbody .col-events .row-container .btn-delete:hover i {
+    color: #fff;
+}
+
+.G-table tbody .col-photo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+/* end - table */
+
+
+/* dropdown */
+.mr-dropdown {
+
+}
+
+.mr-dropdown .dropdown-container {
+    background: var(--dark-blue);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 6px 25px rgba(0, 7, 22, 0.15);
+    border-radius: 5px;
+    padding: 5px 0;
+    overflow: hidden;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+.mr-dropdown .dropdown-container .item-action {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    color: var(--text-thirdly);
+    padding: 6px 20px;
+    min-height: 33px;
+}
+
+.mr-dropdown .dropdown-container .item-action i:not(.icon) {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.mr-dropdown .dropdown-container .item-action .title {
+    color: var(--text-thirdly);
+    font-size: 13px;
+}
+
+.mr-dropdown .dropdown-container .item-action:hover {
+    background: rgba(120, 120, 120, 0.1)
+}
+
+.mr-dropdown .dropdown-container .separator {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 2px 0;
+}
+/* end - dropdown */
