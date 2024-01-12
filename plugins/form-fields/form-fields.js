@@ -177,13 +177,15 @@ class FormFields {
             search = (data.search != undefined && data.search != "") ? true : false,
             validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "";
 
+        console.log("options", options)
+
         var selectTAG = document.createElement("div");
         selectTAG.classList.add("field-container");
         selectTAG.setAttribute("type", "select");
         if (data.field_class != undefined && data.field_class != "") selectTAG.classList.add(data.field_class);
         var selectHTML = `
         ${label}
-        <select name="${name}"></select>`;
+        <select name="${name}" ${validate}></select>`;
         selectTAG.innerHTML = selectHTML;
 
         var select = selectTAG.querySelector("select");
@@ -457,7 +459,11 @@ class FormFields {
             if (typeField === "select") {
                 var select = container.querySelector("select"),
                     name = select.getAttribute("name"),
-                    value = select.options[0].text;
+                    option = select.options[0],
+                    value = (option == undefined) ? "" : select.options[0].text,
+                    validate = select.getAttribute("validate");
+
+                if (validate != null && validate === "true") fieldsValid.push(name);
 
                 formData[name] = value;
             }

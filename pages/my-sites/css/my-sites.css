@@ -36,15 +36,6 @@
     color: var(--global-primary);
 }
 
-.P-my-sites > .wrapper-container .P-table-my-sites tbody .cell-events .row-container {
-    display: flex;
-    align-items: inherit;
-    grid-column-gap: 5px;
-}
-
-.P-my-sites > .wrapper-container .P-table-my-sites tbody .cell-events .row-container .btn {
-    width: 30px;
-}
 
 
 

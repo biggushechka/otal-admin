@@ -4,6 +4,7 @@
 @import "./advantages.css";
 @import "./infrastructure.css";
 @import "./gallery.css";
+@import "./banks.css";
 
 #app {
     padding-top: 150px;

@@ -127,9 +127,9 @@ export default function mySites() {
         <td class="cell-domain"><a href="${linkTOSITE}" target="_blank" uk-tooltip="Перейти на сайт">${domain}</a></td>
         <td class="cell-dc">${DateFormat(site.date_create, "d Month, N (H:i)")}</td>
         <td class="cell-activity"></td>
-        <td class="cell-events">
+        <td class="col-events">
             <div class="row-container">
-                <a href="${linkEDIT}" class="btn btn-outline-primary btn-square"><i class="ph ph-pencil-simple"></i></a>
+                <a href="${linkEDIT}" class="btn btn-outline-primary btn-square btn-edit"><i class="ph ph-pencil-simple"></i></a>
             </div>
         </td>`;
         siteHTML.innerHTML = siteTMPL;
@@ -172,7 +172,7 @@ export default function mySites() {
                 {class: 'dp-btn-delete_project', title: `Удалить`, icon: {type: "icon-ph", name: "ph ph-trash"}}
             ]
         })
-        siteHTML.querySelector(".cell-events .row-container").append(btnsEvents);
+        siteHTML.querySelector(".col-events .row-container").append(btnsEvents);
 
         // удаление сайта
         btnsEvents.querySelector(".dp-btn-delete_project").addEventListener("click", function () {

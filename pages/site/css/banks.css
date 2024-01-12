@@ -1,0 +1,4 @@
+.P-modal-add-bank .container-body .modal-content {
+    overflow-y: unset !important;
+    overflow-x: unset !important;
+}

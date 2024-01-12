@@ -9,6 +9,7 @@
 @import "./normalize.css";
 @import "./form-fields.css";
 @import "/plugins/modal/modal.css";
+@import "/plugins/splide/splide.min.css";
 @import "/plugins/choices-select/choices.min.css";
 
 /* -------------------------- import Components -------------------------- */

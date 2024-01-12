@@ -106,6 +106,7 @@ form .field-container.error > .title-field {
 }
 
 form .field-container.error input[type=text],
+form .field-container.error .choices-select .choices__inner,
 form .field-container.error textarea {
     border-color: var(--danger) !important;
 }

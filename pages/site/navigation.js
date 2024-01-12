@@ -2,15 +2,33 @@ export default function navigation(data) {
     var navTAG = document.createElement("div");
     navTAG.classList.add("P-nav-site");
     var navHTML = `
-    <div class="row-container">`;
-        for (var i in navBtns) {
-            var tab = navBtns[i];
-            navHTML += `<button type="button" class="btn btn-tab" data-tab="${tab.tab}">${tab.title}</button>`;
-        }
-        navHTML += `
+    <div class="row-container">
+        <div class="splide" id="slider-nav">
+            <div class="splide__track">
+                <ul class="splide__list">`;
+                    for (var i in navBtns) {
+                        var tab = navBtns[i];
+                        navHTML += `
+                        <li class="splide__slide">
+                            <button type="button" class="btn btn-tab" data-tab="${tab.tab}">${tab.title}</button>
+                        </li>`;
+                    }
+                    navHTML += `
+                </ul>
+            </div>
+        </div>
     </div>`;
     navTAG.innerHTML = navHTML;
     document.getElementById("G-header").append(navTAG);
+
+    new Splide("#slider-nav", {
+        drag: "free",
+        autoWidth: true,
+        wheel: true,
+        arrows: false,
+        pagination: false,
+    }).mount();
+
 
     isParametr();
 
