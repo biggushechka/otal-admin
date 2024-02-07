@@ -33,6 +33,4 @@ export default function site() {
             console.log('catch', err);
         });
     }
-
-
 }
