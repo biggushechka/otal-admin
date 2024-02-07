@@ -2,3 +2,9 @@
     overflow-y: unset !important;
     overflow-x: unset !important;
 }
+
+.P-table-banks tbody .col-logo .logo-img {
+    width: 48px;
+    aspect-ratio: 1 / 1;
+    margin: auto;
+}

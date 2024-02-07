@@ -173,30 +173,30 @@ class FormFields {
         var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
             name = (data.name != undefined && data.name != "") ? data.name : "",
             options = (data.option != undefined && data.option.length != 0) ? data.option : [],
+            disabled = (data.disabled != undefined && data.disabled == "true") ? `disabled="disabled"` : '',
             sort = (data.sort != undefined && data.sort != "" && data.sort == "true") ? true : false,
             search = (data.search != undefined && data.search != "") ? true : false,
             validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "";
-
-        console.log("options", options)
 
         var selectTAG = document.createElement("div");
         selectTAG.classList.add("field-container");
         selectTAG.setAttribute("type", "select");
         if (data.field_class != undefined && data.field_class != "") selectTAG.classList.add(data.field_class);
-        var selectHTML = `
+        selectTAG.innerHTML = `
         ${label}
-        <select name="${name}" ${validate}></select>`;
-        selectTAG.innerHTML = selectHTML;
+        <select ${disabled} name="${name}" ${validate}></select>`;
 
         var select = selectTAG.querySelector("select");
 
         if (options.length != 0) {
             var arrayOptios = [];
             for (var i in options) {
-                arrayOptios.push({value: i, label: options[i]})
+                arrayOptios.push({value: options[i].value, label: options[i].title})
             }
             options = arrayOptios;
         }
+
+        console.log("options", options)
 
         var choices = new Choices(select, {
             choices: options,
@@ -314,7 +314,9 @@ class FormFields {
     }
 
 
-    // -------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
 
     // заполнение полей
     setValuesForm(form, values) {
@@ -352,27 +354,23 @@ class FormFields {
             if (typeField === "select") {
                 var select = field.querySelector("select"),
                     name = select.getAttribute("name"),
-                    value = field.querySelector(".choices__list.choices__list--single"),
+                    value = values[name],
+                    titleValue = field.querySelector(".choices__list.choices__list--single"),
                     list = field.querySelectorAll(".choices__list--dropdown > .choices__list .choices__item");
 
-                select.innerHTML = "";
-
-                if (values[name] == "") return false;
-
-                select.innerHTML = `<option value="">${values[name]}</option>`;
-                value.innerHTML = values[name];
-
                 list.forEach(function (option) {
-                    var nameOption = option.innerHTML;
+                     var value_id = option.getAttribute("data-value");
 
                     option.removeAttribute("aria-selected");
                     option.classList.remove("is-highlighted");
                     option.classList.remove("choices__item--selectable");
 
-                    if (nameOption == values[name]) {
+                    if (value_id == values[name]) {
                         option.setAttribute("aria-selected", "true");
-                    };
-
+                        titleValue.innerHTML = option.innerHTML;
+                        select.innerHTML = "";
+                        select.innerHTML = `<option value="${value}">${option.innerHTML}</option>`;
+                    }
                 });
             }
 
@@ -460,12 +458,13 @@ class FormFields {
                 var select = container.querySelector("select"),
                     name = select.getAttribute("name"),
                     option = select.options[0],
-                    value = (option == undefined) ? "" : select.options[0].text,
+                    titleValue = (option == undefined) ? "" : select.options[0].text,
+                    value = (option == undefined) ? "" : option.getAttribute("value"),
                     validate = select.getAttribute("validate");
 
                 if (validate != null && validate === "true") fieldsValid.push(name);
 
-                formData[name] = value;
+                formData[name] = {value: value, title: titleValue};
             }
 
             if (typeField === "photos") {

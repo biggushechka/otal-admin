@@ -2,17 +2,6 @@ export default function banks(project) {
     var formFields = new FormFields(),
         tableHTML;
 
-    // получаем данные
-    // var getBanks = XMLHttpRequestAJAX({
-    //     url: "/api/site/banks/list",
-    //     method: "GET",
-    //     body: {
-    //         id_site: project.id
-    //     }
-    // });
-    // getBanks = getBanks.data;
-    // console.log("banks", getBanks)
-
     var banksHTML = document.createElement("section");
     banksHTML.classList.add("P-banks");
     banksHTML.innerHTML = `
@@ -25,6 +14,7 @@ export default function banks(project) {
     document.getElementById("app").append(banksHTML);
 
     initTable();
+    getAllBanks();
 
     function initTable() {
         tableHTML = document.createElement("table");
@@ -62,10 +52,10 @@ export default function banks(project) {
         rowHTML.setAttribute("data-id", bank.id)
         rowHTML.innerHTML = `
             <td class="col-id">${bank.id}</td>
-            <td class="col-logo">${bank.logo}</td>
-            <td class="col-title">${bank.title}</td>
-            <td class="col-rate">${bank.rate}</td>
-            <td class="col-initial_payment">${bank.initial_payment}</td>
+            <td class="col-logo"><img src="${bank.logo}" class="logo-img"></td>
+            <td class="col-title"><b>${bank.title}</b></td>
+            <td class="col-rate">${bank.rate}%</td>
+            <td class="col-initial_payment">${bank.initial_payment}%</td>
             <td class="col-status"></td>
             <td class="col-events">
                 <div class="row-container">
@@ -76,33 +66,33 @@ export default function banks(project) {
         tableHTML.querySelector("tbody .add-new-item").before(rowHTML);
 
         // вставляем switch активности сайта
-        var switchActivity = formFields.switchRadio({name: "activity", checked: data.activity, callback: isActivitySite})
+        var switchActivity = formFields.switchRadio({name: "activity", checked: bank.activity, callback: isActivitySite})
         rowHTML.querySelector(".col-status").append(switchActivity);
 
         // изменение активности сайта
-        // function isActivitySite(status) {
-        //     var isActivity = XMLHttpRequestAJAX({
-        //         url: "/api/site/infrastructure/isActivity",
-        //         method: "POST",
-        //         body: {
-        //             id_adv: data.id,
-        //             id_site: project.id,
-        //             activity: status
-        //         }
-        //     });
-        //
-        //     if (isActivity.code === 200) {
-        //         var status = (isActivity.data.activity == "off") ? "выключена" : "активна";
-        //         alertNotification({status: "success", text: `Запись ${status}`, pos: "top-center"});
-        //     }
-        //
-        //     return isActivity.data.activity
-        // }
+        function isActivitySite(status) {
+            var isActivity = XMLHttpRequestAJAX({
+                url: "/api/site/banks/isActivity",
+                method: "POST",
+                body: {
+                    id_bank: bank.id,
+                    id_site: project.id,
+                    activity: status
+                }
+            });
+
+            if (isActivity.code === 200) {
+                var status = (isActivity.data.activity == "off") ? "выключена" : "активна";
+                alertNotification({status: "success", text: `Запись ${status}`, pos: "top-center"});
+            }
+
+            return isActivity.data.activity
+        }
 
         // редактирование записи
-        // rowHTML.querySelector(".btn-edit").addEventListener("click", function () {
-        //     modalItem(data);
-        // });
+        rowHTML.querySelector(".btn-edit").addEventListener("click", function () {
+            modalItem(bank);
+        });
 
         // удаление записи
         // rowHTML.querySelector(".btn-delete").addEventListener("click", function () {
@@ -130,30 +120,47 @@ export default function banks(project) {
         // });
     }
 
+    function getAllBanks() {
+        // получаем данные
+        var getBanks = XMLHttpRequestAJAX({
+            url: "/api/site/banks/list",
+            method: "GET",
+            body: {
+                id_site: project.id
+            }
+        });
+
+        if (getBanks.code === 200) {
+            for (var i in getBanks.data) {
+                rowItemTable(getBanks.data[i]);
+            }
+        }
+    }
+
     function modalItem(data) {
         var form = document.createElement("form"),
-            titleModal = (data == undefined) ? "Добавить банк" : "Редактирование банк #"+data.id,
+            titleModal = (data == undefined) ? "Добавить банк" : "Редактирование",
             titleBtn = (data == undefined) ? "Добавить" : "Готово",
             listAllBanks = [];
 
-        if (data == undefined) {
-            // получаем данные
-            var getAllBanks = XMLHttpRequestAJAX({
-                url: "/api/site/banks/all",
-                method: "GET"
-            });
+        // получаем данные
+        var getAllBanks = XMLHttpRequestAJAX({
+            url: "/api/site/banks/all",
+            method: "GET"
+        });
 
-            if (getAllBanks.code === 200) getAllBanks = getAllBanks.data;
+        if (getAllBanks.code === 200) {
+            getAllBanks = getAllBanks.data;
+        }
 
-            for (var i in getAllBanks) {
-                var bank = getAllBanks[i];
-                listAllBanks.push(bank.title)
-            }
+        for (var i in getAllBanks) {
+            var bank = getAllBanks[i];
+            listAllBanks.push({title: bank.title, value: bank.id})
         }
 
         // добавляем поля
         form.append(
-            formFields.select({label: "Банк", name: "title_bank", option: listAllBanks, sort: "true", search: "true", validate: "true"}),
+            formFields.select({label: "Банк", name: "id_bank", option: listAllBanks, sort: "true", search: "true", disabled: (data != undefined) ? "true" : "", validate: "true"}),
             formFields.inputText({label: "Ставка (в процентах)", name: "rate", mask: 'number', validate: "true"}),
             formFields.inputText({label: "Первый взнос от (в процентах)", name: "initial_payment", mask: 'number', validate: "true"}),
             formFields.inputHidden({name: "id_site", value: project.id})
@@ -182,40 +189,39 @@ export default function banks(project) {
             }
         });
 
-        function getAllAdv() {
-            if (getInfrastructure.code === 200) {
-                for (var i in getInfrastructure.data) {
-                    rowItemTable(getInfrastructure.data[i]);
-                }
-            }
-        }
-
         function sendFormAdv() {
             var getValuesForm = formFields.getValuesForm(form);
 
             if (getValuesForm.status == false) return false;
 
-            console.log("getValuesForm.form", getValuesForm.form)
+            if (data == undefined) { // добавление
+                // отправляем данные
+                var addNewBank = XMLHttpRequestAJAX({
+                    url: "/api/site/banks/add",
+                    method: "POST",
+                    body: getValuesForm.form
+                });
+                console.log(addNewBank);
 
-            // отправляем данные
-            var sendInfrastructure = XMLHttpRequestAJAX({
-                url: "/api/site/banks/list",
-                method: "POST",
-                body: getValuesForm.form
-            });
-            console.log(sendInfrastructure);
 
-            if (data == undefined) {
-                if (sendInfrastructure.code === 200) {
-                    rowItemTable(sendInfrastructure.data);
+                if (addNewBank.code === 200) {
+                    rowItemTable(addNewBank.data);
                     modal.closeModal();
                     alertNotification({status: "success", text: "Запись успешно добавлена", pos: "top-center"});
                 } else {
                     alertNotification({status: "error", text: "Ошибка при добавлении записи", pos: "top-center"});
                 }
             } else {
-                if (sendInfrastructure.code === 200) {
-                    rowItemTable(sendInfrastructure.data);
+                // отправляем данные
+                var updateBank = XMLHttpRequestAJAX({
+                    url: "/api/site/banks/update",
+                    method: "POST",
+                    body: getValuesForm.form
+                });
+                console.log(updateBank);
+
+                if (updateBank.code === 200) { // редактирование
+                    rowItemTable(updateBank.data);
 
                     var listContainer = tableHTML.querySelector("tbody"),
                         replaceableItem = tableHTML.querySelector(".row-item[data-id='"+data.id+"']"),
@@ -230,6 +236,5 @@ export default function banks(project) {
                 }
             }
         }
-
     }
 }

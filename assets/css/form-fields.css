@@ -41,6 +41,12 @@ form .field-container .title-field {
     font-weight: 400;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 form .field-container input[type=text] {
     width: 100%;
     height: 38px;
@@ -196,6 +202,10 @@ form .field-container .choices-select > .choices__list--dropdown {
 }
 
 form .field-container .choices-select > .choices__list--dropdown .choices__list .choices__item[aria-selected="true"] {
+    background-color: #f2f2f2;
+}
+
+form .field-container .choices-select.is-disabled .choices__inner {
     background-color: #f2f2f2;
 }
 
