@@ -458,13 +458,12 @@ class FormFields {
                 var select = container.querySelector("select"),
                     name = select.getAttribute("name"),
                     option = select.options[0],
-                    titleValue = (option == undefined) ? "" : select.options[0].text,
                     value = (option == undefined) ? "" : option.getAttribute("value"),
                     validate = select.getAttribute("validate");
 
                 if (validate != null && validate === "true") fieldsValid.push(name);
 
-                formData[name] = {value: value, title: titleValue};
+                formData[name] = value;
             }
 
             if (typeField === "photos") {

@@ -38,6 +38,7 @@ class Modal {
 
         // сборка
         this.template();
+        this.widthScrollBody();
         this.openModal();
         this.events();
     }
@@ -171,6 +172,14 @@ class Modal {
                 }
             });
         }
+    }
+
+    widthScrollBody() {
+        var windowFullScreen = window.innerWidth,
+            windowWidthWithScroll = document.documentElement.scrollWidth,
+            withScroll = (windowFullScreen - windowWidthWithScroll);
+
+        document.documentElement.style.setProperty('--widthScrollBar', `${withScroll}px`);
     }
 
     mergeJson(json1, json2) {

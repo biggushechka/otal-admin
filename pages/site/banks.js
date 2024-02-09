@@ -95,35 +95,35 @@ export default function banks(project) {
         });
 
         // удаление записи
-        // rowHTML.querySelector(".btn-delete").addEventListener("click", function () {
-        //     modalAlert({
-        //         type: "delete",
-        //         title: data.title,
-        //         callback: deleteSite,
-        //     });
-        //
-        //     // запрос на удаление записи
-        //     function deleteSite() {
-        //         var deleteItem = XMLHttpRequestAJAX({
-        //             url: "/api/site/infrastructure/list",
-        //             method: "DELETE",
-        //             body: data
-        //         });
-        //
-        //         if (deleteItem.code === 200) {
-        //             rowHTML.remove();
-        //             alertNotification({status: "success", text: "Запись успешно удалена", pos: "top-center"});
-        //         } else {
-        //             alertNotification({status: "error", text: "Ошибка при удалении записи", pos: "top-center"});
-        //         }
-        //     }
-        // });
+        rowHTML.querySelector(".btn-delete").addEventListener("click", function () {
+            modalAlert({
+                type: "delete",
+                title: bank.title,
+                callback: deleteSite,
+            });
+
+            // запрос на удаление записи
+            function deleteSite() {
+                var deleteItem = XMLHttpRequestAJAX({
+                    url: "/api/site/banks/delete-bank",
+                    method: "DELETE",
+                    body: {id: bank.id}
+                });
+
+                if (deleteItem.code === 200) {
+                    rowHTML.remove();
+                    alertNotification({status: "success", text: "Запись успешно удалена", pos: "top-center"});
+                } else {
+                    alertNotification({status: "error", text: "Ошибка при удалении записи", pos: "top-center"});
+                }
+            }
+        });
     }
 
     function getAllBanks() {
         // получаем данные
         var getBanks = XMLHttpRequestAJAX({
-            url: "/api/site/banks/list",
+            url: "/api/site/banks/get-banks",
             method: "GET",
             body: {
                 id_site: project.id
@@ -138,6 +138,7 @@ export default function banks(project) {
     }
 
     function modalItem(data) {
+        console.log("bank", data)
         var form = document.createElement("form"),
             titleModal = (data == undefined) ? "Добавить банк" : "Редактирование",
             titleBtn = (data == undefined) ? "Добавить" : "Готово",
@@ -145,7 +146,7 @@ export default function banks(project) {
 
         // получаем данные
         var getAllBanks = XMLHttpRequestAJAX({
-            url: "/api/site/banks/all",
+            url: "/api/site/banks/all-banks",
             method: "GET"
         });
 
@@ -163,7 +164,8 @@ export default function banks(project) {
             formFields.select({label: "Банк", name: "id_bank", option: listAllBanks, sort: "true", search: "true", disabled: (data != undefined) ? "true" : "", validate: "true"}),
             formFields.inputText({label: "Ставка (в процентах)", name: "rate", mask: 'number', validate: "true"}),
             formFields.inputText({label: "Первый взнос от (в процентах)", name: "initial_payment", mask: 'number', validate: "true"}),
-            formFields.inputHidden({name: "id_site", value: project.id})
+            formFields.inputHidden({name: "id_site", value: project.id}),
+            formFields.inputHidden({name: "id", value: (data !== undefined) ? data.id : ""})
         );
 
         // заполняем поля формы из БД
@@ -194,15 +196,14 @@ export default function banks(project) {
 
             if (getValuesForm.status == false) return false;
 
-            if (data == undefined) { // добавление
+            // добавление
+            if (data == undefined) {
                 // отправляем данные
                 var addNewBank = XMLHttpRequestAJAX({
-                    url: "/api/site/banks/add",
+                    url: "/api/site/banks/add-bank",
                     method: "POST",
                     body: getValuesForm.form
                 });
-                console.log(addNewBank);
-
 
                 if (addNewBank.code === 200) {
                     rowItemTable(addNewBank.data);
@@ -211,16 +212,19 @@ export default function banks(project) {
                 } else {
                     alertNotification({status: "error", text: "Ошибка при добавлении записи", pos: "top-center"});
                 }
-            } else {
+            }
+
+            // редактирование
+            if (data !== undefined) {
                 // отправляем данные
                 var updateBank = XMLHttpRequestAJAX({
-                    url: "/api/site/banks/update",
+                    url: "/api/site/banks/update-bank",
                     method: "POST",
                     body: getValuesForm.form
                 });
                 console.log(updateBank);
 
-                if (updateBank.code === 200) { // редактирование
+                if (updateBank.code === 200) {
                     rowItemTable(updateBank.data);
 
                     var listContainer = tableHTML.querySelector("tbody"),

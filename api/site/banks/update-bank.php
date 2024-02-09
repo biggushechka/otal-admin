@@ -5,43 +5,34 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/db_connect.php';
 
+global $dbh;
+
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
 
-print_r($POST);
-
-$id_site = $POST['id_site'];
-$id_bank = $POST['bank']['value'];
+$id_row = $POST['id'];
 $rate = $POST['rate'];
 $initial_payment = $POST['initial_payment'];
-$currentDateTime = date('Y-m-d H:i:s');
 
 // отправить
 if ($method === "POST") {
-    $query_add_bank = $dbh->prepare("INSERT INTO `project_banks` SET
-        `id_site` = :id_site,
-        `id_bank` = :id_bank,
+    
+    $query_update_bank = $dbh->prepare("UPDATE `project_banks` SET
         `rate` = :rate,
-        `initial_payment` = :initial_payment,
-        `activity` = :activity,
-        `date_create` = :date_create
+        `initial_payment` = :initial_payment
+        WHERE `id` = :id
     ");
 
-    $query_add_bank->execute([
-        "id_site" => $id_site,
-        "id_bank" => $id_bank,
+    $query_update_bank->execute([
+        "id" => $id_row,
         "rate" => $rate,
-        "initial_payment" => $initial_payment,
-        "activity" => "on",
-        "date_create" => $currentDateTime
+        "initial_payment" => $initial_payment
     ]);
 
-    if ($query_add_bank->rowCount() > 0) {
-        $new_bank_id = $dbh->lastInsertId();
+    if ($query_update_bank->rowCount() > 0) {
         $query_get_bank = $dbh->prepare("SELECT * FROM `project_banks` WHERE `id` = :id");
-        $query_get_bank->execute(["id" => $new_bank_id]);
-        $new_bank = $query_get_bank->fetch(PDO::FETCH_OBJ);
-
+        $query_get_bank->execute(["id" => $id_row]);
+        $update_bank = $query_get_bank->fetch(PDO::FETCH_OBJ);
 
         // получаем все банки
         $query_get_allBanks = $dbh->prepare("SELECT * FROM `banks`");
@@ -49,16 +40,16 @@ if ($method === "POST") {
         $listAllBanks = $query_get_allBanks->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($listAllBanks as $foundBank) {
-            if ($foundBank['id'] == $new_bank->id_bank) {
-                $new_bank->logo = $foundBank['logo'];
-                $new_bank->title = $foundBank['title'];
+            if ($foundBank['id'] == $update_bank->id_bank) {
+                $update_bank->logo = $foundBank['logo'];
+                $update_bank->title = $foundBank['title'];
                 break;
             }
         }
 
         header("HTTP/1.1 200 OK");
         header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($new_bank, JSON_UNESCAPED_UNICODE);
+        echo json_encode($update_bank, JSON_UNESCAPED_UNICODE);
     } else {
         header("HTTP/1.1 409 Conflict");
         header('Content-Type: application/json; charset=UTF-8');
