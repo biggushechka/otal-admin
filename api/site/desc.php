@@ -43,7 +43,7 @@ if ($method === "POST") {
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Данные были успешно обновлены", JSON_UNESCAPED_UNICODE);
     } else {
-        header("HTTP/1.1 409 Conflict");
+        header("HTTP/1.1 400 Bad Request");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Ошибка при обновлении данных", JSON_UNESCAPED_UNICODE);
     }

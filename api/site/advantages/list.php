@@ -121,12 +121,12 @@ if ($method === "POST") {
                 header('Content-Type: application/json; charset=UTF-8');
                 echo json_encode($adv, JSON_UNESCAPED_UNICODE);
             } else {
-                header("HTTP/1.1 409 Conflict");
+                header("HTTP/1.1 400 Bad Request");
                 header('Content-Type: application/json; charset=UTF-8');
                 echo json_encode("Ошибка при добавлении записи", JSON_UNESCAPED_UNICODE);
             }
         } else {
-            header("HTTP/1.1 409 Conflict");
+            header("HTTP/1.1 400 Bad Request");
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode("Ошибка при сохранении файла", JSON_UNESCAPED_UNICODE);
             return false;
@@ -217,13 +217,13 @@ function updateRow() {
                     header('Content-Type: application/json; charset=UTF-8');
                     echo json_encode($adv, JSON_UNESCAPED_UNICODE);
                 } else {
-                    header("HTTP/1.1 409 Conflict");
+                    header("HTTP/1.1 400 Bad Request");
                     header('Content-Type: application/json; charset=UTF-8');
                     echo json_encode("Ошибка при обновлении", JSON_UNESCAPED_UNICODE);
                 }
 
             } else {
-                header("HTTP/1.1 409 Conflict");
+                header("HTTP/1.1 400 Bad Request");
                 header('Content-Type: application/json; charset=UTF-8');
                 echo json_encode("Ошибка при сохранении файла", JSON_UNESCAPED_UNICODE);
                 return false;
@@ -239,7 +239,7 @@ function updateRow() {
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode($adv, JSON_UNESCAPED_UNICODE);
         } else {
-            header("HTTP/1.1 409 Conflict");
+            header("HTTP/1.1 400 Bad Request");
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode("Ошибка при обновлении", JSON_UNESCAPED_UNICODE);
         }
@@ -271,7 +271,7 @@ if ($method === "DELETE") {
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Запись успешно удалена", JSON_UNESCAPED_UNICODE);
     } else {
-        header("HTTP/1.1 409 Conflict");
+        header("HTTP/1.1 400 Bad Request");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Ошибка при удалении записи", JSON_UNESCAPED_UNICODE);
     }

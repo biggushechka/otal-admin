@@ -1,11 +1,37 @@
 .P-meta {
-
+    max-width: 800px !important;
 }
 
 .P-meta .meta-item {
+    width: 100%;
+    max-width: none;
+}
 
+.P-meta .meta-item pre {
+    padding: 0;
+}
+
+.P-meta .meta-item pre code {
+    white-space: pre-wrap;
 }
 
 .P-meta .meta-item pre span {
     display: unset;
+}
+
+.P-meta .meta-item .comment-block {
+
+}
+
+.P-meta .meta-item .comment-block .title {
+    font-size: 13px;
+    color: #4f4f4f;
+}
+
+.P-meta .meta-item .comment-block .desc {
+    font-size: 14px;
+    margin-top: 6px;
+    padding: 12px;
+    background: #ebf0f9;
+    border-radius: 0 10px 10px 10px;
 }

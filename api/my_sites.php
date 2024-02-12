@@ -20,7 +20,7 @@ if ($method === "POST") {
     $isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
 
     if ($isSite) {
-        header("HTTP/1.1 409 Conflict");
+        header("HTTP/1.1 400 Bad Request");
         echo json_encode("Сайт с таким названием или доменом уже существует", JSON_UNESCAPED_UNICODE);
     } else {
         $query_create_site = $dbh->prepare("INSERT INTO `my_sites` SET `title` = :title, `domain` = :domain, `date_create` = :date_create, `activity` = :activity");
@@ -77,7 +77,7 @@ if ($method === "DELETE") {
         header("HTTP/1.1 200 Delete");
         echo json_encode("Сайт был успешно удален", JSON_UNESCAPED_UNICODE);
     } else {
-        header("HTTP/1.1 409 Conflict");
+        header("HTTP/1.1 400 Bad Request");
         echo json_encode("Сайт с таким доменом не найден", JSON_UNESCAPED_UNICODE);
     }
 }

@@ -60,7 +60,7 @@ if ($method === "POST") {
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode($new_bank, JSON_UNESCAPED_UNICODE);
     } else {
-        header("HTTP/1.1 409 Conflict");
+        header("HTTP/1.1 400 Bad Request");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Ошибка при добавлении записи", JSON_UNESCAPED_UNICODE);
     }

@@ -5,12 +5,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/db_connect.php';
 
-global $dbh;
-
-$get_post_data = file_get_contents("php://input");
-$POST = json_decode($get_post_data, true);
-
-// удаление сайта
+// удаление банка
 if ($method === "DELETE") {
     $id_bank = $_GET['id'];
 
@@ -21,7 +16,7 @@ if ($method === "DELETE") {
         header("HTTP/1.1 200 Delete");
         echo json_encode("Банк был успешно удален", JSON_UNESCAPED_UNICODE);
     } else {
-        header("HTTP/1.1 409 Conflict");
+        header("HTTP/1.1 400 Bad Request");
         echo json_encode("Ошибка при удалении банка", JSON_UNESCAPED_UNICODE);
     }
 }

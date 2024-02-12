@@ -88,12 +88,12 @@ if ($method === "POST") {
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode($new_album, JSON_UNESCAPED_UNICODE);
         } else {
-            header("HTTP/1.1 409 Conflict");
+            header("HTTP/1.1 400 Bad Request");
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode("Ошибка при добавлении записи", JSON_UNESCAPED_UNICODE);
         }
     } else {
-        header("HTTP/1.1 409 Conflict");
+        header("HTTP/1.1 400 Bad Request");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Альбом с таким названием уже существует", JSON_UNESCAPED_UNICODE);
     }
@@ -120,12 +120,12 @@ if ($method === "UPDATE") {
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode($new_name_album, JSON_UNESCAPED_UNICODE);
         } else {
-            header("HTTP/1.1 409 Conflict");
+            header("HTTP/1.1 400 Bad Request");
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode("error", JSON_UNESCAPED_UNICODE);
         }
     } else {
-        header("HTTP/1.1 409 Conflict");
+        header("HTTP/1.1 400 Bad Request");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Альбом с таким названием уже существует", JSON_UNESCAPED_UNICODE);
     }
@@ -169,7 +169,7 @@ if ($method === "DELETE") {
             header("HTTP/1.1 200 UPDATE");
             header('Content-Type: application/json; charset=UTF-8');
         } else {
-            header("HTTP/1.1 409 Conflict");
+            header("HTTP/1.1 400 Bad Request");
             header('Content-Type: application/json; charset=UTF-8');
         }
     }

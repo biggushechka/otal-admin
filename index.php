@@ -21,10 +21,8 @@ require_once $root . '/backend/template.php';
     <!-- Style -->
     <link rel="stylesheet" href="/css/global.css?v=<?=$version?>">
 
-    <link rel="stylesheet" href="/plugins/highlight/styles/default.min.css">
     <link rel="stylesheet" href="/plugins/highlight/styles/atom-one-dark.min.css">
     <script src="/plugins/highlight/highlight.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@10.8.0/languages/html.min.js"></script>
 
 </head>
 <body>
