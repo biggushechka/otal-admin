@@ -144,7 +144,7 @@ export default function banks(project) {
             titleBtn = (data == undefined) ? "Добавить" : "Готово",
             listAllBanks = [];
 
-        // получаем данные
+        // получаем список банков
         var getAllBanks = XMLHttpRequestAJAX({
             url: "/api/site/banks/all-banks",
             method: "GET"
@@ -158,6 +158,8 @@ export default function banks(project) {
             var bank = getAllBanks[i];
             listAllBanks.push({title: bank.title, value: bank.id})
         }
+
+        console.log("listAllBanks", listAllBanks);
 
         // добавляем поля
         form.append(

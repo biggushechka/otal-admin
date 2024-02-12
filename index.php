@@ -19,7 +19,13 @@ require_once $root . '/backend/template.php';
     <link rel="mask-icon" href="/static/favicon.png">
 
     <!-- Style -->
-    <link rel="stylesheet" href="/assets/css/global.css?v=<?=$version?>">
+    <link rel="stylesheet" href="/css/global.css?v=<?=$version?>">
+
+    <link rel="stylesheet" href="/plugins/highlight/styles/default.min.css">
+    <link rel="stylesheet" href="/plugins/highlight/styles/atom-one-dark.min.css">
+    <script src="/plugins/highlight/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@10.8.0/languages/html.min.js"></script>
+
 </head>
 <body>
     <main id="app"></main>
@@ -32,8 +38,8 @@ require_once $root . '/backend/template.php';
     <script src="/plugins/imask/imask.js"></script>
     <script src="/plugins/choices-select/choices.min.js"></script>
     <script src="/plugins/form-fields/form-fields.js?v=<?=$version?>"></script>
-    <script src="/assets/js/functions.js?v=<?=$version?>"></script>
-    <script src="/assets/js/scripts.js?v=<?=$version?>"></script>
-    <script src="/assets/js/router.js?v=<?=$version?>"></script>
+    <script src="/js/functions.js?v=<?=$version?>"></script>
+    <script src="/js/scripts.js?v=<?=$version?>"></script>
+    <script src="/js/router.js?v=<?=$version?>"></script>
 </body>
 </html>

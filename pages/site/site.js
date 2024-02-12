@@ -29,8 +29,8 @@ export default function site() {
 
         import(`./${tab}.js?v=`+version).then(function(obj) {
             obj.default(get_site.data);
-        }).catch(function(err) {
-            console.log('catch', err);
+        }).catch(function(error) {
+            console.error(error);
         });
     }
 }

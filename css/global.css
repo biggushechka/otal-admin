@@ -1,13 +1,13 @@
 @charset "UTF-8";
 
 /* ------------------------------- import ------------------------------- */
-@import "./../../plugins/uikit/uikit.min.css";
-@import "./variables.css";
-@import "./fonts.css";
-@import "../icons/icons.css";
-@import "./uikit.css";
-@import "./normalize.css";
-@import "./form-fields.css";
+@import "../plugins/uikit/uikit.min.css";
+@import "variables.css";
+@import "fonts.css";
+@import "../assets/icons/icons.css";
+@import "uikit.css";
+@import "normalize.css";
+@import "form-fields.css";
 @import "/plugins/modal/modal.css";
 @import "/plugins/splide/splide.min.css";
 @import "/plugins/choices-select/choices.min.css";

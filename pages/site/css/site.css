@@ -5,6 +5,7 @@
 @import "./infrastructure.css";
 @import "./gallery.css";
 @import "./banks.css";
+@import "./meta.css";
 
 #app {
     padding-top: 150px;
@@ -27,7 +28,7 @@
 #app section .card-body .footer-events {
     display: flex;
     align-items: center;
-    grid-gap: 20px;
+    grid-gap: 10px;
     justify-content: end;
     margin-top: 20px;
 }

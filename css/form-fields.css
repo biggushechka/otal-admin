@@ -56,9 +56,13 @@ form .field-container input[type=text] {
     padding: 0 10px;
 }
 
-form .field-container input[type=text]:hover,
-form .field-container textarea:hover {
+form .field-container:hover input[type="text"],
+form .field-container:hover textarea {
     border-color: var(--global-primary);
+}
+
+form .field-container:hover .title-field {
+    color: var(--global-primary);
 }
 
 form .field-container input[type=text]:focus,
