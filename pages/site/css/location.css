@@ -226,6 +226,10 @@
     border-bottom: none;
 }
 
+.P-view-location .list-parameters .item:first-child {
+    font-weight: bold;
+}
+
 .P-view-location .list-parameters .item:hover {
     background: rgba(0, 0, 0, 0.04);
 }

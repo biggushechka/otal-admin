@@ -1,0 +1,39 @@
+.P-orders > .card-body {
+    width: 100%;
+    max-width: none;
+}
+
+.P-orders > .card-body .header-card-body {
+    margin-bottom: 25px;
+}
+
+.P-orders > .card-body .header-card-body .target-block {
+    display: flex;
+    align-items: center;
+    grid-gap: 20px;
+}
+
+.P-orders > .card-body .header-card-body .target-block > .item {
+    display: flex;
+    align-items: center;
+    grid-gap: 10px;
+}
+
+.P-orders > .card-body .header-card-body .target-block > .item .label {
+    font-size: 14px;
+    color: #727272;
+}
+
+.P-orders > .card-body .header-card-body .target-block > .item select {
+    width: 160px;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #9a9a9a;
+    padding: 3px;
+    font-size: 14px;
+}
+
+.P-orders > .card-body .header-card-body .target-block > .item select:hover {
+    border-color: var(--global-primary);
+    cursor: pointer;
+}

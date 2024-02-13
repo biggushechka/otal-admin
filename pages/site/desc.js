@@ -10,7 +10,7 @@ export default function desc(project) {
         }
     });
     getGeneralInfo = getGeneralInfo.data;
-    console.log("desc", getGeneralInfo)
+    // console.log("desc", getGeneralInfo)
 
     var blockTAG = document.createElement("section");
     blockTAG.classList.add("P-desc");

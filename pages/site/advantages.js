@@ -50,10 +50,9 @@ export default function advantages(project) {
                 id_site: project.id
             }
         });
-        console.log("getAdvantages", getAdvantages);
+        // console.log("getAdvantages", getAdvantages);
 
         var tableHTML;
-
         var advIndexHTML = document.createElement("div");
         advIndexHTML.classList.add("P-adv-index");
         advIndexHTML.innerHTML = `

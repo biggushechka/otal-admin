@@ -10,7 +10,7 @@ export default function location(project) {
         }
     });
     getLocation = getLocation.data;
-    console.log("getLocation", getLocation)
+    // console.log("getLocation", getLocation)
 
     if (getLocation.address == "") {
         // если нет адреса, то отображаем пустой блок с возможностью добавить адрес
@@ -208,7 +208,7 @@ export default function location(project) {
             } else if (data.dadata_type == "geolocate") {
                 html += `
                 <div class="geolocate-container">
-                    <input type="text" placeholder="Ширита" name="lat">
+                    <input type="text" placeholder="Широта" name="lat">
                     <input type="text" placeholder="Долгота" name="lon">
                     <button type="button" class="btn btn-primary btn-find-geo">Найти</button>
                 </div>
@@ -505,7 +505,7 @@ export default function location(project) {
 
             var dataAddress = {
                 address: {
-                    title: "Адерс",
+                    title: "Адрес",
                     value: getLocation.address,
                 },
                 country: {

@@ -28,6 +28,10 @@ require_once $root . '/backend/template.php';
 <body>
     <main id="app"></main>
 
+    <script src="/js/functions.js?v=<?=$version?>"></script>
+    <script src="/js/scripts.js?v=<?=$version?>"></script>
+    <script src="/js/router.js?v=<?=$version?>"></script>
+
     <script src="https://api-maps.yandex.ru/2.1/?apikey=ac7c6d4c-48ca-4019-af05-4911f2b78b9b&lang=ru_RU" type="text/javascript"></script>
     <script src="/plugins/uikit/uikit.min.js"></script>
     <script src="/assets/icons/index.js"></script>
@@ -36,8 +40,5 @@ require_once $root . '/backend/template.php';
     <script src="/plugins/imask/imask.js"></script>
     <script src="/plugins/choices-select/choices.min.js"></script>
     <script src="/plugins/form-fields/form-fields.js?v=<?=$version?>"></script>
-    <script src="/js/functions.js?v=<?=$version?>"></script>
-    <script src="/js/scripts.js?v=<?=$version?>"></script>
-    <script src="/js/router.js?v=<?=$version?>"></script>
 </body>
 </html>

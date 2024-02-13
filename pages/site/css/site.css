@@ -6,6 +6,7 @@
 @import "./gallery.css";
 @import "./banks.css";
 @import "./meta.css";
+@import "./orders.css";
 
 #app {
     padding-top: 150px;

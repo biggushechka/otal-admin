@@ -196,8 +196,6 @@ class FormFields {
             options = arrayOptios;
         }
 
-        console.log("options", options)
-
         var choices = new Choices(select, {
             choices: options,
             itemSelectText: 'Выбрать',

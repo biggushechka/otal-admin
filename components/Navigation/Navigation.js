@@ -1,13 +1,18 @@
 const navigationList = [
     {
-        title: "Главная",
+        title: "Dashboard",
         link: "/",
         icon: "ph ph-house"
     },
     {
-        title: "Мои сайты",
+        title: "Мои проекты",
         link: "/my-sites",
         icon: "ph ph-browsers"
+    },
+    {
+        title: "Заявки",
+        link: "/orders",
+        icon: "ph ph-chat-text"
     },
     {
         title: "Профиль",
