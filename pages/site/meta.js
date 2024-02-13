@@ -18,34 +18,26 @@ export default function meta(project) {
             }
         });
 
-        console.log("getMeta", getMeta);
-
         if (getMeta.code === 200) {
             for (var i in getMeta.data) {
-                metaItem(getMeta.data[i]);
+                outputMetaItem(getMeta.data[i]);
             }
         }
     }
 
-    function metaNewEditModal(data) {
-        var form = document.createElement("form"),
-            titleModal = (data === undefined) ? "Добавить Meta" : "Редактирование",
-            titleBtn = (data === undefined) ? "Добавить" : "Готово";
+    function addNewMeta() {
+        var form = document.createElement("form");
 
         // добавляем поля
         form.append(
-            formFields.inputHidden({name: "id", value: (data !== undefined) ? data.id : ""}),
             formFields.inputText({label: "Название", name: "title", validate: "true"}),
             formFields.textarea({label: "Код", name: "code", validate: "true"}),
             formFields.textarea({label: "Комментарий", name: "comment", validate: "false"}),
             formFields.inputHidden({label: "id_site", name: "id_site", value: project.id})
         );
 
-        // заполняем поля формы из БД
-        if (data != undefined) formFields.setValuesForm(form, data);
-
         var modal = new Modal({
-            title: titleModal,
+            title: "Добавить Meta",
             classModal: 'P-modal-add-meta',
             content: form,
             mode: 'center',
@@ -56,7 +48,7 @@ export default function meta(project) {
                 },
                 submit: {
                     active: true,
-                    title: titleBtn,
+                    title: "Добавить",
                     callback: function() {
                         sendForm();
                     }
@@ -69,56 +61,92 @@ export default function meta(project) {
 
             if (getValuesForm.status === false) return false;
 
-            // добавление
-            if (data === undefined) {
-                // отправляем данные
-                var addNewMeta = XMLHttpRequestAJAX({
-                    url: "/api/site/meta/add-meta",
-                    method: "POST",
-                    body: getValuesForm.form
-                });
+            // отправляем данные
+            var addNewMeta = XMLHttpRequestAJAX({
+                url: "/api/site/meta/add-meta",
+                method: "POST",
+                body: getValuesForm.form
+            });
 
-                if (addNewMeta.code === 200) {
-                    metaItem(addNewMeta.data);
-                    modal.closeModal();
-                    alertNotification({status: "success", text: "Запись успешно добавлена", pos: "top-center"});
-                } else {
-                    alertNotification({status: "error", text: "Ошибка при добавлении записи", pos: "top-center"});
-                }
-            }
-
-            // редактирование
-            if (data !== undefined) {
-                // отправляем данные
-                var updateMeta = XMLHttpRequestAJAX({
-                    url: "/api/site/meta/edit-meta",
-                    method: "POST",
-                    body: getValuesForm.form
-                });
-                console.log(updateMeta);
-
-                if (updateMeta.code === 200) {
-                    // metaItem(updateMeta.data);
-                    //
-                    // var listContainer = tableHTML.querySelector("tbody"),
-                    //     replaceableItem = tableHTML.querySelector(".row-item[data-id='"+data.id+"']"),
-                    //     allItem = tableHTML.querySelectorAll(".row-item"),
-                    //     newItem = allItem[allItem.length - 1];
-                    //
-                    // listContainer.replaceChild(newItem, replaceableItem);
-                    modal.closeModal();
-                    alertNotification({status: "success", text: "Запись успешно обновлена", pos: "top-center"});
-                } else {
-                    alertNotification({status: "error", text: "Ошибка при обновлении записи", pos: "top-center"});
-                }
+            if (addNewMeta.code === 200) {
+                outputMetaItem(addNewMeta.data);
+                modal.closeModal();
+                alertNotification({status: "success", text: "Запись успешно добавлена", pos: "top-center"});
+            } else {
+                alertNotification({status: "error", text: "Ошибка при добавлении записи", pos: "top-center"});
             }
         }
     }
-    
-    function metaItem(meta) {
+
+    function editMeta(data) {
+        var form = document.createElement("form");
+
+        // добавляем поля
+        form.append(
+            formFields.inputText({label: "Название", name: "title", validate: "true"}),
+            formFields.textarea({label: "Код", name: "code", validate: "true"}),
+            formFields.textarea({label: "Комментарий", name: "comment", validate: "false"}),
+            formFields.inputHidden({name: "id", value: data.id}),
+            formFields.inputHidden({label: "id_site", name: "id_site", value: project.id})
+        );
+
+        // заполняем поля формы из БД
+        formFields.setValuesForm(form, data);
+
+        var modal = new Modal({
+            title: "Редактирование",
+            classModal: 'P-modal-add-meta',
+            content: form,
+            mode: 'center',
+            width: '540px',
+            footerEvents:{
+                cancel: {
+                    active: true,
+                },
+                submit: {
+                    active: true,
+                    title: "Готово",
+                    callback: function() {
+                        sendForm();
+                    }
+                },
+            }
+        });
+
+        function sendForm() {
+            var getValuesForm = formFields.getValuesForm(form);
+
+            if (getValuesForm.status === false) return false;
+
+            // отправляем данные
+            var updateMeta = XMLHttpRequestAJAX({
+                url: "/api/site/meta/edit-meta",
+                method: "POST",
+                body: getValuesForm.form
+            });
+
+            if (updateMeta.code === 200) {
+                outputMetaItem(updateMeta.data);
+
+                var replaceableItem = sectionHTML.querySelector(".meta-item[meta-id='"+data.id+"']"),
+                    allItem = sectionHTML.querySelectorAll(".meta-item"),
+                    newItem = allItem[allItem.length - 1];
+
+                sectionHTML.replaceChild(newItem, replaceableItem);
+
+                modal.closeModal();
+                alertNotification({status: "success", text: "Запись успешно обновлена", pos: "top-center"});
+            } else {
+                alertNotification({status: "error", text: "Ошибка при обновлении записи", pos: "top-center"});
+            }
+        }
+    }
+
+    function outputMetaItem(meta) {
         var metaHTML = document.createElement("div");
         metaHTML.classList.add("meta-item");
         metaHTML.classList.add("card-body");
+        metaHTML.setAttribute("meta-id", meta.id)
         metaHTML.innerHTML = `
         <div class="header-card-body">
             <h4 class="title-card">${meta.title}</h4>
@@ -129,6 +157,29 @@ export default function meta(project) {
             <button type="button" class="btn btn-primary btn-icon-left btn-edit-meta"><i class="ph ph-pencil-simple"></i>Редактировать</button>
         </div>`;
         sectionHTML.querySelector(".btn-add-container").before(metaHTML);
+
+        // вставляем switch активности сайта
+        var switchActivity = formFields.switchRadio({name: "activity", checked: meta.activity, callback: isActivitySite})
+        metaHTML.querySelector(".header-card-body").append(switchActivity);
+
+        function isActivitySite(status) {
+            var isActivity = XMLHttpRequestAJAX({
+                url: "/api/site/meta/activity-meta",
+                method: "POST",
+                body: {
+                    id_site: project.id,
+                    id_meta: meta.id,
+                    activity: status
+                }
+            });
+
+            if (isActivity.code === 200) {
+                var status = (isActivity.data.activity == "off") ? "выключена" : "активна";
+                alertNotification({status: "success", text: `Запись ${status}`, pos: "top-center"});
+            }
+
+            return isActivity.data.activity
+        }
 
         if (meta.code != undefined && meta.code != "") {
             var code = document.createElement("pre");
@@ -148,7 +199,7 @@ export default function meta(project) {
         }
 
         metaHTML.querySelector(".btn-edit-meta").addEventListener("click", function () {
-            metaNewEditModal(meta);
+            editMeta(meta);
         });
 
         metaHTML.querySelector(".btn-delete-meta").addEventListener("click", function () {
@@ -189,7 +240,7 @@ export default function meta(project) {
         sectionHTML.append(btnAddMetaHTML);
 
         btnAddMetaHTML.addEventListener("click", function () {
-            metaNewEditModal()
+            addNewMeta();
         });
     }
 }

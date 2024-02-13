@@ -10,14 +10,14 @@ const navigationList = [
         icon: "ph ph-browsers"
     },
     {
-        title: "Разработчику",
-        link: "/dev",
-        icon: "ph ph-code"
-    },
-    {
         title: "Профиль",
         link: "/profile",
         icon: "ph ph-user"
+    },
+    {
+        title: "Разработчику",
+        link: "/dev",
+        icon: "ph ph-code"
     },
     {
         title: "Настройки",

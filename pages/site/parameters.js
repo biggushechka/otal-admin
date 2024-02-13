@@ -30,21 +30,34 @@ export default function parameters(project) {
     function initForm() {
 
         var classProject = [
-            {title: "Эконом", value: "1"},
-            {title: "Бизнес", value: "1"},
-            {title: "Премиум", value: "1"},
-            {title: "Элит", value: "1"},
-            {title: "Клубные комплекс", value: "1"}
+            {title: "Эконом", value: "economy"},
+            {title: "Бизнес", value: "business"},
+            {title: "Премиум", value: "premium"},
+            {title: "Элит", value: "elite"},
+            {title: "Клубные комплекс", value: "club-facilities"}
         ];
 
         var material_house = [
-            {title: "Кирпич", value: "1"},
-            {title: "Бетон", value: "1"},
-            {title: "1111", value: "1"},
+            {title: "Кирпич", value: "brick"},
+            {title: "Бетон", value: "concrete"},
+            {title: "Металл", value: "metal"},
+            {title: "Камень", value: "stone"},
+            {title: "Стекло", value: "glass"},
+            {title: "Керамика", value: "ceramics"},
+            {title: "Пластик", value: "plastic"},
         ];
 
-        var material_house = ['', '', '', 'Металл', 'Камень', 'Стекло', 'Керамика', 'Пластик'];
-        var finishing = ['Черновая отделка', 'Предчистовая', 'Чистовая', 'Под ключ', 'Евроремонт', 'Дизайнерский ремонт', 'Минималистический стиль', 'Классический стиль', 'Модерн']
+        var finishing = [
+            {title: "Черновая отделка", value: "rough-finish"},
+            {title: "Предчистовая", value: "pre-cleaning"},
+            {title: "Чистовая", value: "cleaning"},
+            {title: "Под ключ", value: "turnkey"},
+            {title: "Евроремонт", value: "renovation"},
+            {title: "Дизайнерский ремонт", value: "designer-renovation"},
+            {title: "Минималистический стиль", value: "minimalist-style"},
+            {title: "Классический стиль", value: "classic-style"},
+            {title: "Модерн", value: "modern"}
+        ];
 
         // вставляем поля формы
         blockTAG.querySelector("form").append(
@@ -97,6 +110,7 @@ export default function parameters(project) {
 
             formFields.inputHidden({name: "id_site", value: project.id})
         );
+
         // заполняем поля формы из БД
         formFields.setValuesForm(blockTAG.querySelector("form"), getParameters);
 
