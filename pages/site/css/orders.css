@@ -13,18 +13,18 @@
     grid-gap: 20px;
 }
 
-.P-orders > .card-body .header-card-body .target-block > .item {
+.P-orders > .card-body .header-card-body .target-block > .sort-item {
     display: flex;
     align-items: center;
     grid-gap: 10px;
 }
 
-.P-orders > .card-body .header-card-body .target-block > .item .label {
+.P-orders > .card-body .header-card-body .target-block > .sort-item .label {
     font-size: 14px;
     color: #727272;
 }
 
-.P-orders > .card-body .header-card-body .target-block > .item select {
+.P-orders > .card-body .header-card-body .target-block > .sort-item select {
     width: 160px;
     background: #fff;
     border-radius: 5px;
@@ -33,7 +33,7 @@
     font-size: 14px;
 }
 
-.P-orders > .card-body .header-card-body .target-block > .item select:hover {
+.P-orders > .card-body .header-card-body .target-block > .sort-item select:hover {
     border-color: var(--global-primary);
     cursor: pointer;
 }

@@ -53,7 +53,18 @@ export default function orders() {
     }
 
     function sortSelect(data) {
+        var sortHTML = document.createElement("div");
+        sortHTML.classList.add("sort-item");
+        sortHTML.innerHTML = `
+        <span class="label">Тип</span>
+        <select name="category"></select>`;
 
+        for (var i in data.options) {
+            var option = data.options[i];
+            var optionHTML = document.createElement("option");
+            optionHTML.setAttribute("value", option.value)
+            optionHTML.innerHTML = option.title
+        }
     }
 
     function getOrders() {
