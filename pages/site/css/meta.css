@@ -13,6 +13,7 @@
 
 .P-meta .meta-item pre code {
     white-space: pre-wrap;
+    border-radius: 5px;
 }
 
 .P-meta .meta-item pre span {

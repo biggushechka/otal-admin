@@ -1,9 +1,11 @@
-export default function orders() {
+export default function orders(project) {
     var formFields = new FormFields(),
         sectionHTML,
         tableHTML;
 
     initCarcass();
+    initTable();
+    getOrders();
 
     function initCarcass() {
         sectionHTML = document.createElement("section");
@@ -12,42 +14,35 @@ export default function orders() {
         <div class="card-body">
             <div class="header-card-body">
                 <h4 class="title-card">Заявки</h4>
-                <div class="target-block">
-                    <div class="item">
-                        <span class="label">Дата</span>
-                        <select name="category">
-                            <option value="1">За все время</option>
-                            <option value="1">За сегодня</option>
-                            <option value="1">За эту неделю</option>
-                            <option value="1">За этот месяц</option>
-                        </select>
-                    </div>
-                    <div class="item">
-                        <span class="label">Тип</span>
-                        <select name="category">
-                            <option value="1">Все</option>
-                            <option value="1">Консультация</option>
-                            <option value="1">Перезвонить</option>
-                            <option value="1">Вопрос по ипотеке</option>
-                            <option value="1">Запрос презентации</option>
-                        </select>
-                    </div>
-                </div>
+                <div class="target-block"></div>
             </div>
             <div class="content-card"></div>
         </div>`;
         document.getElementById("app").append(sectionHTML);
 
-        initTable();
-
+        // сортировка по "Дате"
         sortSelect({
             title: "Дата",
-            name: "date-orders",
+            name: "date",
             options: [
                 {title: "За все время", value: "all"},
                 {title: "За сегодня", value: "today"},
                 {title: "За эту неделю", value: "week"},
-                {title: "За этот месяц", value: "month"}
+                {title: "За этот месяц", value: "month"},
+                {title: "За прошлый месяц", value: "month"}
+            ]
+        });
+
+        // сортировка по "Типу"
+        sortSelect({
+            title: "Тип",
+            name: "type",
+            options: [
+                {title: "Все", value: "all"},
+                {title: "Консультация", value: "consultation"},
+                {title: "Перезвонить", value: "callback"},
+                {title: "Вопрос по ипотеке", value: "mortgage"},
+                {title: "Запрос презентации", value: "presentation"}
             ]
         });
     }
@@ -56,19 +51,48 @@ export default function orders() {
         var sortHTML = document.createElement("div");
         sortHTML.classList.add("sort-item");
         sortHTML.innerHTML = `
-        <span class="label">Тип</span>
-        <select name="category"></select>`;
+        <span class="label">${data.title}</span>
+        <select name="${data.name}"></select>`;
 
         for (var i in data.options) {
             var option = data.options[i];
             var optionHTML = document.createElement("option");
             optionHTML.setAttribute("value", option.value)
-            optionHTML.innerHTML = option.title
+            optionHTML.innerHTML = option.title;
+            sortHTML.querySelector("select").append(optionHTML);
         }
+
+        sortHTML.querySelector("select").addEventListener("change", function () {
+            getOrders();
+        });
+
+        sectionHTML.querySelector(".target-block").append(sortHTML);
     }
 
     function getOrders() {
+        var allSort = sectionHTML.querySelectorAll(".target-block select"),
+            dataSort = {id_site: project.id};
 
+        allSort.forEach(function (select) {
+            var selectName = select.getAttribute("name"),
+                valueActiveOption = select.options[select.selectedIndex].value;
+
+            dataSort[selectName] = valueActiveOption;
+        });
+
+        var getOrders = XMLHttpRequestAJAX({
+            url: "/api/site/orders/get-orders",
+            method: "GET",
+            body: dataSort
+        });
+
+        if (getOrders.code == 200) {
+            tableHTML.querySelector("tbody").innerHTML = "";
+
+            for (var i in getOrders.data) {
+                rowItemTable(getOrders.data[i]);
+            }
+        }
     }
 
     function initTable() {
@@ -89,26 +113,23 @@ export default function orders() {
         </thead>
         <tbody></tbody>`;
         sectionHTML.querySelector(".content-card").append(tableHTML);
-
-        rowItemTable();
-        rowItemTable();
-        rowItemTable();
-        rowItemTable();
-        rowItemTable();
     }
 
     function rowItemTable(order) {
+
+        console.log("order", order);
+
         var rowHTML = document.createElement("tr");
         rowHTML.classList.add("row-item");
         // rowHTML.setAttribute("data-id", order.id)
         rowHTML.innerHTML = `
-            <td class="col-id">1</td>
-            <td class="col-date">27 Декабря, ср (12:33)</td>
-            <td class="col-type"><b>Консультация</b></td>
-            <td class="col-name">Алексей</td>
-            <td class="col-phone">+7 (968) 512-76-12</td>
-            <td class="col-email">alex-ivanov@mail.ru</td>
-            <td class="col-comment">---</td>`;
+            <td class="col-id">${order.id}</td>
+            <td class="col-date">${DateFormat(order.date_create, "d Month, N (H:i)")}</td>
+            <td class="col-type"><b>${order.type}</b></td>
+            <td class="col-name">${order.name}</td>
+            <td class="col-phone">${order.phone}</td>
+            <td class="col-email">${order.email}</td>
+            <td class="col-comment">${order.comment}</td>`;
         tableHTML.querySelector("tbody").append(rowHTML);
     }
 }

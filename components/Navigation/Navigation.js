@@ -61,7 +61,7 @@ findActivePage();
 // Выделяем цветом ссылку в меню, исходя из того, на какой стр. мы находимся
 function findActivePage() {
     const currentPath = window.location.pathname,
-        paths = pathname.split('/'),
+        paths = currentPath.split('/'),
         domain = "/"+paths[1];
 
     console.log("paths", paths)
