@@ -1,24 +1,66 @@
 <?php
 
+global $dbh;
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
-$method = $_SERVER['REQUEST_METHOD'];
-
 require_once $rootPath . '/api/db_connect.php';
 
-// Получение
-if ($method === "GET") {
-    $query_get_mata = $dbh->prepare("SELECT * FROM `project_orders`");
-    $query_get_mata->execute();
+$id_site = $_GET['id_site'];
+$date = $_GET['date'];
+$type = $_GET['type'];
 
-    if ($query_get_mata->rowCount() > 0) {
-        $meta = $query_get_mata->fetchAll(PDO::FETCH_ASSOC);
+$queryTable = "SELECT * FROM `project_orders` ";
+$queryDate = "";
+$queryType = "";
+$queryProject = "";
 
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($meta, JSON_UNESCAPED_UNICODE);
+switch ($date) {
+    case "today":
+        $todayDate = date("Y-m-d");
+        $queryDate = "WHERE date_create = '{$todayDate}'";
+        break;
+    case "week":
+        $week_start = date('Y-m-d', strtotime('this week'));
+        $week_end = date('Y-m-d', strtotime('this week +6 days'));
+        $queryDate = "WHERE date_create >= '{$week_start}' AND date_create <= '{$week_end}'";
+        break;
+    case "month":
+        $month_start = date('Y-m-01');
+        $month_end = date('Y-m-t');
+        $queryDate = "WHERE date_create >= '{$month_start}' AND date_create <= '{$month_end}'";
+        break;
+    case "last-month":
+        $month_start = date('Y-m-01', strtotime('first day of previous month'));
+        $month_end = date('Y-m-t', strtotime('last day of previous month'));
+        $queryDate = "WHERE date_create >= '{$month_start}' AND date_create <= '{$month_end}'";
+        break;
+    default:
+        $queryDate = "";
+        break;
+}
+
+if ($type != "all") {
+    if ($queryDate == "") {
+        $queryType = "WHERE type = '{$type}'";
     } else {
-        header("HTTP/1.1 204 Not Found");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Ошибка при получении", JSON_UNESCAPED_UNICODE);
+        $queryType = " AND type = '{$type}'";
     }
 }
+
+if ($type == "all" && $date == "all") {
+    $queryProject = "WHERE id_site = '{$id_site}'";
+} else {
+    $queryProject = " AND id_site = '{$id_site}'";
+}
+
+$queryGetOrders = $queryTable . $queryDate . $queryType . $queryProject . " ORDER BY date_create DESC";
+
+//echo $queryGetOrders;
+//return false;
+
+$query_get_mata = $dbh->prepare($queryGetOrders);
+$query_get_mata->execute();
+
+$meta = $query_get_mata->fetchAll(PDO::FETCH_ASSOC);
+echo json_encode($meta, JSON_UNESCAPED_UNICODE);
+header("HTTP/1.1 200 OK");
+header('Content-Type: application/json; charset=UTF-8');

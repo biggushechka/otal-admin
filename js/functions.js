@@ -306,9 +306,7 @@ function DateFormat(date, format) {
     var arr_months_wd = {'01':'Января', '02':'Февраля', '03':'Марта','04':'Апреля', '05':'Мая', '06':'Июня', '07':'Июля', '08':'Августа', '09':'Сентября', '10':'Октября', '11':'Ноября', '12':'Декабря'}
     var arr_months = {'01':'Январь', '02':'Февраль', '03':'Март','04':'Апрель', '05':'Май', '06':'Июнь', '07':'Июль', '08':'Август', '09':'Сентябрь', '10':'Октябрь', '11':'Ноябрь', '12':'Декабрь'}
     var week_days = ['вс', 'пн', 'вт','ср','чт','пт','сб']
-    if(format == undefined){
-        format = "Y-m-d";
-    }
+    var t = new Date(date.getFullYear(), date.getMonth()+1, 0);
     var month = date.getMonth()+1,
         day = date.getDate(),
         hour = date.getHours(),
@@ -320,11 +318,14 @@ function DateFormat(date, format) {
     hour = (hour<10)?"0"+hour:hour;
     minute = (minute<10)?"0"+minute:minute;
     second = (second<10)?"0"+second:second;
-    var t = new Date(date.getFullYear(), date.getMonth()+1, 0);
     t = t.getDate()+1;
     month = month.toString().length > 1 ? month : '0' + month;
     day = day.toString().length > 1 ? day : '0' + day;
     var fullYear = date.getFullYear();
+
+    if(format == undefined){
+        format = "Y-m-d";
+    }
     if(format == "Y"){
         return fullYear;
     }

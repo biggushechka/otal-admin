@@ -13,7 +13,7 @@ export default function orders(project) {
         sectionHTML.innerHTML = `
         <div class="card-body">
             <div class="header-card-body">
-                <h4 class="title-card">Заявки</h4>
+                <h4 class="title-card">Заявки <span class="count-all"></span></h4>
                 <div class="target-block"></div>
             </div>
             <div class="content-card"></div>
@@ -29,7 +29,7 @@ export default function orders(project) {
                 {title: "За сегодня", value: "today"},
                 {title: "За эту неделю", value: "week"},
                 {title: "За этот месяц", value: "month"},
-                {title: "За прошлый месяц", value: "month"}
+                {title: "За прошлый месяц", value: "last-month"}
             ]
         });
 
@@ -86,9 +86,12 @@ export default function orders(project) {
             body: dataSort
         });
 
-        if (getOrders.code == 200) {
-            tableHTML.querySelector("tbody").innerHTML = "";
+        console.log("getOrders", getOrders);
 
+        tableHTML.querySelector("tbody").innerHTML = "";
+        sectionHTML.querySelector(".title-card .count-all").innerHTML = "- " + getOrders.data.length;
+
+        if (getOrders.code === 200) {
             for (var i in getOrders.data) {
                 rowItemTable(getOrders.data[i]);
             }
@@ -116,15 +119,16 @@ export default function orders(project) {
     }
 
     function rowItemTable(order) {
+        var date = (DateFormat(order.date_create, "Y-m-d") == DateFormat(new Date(), "Y-m-d")) ? "Сегодня" + " ("+DateFormat(order.date_create, "H:i")+")" : DateFormat(order.date_create, "d Month, N (H:i)");
 
-        console.log("order", order);
+        console.log("date", date)
 
         var rowHTML = document.createElement("tr");
         rowHTML.classList.add("row-item");
         // rowHTML.setAttribute("data-id", order.id)
         rowHTML.innerHTML = `
             <td class="col-id">${order.id}</td>
-            <td class="col-date">${DateFormat(order.date_create, "d Month, N (H:i)")}</td>
+            <td class="col-date">${date}</td>
             <td class="col-type"><b>${order.type}</b></td>
             <td class="col-name">${order.name}</td>
             <td class="col-phone">${order.phone}</td>
