@@ -119,9 +119,11 @@ export default function orders(project) {
     }
 
     function rowItemTable(order) {
-        var date = (DateFormat(order.date_create, "Y-m-d") == DateFormat(new Date(), "Y-m-d")) ? "Сегодня" + " ("+DateFormat(order.date_create, "H:i")+")" : DateFormat(order.date_create, "d Month, N (H:i)");
-
-        console.log("date", date)
+        var date = (DateFormat(order.date_create, "Y-m-d") == DateFormat(new Date(), "Y-m-d")) ? "Сегодня" + " ("+DateFormat(order.date_create, "H:i")+")" : DateFormat(order.date_create, "d Month, N (H:i)"),
+            typeOrder = (order.type === "consultation") ? "Консультация" :
+                (order.type === "callback") ? "Перезвонить" :
+                (order.type === "mortgage") ? "Вопрос по ипотеке" :
+                (order.type === "presentation") ? "Запрос презентации" : "NaN";
 
         var rowHTML = document.createElement("tr");
         rowHTML.classList.add("row-item");
@@ -129,7 +131,7 @@ export default function orders(project) {
         rowHTML.innerHTML = `
             <td class="col-id">${order.id}</td>
             <td class="col-date">${date}</td>
-            <td class="col-type"><b>${order.type}</b></td>
+            <td class="col-type"><b>${typeOrder}</b></td>
             <td class="col-name">${order.name}</td>
             <td class="col-phone">${order.phone}</td>
             <td class="col-email">${order.email}</td>
