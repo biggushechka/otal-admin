@@ -26,6 +26,7 @@ export default function authorization() {
 
     var form = autorizHTML.querySelector("form");
 
+
     // добавляем поля
     form.append(
         formFields.inputText({label: "", name: "username", placeholder: "Email или номер телефона", autocomplete: "on", validate: "true"}),
