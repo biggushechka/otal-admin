@@ -1,8 +1,7 @@
 <?php
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
-
-require_once $rootPath . '/api/setting.php';
+require_once $rootPath . '/api/allowed-origins.php';
 
 $dbhost = "novato1v.beget.tech";
 $dbuser = "novato1v_otales";

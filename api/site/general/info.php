@@ -42,7 +42,21 @@ if ($method === "POST") {
 if ($method === "GET") {
     $query_get_general = $dbh->prepare("SELECT * FROM `project_general` WHERE `id_site` = :id_site LIMIT 1");
     $query_get_general->execute(["id_site" => $siteID]);
-    $data = $query_get_general->fetch(PDO::FETCH_OBJ);
+    $data = "";
+
+    // проверям, есть ли строка
+    // если нет, то создаем пустую строку
+    if ($query_get_general->rowCount() == 0) {
+        $query_creat = $dbh->prepare("INSERT INTO `project_general` SET `id_site` = :id_site");
+        $query_creat->execute(["id_site" => $siteID]);
+        $lastInsertId = $dbh->lastInsertId();
+
+        $query_get_general = $dbh->prepare("SELECT * FROM `project_general` WHERE `id_site` = :id_site LIMIT 1");
+        $query_get_general->execute(["id_site" => $siteID]);
+        $data = $query_get_general->fetch(PDO::FETCH_OBJ);
+    } else {
+        $data = $query_get_general->fetch(PDO::FETCH_OBJ);
+    }
 
     header("HTTP/1.1 200 OK");
     header('Content-Type: application/json; charset=UTF-8');

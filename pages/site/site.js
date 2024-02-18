@@ -13,7 +13,7 @@ export default function site() {
     }
 
     settingPage({
-        title: get_site.data.domain,
+        title: domain,
         breadcrumbs: [
             {title: "Мои сайты", link: "/my-sites"},
             {title: domain, link: ""},

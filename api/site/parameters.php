@@ -28,17 +28,25 @@ $date_end_construction = $POST['date_end_construction'] ?? $_GET['date_end_const
 if ($method === "GET") {
     $query_get_parameters = $dbh->prepare("SELECT * FROM `project_parameters` WHERE `id_site` = :id_site LIMIT 1");
     $query_get_parameters->execute(["id_site" => $siteID]);
-    $parameters = $query_get_parameters->fetch(PDO::FETCH_OBJ);
+    $parameters = "";
 
-    if ($query_get_parameters->rowCount() != 0) {
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($parameters, JSON_UNESCAPED_UNICODE);
+    // проверям, есть ли строка
+    // если нет, то создаем пустую строку
+    if ($query_get_parameters->rowCount() == 0) {
+        $query_creat = $dbh->prepare("INSERT INTO `project_parameters` SET `id_site` = :id_site");
+        $query_creat->execute(["id_site" => $siteID]);
+        $lastInsertId = $dbh->lastInsertId();
+
+        $query_get_parameters = $dbh->prepare("SELECT * FROM `project_parameters` WHERE `id_site` = :id_site LIMIT 1");
+        $query_get_parameters->execute(["id_site" => $siteID]);
+        $data = $query_get_parameters->fetch(PDO::FETCH_OBJ);
     } else {
-        header("HTTP/1.1 204 Not Found");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Ошибка при получении", JSON_UNESCAPED_UNICODE);
+        $data = $query_get_parameters->fetch(PDO::FETCH_OBJ);
     }
+
+    header("HTTP/1.1 200 OK");
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
 }
 
 if ($method === "POST") {

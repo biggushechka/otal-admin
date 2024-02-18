@@ -79,14 +79,15 @@ function setCookie(data) {
     }
 
     // проверка срока жизни
-    if (data.expires == "" || data.expires == undefined || data.expires == "infinite") {
+    if (data.expires != undefined && data.expires == "infinite") {
         var currentDate = new Date(),
-            expirationDate = new Date(currentDate.getFullYear() + 10, currentDate.getMonth(), currentDate.getDate()),
-            expirationDateString = expirationDate.toUTCString();
+            expirationDate = new Date(currentDate.getFullYear() + 10, currentDate.getMonth(), currentDate.getDate());
 
-        expires = expirationDateString;
-    } else {
-        expires = data.expires;
+        expires = expirationDate.toUTCString();
+    } else if (data.expires != undefined && typeof data.expires == "number") {
+        var currentDate = new Date();
+        currentDate.setTime(currentDate.getTime() + (data.expires * 1000));
+        expires = currentDate.toUTCString();
     }
 
     document.cookie = `${name}=${value}; expires=${expires}; path=${data.path};`;
@@ -270,13 +271,11 @@ function XMLHttpRequestAJAX(data) {
 }
 
 function logOutAdmin() {
-    var bodyTag = document.body;
-
     getAuthorization = "";
     deleteCookie("authorization");
-    bodyTag.classList.add("exit");
+    document.body.classList.add("exit");
 
-    bodyTag.addEventListener('animationend', function(e) {
+    document.body.addEventListener('animationend', function(e) {
         location.reload();
     });
 }

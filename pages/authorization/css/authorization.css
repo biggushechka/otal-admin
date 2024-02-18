@@ -66,16 +66,7 @@ body {
     margin-bottom: 24px;
 }
 
-.P-authorization-form .form-container .wrapper-container .form-wrapper label {
-    display: flex;
-    margin-bottom: 16px;
-}
-
-.P-authorization-form .form-container .wrapper-container .form-wrapper label:last-child {
-    margin-bottom: 0;
-}
-
-.P-authorization-form .form-container .wrapper-container .form-wrapper .field-input {
+.P-authorization-form .form-container form input {
     display: block;
     width: 100%;
     height: 48px;
@@ -96,29 +87,17 @@ input:-webkit-autofill {
     transition: background-color 5000s ease-in-out 0s;
 }
 
-.P-authorization-form .form-container .wrapper-container .form-wrapper .field-input:hover {
-    border-color: #333;
-}
-
-.P-authorization-form .form-container .wrapper-container .form-wrapper .field-input:focus {
-    border-color: var(--global-primary);
-}
-
-.P-authorization-form .form-container .wrapper-container .form-wrapper .field-input.error-valid {
-    border-color: var(--danger);
-}
-
 .P-authorization-form .form-container .wrapper-container .form-wrapper .btn-submit-authorization {
     position: relative;
     width: 100%;
     height: 48px;
     color: #fff !important;
     border-radius: 6px;
-    margin-top: 17px;
+    margin-top: 20px;
 }
 
 .P-authorization-form .form-container .wrapper-container .form-wrapper .error-notification {
-    margin-top: -10px;
+    margin-top: 10px;
     opacity: 0;
 }
 

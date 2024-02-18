@@ -1,6 +1,8 @@
 export default function authorization() {
     createCSSLink("/pages/authorization/css/authorization.css");
 
+    var formFields = new FormFields();
+
     var autorizHTML = document.createElement("div");
     autorizHTML.classList.add("P-authorization-form");
     autorizHTML.innerHTML = `
@@ -10,23 +12,27 @@ export default function authorization() {
                 <img src="/assets/img/logo.svg" alt="logo" class="img-logo">
                 <span class="title">OTAL Admin</span>
             </div>
-            <form class="form-wrapper">
+            <div class="form-wrapper">
                 <span class="title-form">Личный кабинет</span>
-                <label>
-                    <input type="text" name="username" placeholder="Email или номер телефона" autocomplete="on" class="field-input">
-                </label>
-                <label>
-                    <input type="password" name="password" placeholder="Пароль" autocomplete="on" class="field-input">
-                </label>
+                <form></form> 
                 <div class="error-notification">
-                    <span class="text">Неверный логин или пароль, попробуйте заново</span>
+                    <span class="text"></span>
                 </div>
                 <button type="button" class="btn btn-primary btn-submit-authorization"><span class="title">Войти</span></button>
-            </form>
+            </div>
         </div>       
     </div>`;
     document.getElementById("app").append(autorizHTML);
 
+    var form = autorizHTML.querySelector("form");
+
+    // добавляем поля
+    form.append(
+        formFields.inputText({label: "", name: "username", placeholder: "Email или номер телефона", autocomplete: "on", validate: "true"}),
+        formFields.inputText({label: "", name: "password", placeholder: "Пароль", autocomplete: "on", validate: "true"})
+    );
+
+    // клик по кнопке "Войти"
     autorizHTML.querySelector(".btn-submit-authorization").addEventListener("click", function () {
         authorizationVerification();
     });
@@ -38,60 +44,34 @@ export default function authorization() {
             authorizationVerification();
         }
     });
-}
 
-function authorizationVerification() {
-    var form = document.querySelector(".P-authorization-form form"),
-        loginField = form.querySelector('input[name="username"]'),
-        passwordField = form.querySelector('input[name="password"]'),
-        btnSubmit = form.querySelector('.btn-submit-authorization'),
-        loginVal = loginField.value,
-        passwordVal = passwordField.value;
+    function authorizationVerification() {
+        var btnSubmit = autorizHTML.querySelector(".btn-submit-authorization"),
+            error = autorizHTML.querySelector(".error-notification"),
+            getValuesForm = formFields.getValuesForm(form);
 
-    if (loginVal === '' || passwordVal === '') {
+        console.log("getValuesForm", getValuesForm)
+        error.classList.remove("active");
 
-        if (loginVal === '') loginField.classList.add('error-valid');
-        if (passwordVal === '') passwordField.classList.add('error-valid');
+        if (getValuesForm.status == false) return false;
 
-        // при фокусе (активном сосотоянии) убираем у input класс с ошибкой
-        var inputs = form.querySelectorAll('input');
-        inputs.forEach(function (input) {
-            input.addEventListener('click', function () {
-                this.classList.remove('error-valid');
-                form.querySelector(".error-notification").classList.remove("active");
-            });
-
-            input.addEventListener('change', function () {
-                this.classList.remove('error-valid');
-                form.querySelector(".error-notification").classList.remove("active");
-            });
-        });
-
-        return false;
-    } else {
-        var formData = {};
-        formData.login = loginVal;
-        formData.password = passwordVal;
-
-        form.querySelector(".error-notification").classList.remove("active");
         btnSubmit.classList.add('loading'); // запускаем анимацию в кнопке submit
 
         setTimeout(function () {
             // отправляем форму на сервер
-            var res = XMLHttpRequestAJAX({
-                url: "/api/login",
+            var sendLoginData = XMLHttpRequestAJAX({
+                url: "/api/authorization",
                 method: "POST",
-                body: formData
+                body: getValuesForm.form
             });
 
-            console.log("res", res)
+            btnSubmit.classList.remove('loading'); // запускаем анимацию в кнопке submit
 
-            if (res.code === 200) {
-
+            if (sendLoginData.code === 200) {
                 setCookie({
                     name: "authorization",
-                    data: res.data.id,
-                    expires: "",
+                    data: sendLoginData.data.id,
+                    expires: 10800, // сеанс на 3 часа
                     path: "/"
                 });
 
@@ -104,11 +84,10 @@ function authorizationVerification() {
                         location.reload();
                     });
                 }, 500);
-
             } else {
-                form.querySelector(".error-notification").classList.add("active");
+                error.querySelector(".text").innerHTML = sendLoginData.data;
+                error.classList.add("active");
             }
-            btnSubmit.classList.remove('loading'); // запускаем анимацию в кнопке submit
-        }, 800)
+        }, 700)
     }
 }

@@ -30,7 +30,7 @@ export default function mySites() {
         var modalHTML = document.createElement("form");
 
         modalHTML.append(formFields.inputText({label: "Название", placeholder: "Alba Del Mare", name: "title", validate: "true"}));
-        modalHTML.append(formFields.inputText({label: "Домен", placeholder: "example.ru", name: "domain", validate: "true"}));
+        modalHTML.append(formFields.inputText({label: "Домен", placeholder: "https://example.ru", name: "domain", mask: "domain", validate: "true"}));
 
         var modal = new Modal({
             title: 'Создать новый сайт',
@@ -119,8 +119,9 @@ export default function mySites() {
             linkEDIT = `/my-sites/${domain}`,
             linkTOSITE = `${site.domain}/`;
 
-        siteHTML = document.createElement("tr");
+        console.log("site", site)
 
+        siteHTML = document.createElement("tr");
         var siteTMPL = `
         <td class="cell-id">${site.id}</td>
         <td class="cell-title"><a href="${linkEDIT}" class="link-to-site"><i class="ph-fill ph-folder-simple"></i>${site.title}</a></td>
@@ -133,7 +134,7 @@ export default function mySites() {
             </div>
         </td>`;
         siteHTML.innerHTML = siteTMPL;
-        tableHTML.querySelector("tbody").append(siteHTML);
+        tableHTML.querySelector("tbody").prepend(siteHTML);
 
         // вставляем switch активности сайта
         var switchActivity = formFields.switchRadio({name: "activity", checked: site.activity, callback: isActivitySite})
@@ -185,10 +186,10 @@ export default function mySites() {
             // запрос на удаление сайта
             function deleteSite() {
                 var deleteSiteReq = XMLHttpRequestAJAX({
-                    url: "/api/my_sites",
+                    url: "/api/projects/remove-projects",
                     method: "DELETE",
                     body: {
-                        domain: site.domain
+                        id_site: site.id
                     }
                 });
 

@@ -4,6 +4,7 @@ class FormFields {
         var label = (data.label != undefined && data.label != "") ? `<span class="title-field">${data.label}</span>` : "",
             name = (data.name != undefined && data.name != "") ? data.name : "",
             placeholder = (data.placeholder != undefined && data.placeholder != "") ? `placeholder="${data.placeholder}"` : "",
+            autocomplete = (data.autocomplete != undefined && data.autocomplete != "") ? `autocomplete="${data.autocomplete}"` : "",
             validate = (data.validate != undefined && data.validate == "true") ? `validate="true"` : "";
 
         var fieldTAG = document.createElement("div");
@@ -12,8 +13,12 @@ class FormFields {
         if (data.field_class != undefined && data.field_class != "") fieldTAG.classList.add(data.field_class);
         var fieldHTML = `
         ${label}
-        <input type="text" name="${name}" value="" ${placeholder} class="field-input" ${validate}>`;
+        <input type="text" name="${name}" value="" ${placeholder} ${autocomplete} class="field-input" ${validate}>`;
         fieldTAG.innerHTML = fieldHTML;
+
+        if (data.name != undefined && data.name == "password") {
+            fieldTAG.querySelector("input").setAttribute("type", "password")
+        }
 
         if (data.mask != undefined) {
             var input = fieldTAG.querySelector("input");
@@ -35,9 +40,17 @@ class FormFields {
             if (data.mask == "number") {
                 IMask(input, {mask: Number, radix: '.', thousandsSeparator: ' ', lazy: false});
             }
-
             if (data.mask == "date") {
                 IMask(input, {mask: Date, lazy: false});
+            }
+            if (data.mask == "domain") {
+                var pattern = /^https:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+
+                input.onblur = function() {
+                    if (!pattern.test(input.value)) {
+                        input.value = "";
+                    }
+                };
             }
         }
 
