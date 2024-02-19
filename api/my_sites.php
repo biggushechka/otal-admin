@@ -3,7 +3,7 @@
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $method = $_SERVER['REQUEST_METHOD'];
 
-require_once $rootPath . '/api/db_connect.php';
+require_once $rootPath . '/api/config/db_connect.php';
 
 $postdata = file_get_contents("php://input");
 $data = json_decode($postdata, true);
@@ -54,7 +54,7 @@ if ($method === "GET") {
         $allowedOrigins[] = $site['domain'];
     }
     $jsonString = json_encode($allowedOrigins);
-    file_put_contents($rootPath . "/api/allowed-origins.txt", $jsonString);
+    file_put_contents($rootPath . "/api/config/allowed-origins.txt", $jsonString);
 
 
     header("HTTP/1.1 200 OK");

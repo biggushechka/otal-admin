@@ -2,7 +2,7 @@
 
 global $dbh;
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
-require_once $rootPath . '/api/db_connect.php';
+require_once $rootPath . '/api/config/db_connect.php';
 require_once $rootPath . '/backend/functions.php';
 
 // удаление проекта

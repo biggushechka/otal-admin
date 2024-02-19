@@ -227,7 +227,7 @@ export default function gallery(project) {
                 <th width="80">Фото</th>
                 <th width="">Название</th>
                 <th width="">Расширение</th>
-                <th width="">Вес</th>
+                <th width="90">Вес</th>
                 <th width="200">Дата</th>
                 <th width="100">Статус</th>
                 <th width="100">Действия</th>
@@ -262,7 +262,7 @@ export default function gallery(project) {
         <td class="col-status"></td>
         <td class="col-events">
             <div class="row-container">
-                <button type="button" class="btn btn-outline-primary btn-square btn-edit"><i class="ph ph-pencil-simple"></i></button>
+                <button type="button" class="btn btn-outline-primary btn-square btn-edit" uk-tooltip="Заменить фото"><i class="ph ph-pencil-simple"></i></button>
                 <button type="button" class="btn btn-outline-primary btn-square btn-delete"><i class="ph ph-trash"></i></button>
             </div>
         </td>`;

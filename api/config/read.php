@@ -11,7 +11,7 @@ $allowedOrigins = [
 ];
 
 // получаем все сайты из бд, которое есть в админке
-$get_allowedOrigins = file_get_contents($rootPath . "/api/allowed-origins.txt");
+$get_allowedOrigins = file_get_contents($rootPath . "/api/config/allowed-origins.txt");
 
 // добавляем в разрешенные домены сайты, которые есть в админке
 $ao_json = json_decode($get_allowedOrigins);
