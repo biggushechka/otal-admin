@@ -59,7 +59,7 @@ export default function mySites() {
             if (getValuesForm.status == false) return false;
 
             var createSite = XMLHttpRequestAJAX({
-                url: "/api/my_sites",
+                url: "/api/sites/add-site",
                 method: "POST",
                 body: getValuesForm.form
             });
@@ -80,7 +80,7 @@ export default function mySites() {
     // получаем все сайты
     function getAllSite() {
         var getSite = XMLHttpRequestAJAX({
-            url: "/api/my_sites",
+            url: "/api/sites/get-sites",
             method: "GET"
         });
         getSite = getSite.data;
@@ -140,7 +140,6 @@ export default function mySites() {
         var switchActivity = formFields.switchRadio({name: "activity", checked: site.activity, callback: isActivitySite})
         siteHTML.querySelector(".cell-activity").append(switchActivity);
 
-
         // изменение активности сайта
         function isActivitySite(status) {
             var isActivity = XMLHttpRequestAJAX({
@@ -186,7 +185,7 @@ export default function mySites() {
             // запрос на удаление сайта
             function deleteSite() {
                 var deleteSiteReq = XMLHttpRequestAJAX({
-                    url: "/api/projects/remove-projects",
+                    url: "/api/sites/delete-site",
                     method: "DELETE",
                     body: {
                         id_site: site.id

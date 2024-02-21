@@ -17,7 +17,7 @@ $initial_payment = $POST['initial_payment'];
 // отправить
 if ($method === "POST") {
     
-    $query_update_bank = $dbh->prepare("UPDATE `project_banks` SET
+    $query_update_bank = $dbh->prepare("UPDATE `site_banks` SET
         `rate` = :rate,
         `initial_payment` = :initial_payment
         WHERE `id` = :id
@@ -30,7 +30,7 @@ if ($method === "POST") {
     ]);
 
     if ($query_update_bank->rowCount() > 0) {
-        $query_get_bank = $dbh->prepare("SELECT * FROM `project_banks` WHERE `id` = :id");
+        $query_get_bank = $dbh->prepare("SELECT * FROM `site_banks` WHERE `id` = :id");
         $query_get_bank->execute(["id" => $id_row]);
         $update_bank = $query_get_bank->fetch(PDO::FETCH_OBJ);
 

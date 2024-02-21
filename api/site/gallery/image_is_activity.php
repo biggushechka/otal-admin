@@ -15,12 +15,12 @@ $currentDateTime = date('Y-m-d H:i:s');
 // изменяем активность
 if ($method === "POST") {
 
-    $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id` = :id");
+    $query_get_images = $dbh->prepare("SELECT * FROM `site_gallery_image` WHERE `id` = :id");
     $query_get_images->execute(["id" => $id_image]);
     $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
 
     if ($query_get_images->rowCount() > 0) {
-        $query_updateActivity = $dbh->prepare("UPDATE `project_gallery_image` SET `activity` = :activity WHERE `id` = :id");
+        $query_updateActivity = $dbh->prepare("UPDATE `site_gallery_image` SET `activity` = :activity WHERE `id` = :id");
         $query_updateActivity->execute(["activity" => $changeActivity, "id" => $getImages->id]);
 
         if ($query_get_images->rowCount() > 0) {

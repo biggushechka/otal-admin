@@ -18,7 +18,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // отправить
 if ($method === "POST") {
-    $query_add_bank = $dbh->prepare("INSERT INTO `project_banks` SET
+    $query_add_bank = $dbh->prepare("INSERT INTO `site_banks` SET
         `id_site` = :id_site,
         `id_bank` = :id_bank,
         `rate` = :rate,
@@ -38,7 +38,7 @@ if ($method === "POST") {
 
     if ($query_add_bank->rowCount() > 0) {
         $new_bank_id = $dbh->lastInsertId();
-        $query_get_bank = $dbh->prepare("SELECT * FROM `project_banks` WHERE `id` = :id");
+        $query_get_bank = $dbh->prepare("SELECT * FROM `site_banks` WHERE `id` = :id");
         $query_get_bank->execute(["id" => $new_bank_id]);
         $new_bank = $query_get_bank->fetch(PDO::FETCH_OBJ);
 

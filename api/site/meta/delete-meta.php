@@ -9,7 +9,7 @@ require_once $rootPath . '/api/config/db_connect.php';
 if ($method === "DELETE") {
     $id_meta = $_GET['id'];
 
-    $query_deleteBank = $dbh->prepare("DELETE FROM `project_meta` WHERE `id` = :id");
+    $query_deleteBank = $dbh->prepare("DELETE FROM `site_meta` WHERE `id` = :id");
     $query_deleteBank->execute(["id" => $id_meta]);
 
     if ($query_deleteBank->rowCount() > 0) {

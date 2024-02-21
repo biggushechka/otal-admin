@@ -9,7 +9,7 @@ $id_site = $_GET['id_site'];
 
 // Получение
 if ($method === "GET") {
-    $query_get_mata = $dbh->prepare("SELECT * FROM `project_meta` WHERE `id_site` = :id_site");
+    $query_get_mata = $dbh->prepare("SELECT * FROM `site_meta` WHERE `id_site` = :id_site");
     $query_get_mata->execute(["id_site" => $id_site]);
 
     if ($query_get_mata->rowCount() > 0) {

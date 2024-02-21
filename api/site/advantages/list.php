@@ -19,7 +19,7 @@ $titleAlbum = "advantages";
 
 // Получение
 if ($method === "GET") {
-    $query_get_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE `id_site` = :id_site");
+    $query_get_row = $dbh->prepare("SELECT * FROM `site_advantages` WHERE `id_site` = :id_site");
     $query_get_row->execute(["id_site" => $id_site]);
     $advantages = $query_get_row->fetchAll(PDO::FETCH_ASSOC);
 
@@ -44,7 +44,7 @@ if ($method === "POST") {
     }
 
     // проверяем, есть ли альбом для фотографий
-    $query_find_album = $dbh->prepare("SELECT * FROM `project_albums` WHERE id_site = :id_site AND title = :title");
+    $query_find_album = $dbh->prepare("SELECT * FROM `site_albums` WHERE id_site = :id_site AND title = :title");
     $query_find_album->execute([
         "id_site" => $id_site,
         "title" => $titleAlbum
@@ -54,7 +54,7 @@ if ($method === "POST") {
 
     // если альбома "advantages" нет, то создаем его
     if ($query_find_album->rowCount() == 0) {
-        $query_create_album = $dbh->prepare("INSERT INTO `project_albums` SET `id_site` = :id_site, `title` = :title, `date_create` = :date_create, `activity` = :activity");
+        $query_create_album = $dbh->prepare("INSERT INTO `site_albums` SET `id_site` = :id_site, `title` = :title, `date_create` = :date_create, `activity` = :activity");
         $query_create_album->execute([
             "id_site" => $id_site,
             "title" => $titleAlbum,
@@ -77,8 +77,8 @@ if ($method === "POST") {
         $filePath = "https://otal-estate.ru/" . $saveImgPath . "/" . $titleImg;
 
         if ($saveImg != "false") {
-            // добавляем фото в таблицу "project_photos"
-            $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `weight` = :weight, `image` = :image, `activity` = :activity, `date_create` = :date_create");
+            // добавляем фото в таблицу "site_photos"
+            $query_add_cover = $dbh->prepare("INSERT INTO `site_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `weight` = :weight, `image` = :image, `activity` = :activity, `date_create` = :date_create");
             $query_add_cover->execute([
                 "id_album" => $album_id,
                 "name_album" => $titleAlbum,
@@ -91,8 +91,8 @@ if ($method === "POST") {
                 "date_create" => $currentDateTime
             ]);
 
-            // добавляем запись в таблицу "project_advantages"
-            $query_add_adv = $dbh->prepare("INSERT INTO `project_advantages` SET
+            // добавляем запись в таблицу "site_advantages"
+            $query_add_adv = $dbh->prepare("INSERT INTO `site_advantages` SET
                 `id_site` = :id_site,
                 `photo` = :photo,
                 `title` = :title,
@@ -113,7 +113,7 @@ if ($method === "POST") {
 
             if ($query_add_adv->rowCount() != 0) {
                 // получаем данные по добавленной записи
-                $query_get_new_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+                $query_get_new_row = $dbh->prepare("SELECT * FROM `site_advantages` WHERE id = :id");
                 $query_get_new_row->execute(["id" => $new_row_id]);
                 $adv = $query_get_new_row->fetch(PDO::FETCH_OBJ);
 
@@ -138,7 +138,7 @@ if ($method === "POST") {
 function updateRow() {
     global $dbh, $id, $id_site, $photos, $title, $description, $currentDateTime, $titleAlbum;
 
-    $query = $dbh->prepare("UPDATE `project_advantages` SET  
+    $query = $dbh->prepare("UPDATE `site_advantages` SET  
         `title` = :title, 
         `description` = :description, 
         `date_create` = :date_create 
@@ -153,12 +153,12 @@ function updateRow() {
 
     if ($photos != "") {
         // получаем все данные "преимущества"
-        $query_get_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+        $query_get_row = $dbh->prepare("SELECT * FROM `site_advantages` WHERE id = :id");
         $query_get_row->execute(["id" => $id]);
         $row = $query_get_row->fetch(PDO::FETCH_ASSOC);
 
         // получаем фотографию
-        $query_find_photo = $dbh->prepare("SELECT * FROM `project_photos` WHERE id_site = :id_site AND image = :image");
+        $query_find_photo = $dbh->prepare("SELECT * FROM `site_photos` WHERE id_site = :id_site AND image = :image");
         $query_find_photo->execute([
             "id_site" => $id_site,
             "image" => $row['photo']
@@ -175,8 +175,8 @@ function updateRow() {
 
         if ($delete_file == "false") return false;
 
-        // удаляем фото из таблицы "project_photos"
-        $query_delete_photo = $dbh->prepare("DELETE FROM `project_photos` WHERE `id` = :id");
+        // удаляем фото из таблицы "site_photos"
+        $query_delete_photo = $dbh->prepare("DELETE FROM `site_photos` WHERE `id` = :id");
         $query_delete_photo->execute(["id" => $find_photo["id"]]);
 
         // ковертируем фото в webp
@@ -190,8 +190,8 @@ function updateRow() {
             $filePath = "https://otal-estate.ru/" . $saveImgPath . "/" . $titleImg;
 
             if ($saveImg != "false") {
-                // добавляем фото в таблицу "project_photos"
-                $query_add_cover = $dbh->prepare("INSERT INTO `project_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `weight` = :weight, `image` = :image, `activity` = :activity, `date_create` = :date_create");
+                // добавляем фото в таблицу "site_photos"
+                $query_add_cover = $dbh->prepare("INSERT INTO `site_photos` SET `id_album` = :id_album, name_album = :name_album, `id_site` = :id_site, `title` = :title, `extension` = :extension, `weight` = :weight, `image` = :image, `activity` = :activity, `date_create` = :date_create");
                 $query_add_cover->execute([
                     "id_album" => $find_photo_idAlbum,
                     "name_album" => $titleAlbum,
@@ -204,12 +204,12 @@ function updateRow() {
                     "date_create" => $currentDateTime
                 ]);
 
-                // добавляем запись в таблицу "project_advantages"
-                $query_uppdate_row = $dbh->prepare("UPDATE `project_advantages` SET `photo` = :photo WHERE `id` = :id");
+                // добавляем запись в таблицу "site_advantages"
+                $query_uppdate_row = $dbh->prepare("UPDATE `site_advantages` SET `photo` = :photo WHERE `id` = :id");
                 $query_uppdate_row->execute(["id" => $id, "photo" => $filePath]);
 
                 if ($query_uppdate_row->rowCount() > 0) {
-                    $query_get_update_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+                    $query_get_update_row = $dbh->prepare("SELECT * FROM `site_advantages` WHERE id = :id");
                     $query_get_update_row->execute(["id" => $id]);
                     $adv = $query_get_update_row->fetch(PDO::FETCH_OBJ);
 
@@ -231,7 +231,7 @@ function updateRow() {
         }
     } else {
         if ($query->rowCount() > 0) {
-            $query_get_update_row = $dbh->prepare("SELECT * FROM `project_advantages` WHERE id = :id");
+            $query_get_update_row = $dbh->prepare("SELECT * FROM `site_advantages` WHERE id = :id");
             $query_get_update_row->execute(["id" => $id]);
             $adv = $query_get_update_row->fetch(PDO::FETCH_OBJ);
 
@@ -258,12 +258,12 @@ if ($method === "DELETE") {
 
     if ($delete_file == "false") return false;
 
-    // удаляем запись из таблицы "project_advantages"
-    $query_delete_adv = $dbh->prepare("DELETE FROM `project_advantages` WHERE `id` = :id");
+    // удаляем запись из таблицы "site_advantages"
+    $query_delete_adv = $dbh->prepare("DELETE FROM `site_advantages` WHERE `id` = :id");
     $query_delete_adv->execute(["id" => $id]);
 
-    // удаляем фото из таблицы "project_photos"
-    $query_delete_photo = $dbh->prepare("DELETE FROM `project_photos` WHERE `image` = :image");
+    // удаляем фото из таблицы "site_photos"
+    $query_delete_photo = $dbh->prepare("DELETE FROM `site_photos` WHERE `image` = :image");
     $query_delete_photo->execute(["image" => $photo]);
 
     if ($query_delete_adv->rowCount() > 0 && $query_delete_photo->rowCount() > 0) {

@@ -4,7 +4,7 @@ export default function parameters(project) {
 
     // получаем данные
     var getParameters = XMLHttpRequestAJAX({
-        url: "/api/site/parameters",
+        url: "/api/site/parameters/get-parameters",
         method: "GET",
         body: {
             id_site: project.id
@@ -124,7 +124,7 @@ export default function parameters(project) {
             console.log("getValuesForm.form", getValuesForm.form)
 
             var updateGeneralInfo = XMLHttpRequestAJAX({
-                url: "/api/site/parameters",
+                url: "/api/site/parameters/update-parameters",
                 method: "POST",
                 body: getValuesForm.form
             });

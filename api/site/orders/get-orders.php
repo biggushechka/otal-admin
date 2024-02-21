@@ -8,7 +8,7 @@ $id_site = $_GET['id_site'];
 $date = $_GET['date'];
 $type = $_GET['type'];
 
-$queryTable = "SELECT * FROM `project_orders` ";
+$queryTable = "SELECT * FROM `site_orders` ";
 $queryDate = "";
 $queryType = "";
 $queryProject = "";

@@ -32,7 +32,7 @@ if ($method === "POST") {
     if ($query_get_site->rowCount() > 0) {
 
         // получаем общую информацию по проекту и контакты
-        $query_get_general = $dbh->prepare("SELECT * FROM `project_general` WHERE `id_site` = :id_site");
+        $query_get_general = $dbh->prepare("SELECT * FROM `site_general` WHERE `id_site` = :id_site");
         $query_get_general->execute(["id_site" => $id_site]);
         $data_general = $query_get_general->fetch(PDO::FETCH_OBJ);
 
@@ -47,7 +47,7 @@ if ($method === "POST") {
         }
 
         // получаем список параметров по проекту
-        $query_get_parameters = $dbh->prepare("SELECT * FROM `project_parameters` WHERE `id_site` = :id_site");
+        $query_get_parameters = $dbh->prepare("SELECT * FROM `site_parameters` WHERE `id_site` = :id_site");
         $query_get_parameters->execute(["id_site" => $id_site]);
         $data_parameters = $query_get_parameters->fetch(PDO::FETCH_OBJ);
 

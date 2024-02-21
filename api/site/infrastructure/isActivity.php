@@ -14,7 +14,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // изменяем активность
 if ($method === "POST") {
-    $query_updateActivity = $dbh->prepare("UPDATE `project_Infrastructure` SET `activity` = :activity WHERE `id` = :id");
+    $query_updateActivity = $dbh->prepare("UPDATE `site_infrastructure` SET `activity` = :activity WHERE `id` = :id");
     $query_updateActivity->execute(["activity" => $changeActivity, "id" => $id_adv]);
 
     if ($query_updateActivity->rowCount() > 0) {

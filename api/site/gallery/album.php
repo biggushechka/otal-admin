@@ -17,7 +17,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 // Запись
 if ($method === "GET") {
     // делаем запрос, есть ли главный альбом
-    $query_find_album = $dbh->prepare("SELECT * FROM `project_gallery_album` WHERE id_site = :id_site AND title = :title");
+    $query_find_album = $dbh->prepare("SELECT * FROM `site_gallery_album` WHERE id_site = :id_site AND title = :title");
     $query_find_album->execute([
         "id_site" => $id_site,
         "title" => "Основной альбом"
@@ -25,7 +25,7 @@ if ($method === "GET") {
 
     // проверям, есть ли главный альбом
     if ($query_find_album->rowCount() == 0) {
-        $query_creat_main_album = $dbh->prepare("INSERT INTO `project_gallery_album` SET
+        $query_creat_main_album = $dbh->prepare("INSERT INTO `site_gallery_album` SET
             `id_site` = :id_site,
             `title` = :title,
             `activity` = :activity,
@@ -41,7 +41,7 @@ if ($method === "GET") {
 
     // запрос на все альбомы для кокнретного сайта
     if ($album == "all") {
-        $query_get_all_album = $dbh->prepare("SELECT * FROM `project_gallery_album` WHERE id_site = :id_site");
+        $query_get_all_album = $dbh->prepare("SELECT * FROM `site_gallery_album` WHERE id_site = :id_site");
         $query_get_all_album->execute(["id_site" => $id_site]);
         $all_album = $query_get_all_album->fetchAll(PDO::FETCH_ASSOC);
 
@@ -58,14 +58,14 @@ if ($method === "GET") {
 
 // Запись
 if ($method === "POST") {
-    $query_find_album = $dbh->prepare("SELECT * FROM `project_gallery_album` WHERE id_site = :id_site AND title = :title");
+    $query_find_album = $dbh->prepare("SELECT * FROM `site_gallery_album` WHERE id_site = :id_site AND title = :title");
     $query_find_album->execute([
         "id_site" => $id_site,
         "title" => $name_album
     ]);
 
     if ($query_find_album->rowCount() == 0) {
-        $query_create_album = $dbh->prepare("INSERT INTO `project_gallery_album` SET
+        $query_create_album = $dbh->prepare("INSERT INTO `site_gallery_album` SET
             `id_site` = :id_site,
             `title` = :title,
             `activity` = :activity,
@@ -80,7 +80,7 @@ if ($method === "POST") {
         $album_id = $dbh->lastInsertId();
 
         if ($query_create_album->rowCount() != 0) {
-            $query_get_album = $dbh->prepare("SELECT * FROM `project_gallery_album` WHERE `id` = :id");
+            $query_get_album = $dbh->prepare("SELECT * FROM `site_gallery_album` WHERE `id` = :id");
             $query_get_album->execute(["id" => $album_id]);
             $new_album = $query_get_album->fetch(PDO::FETCH_OBJ);
 
@@ -105,14 +105,14 @@ if ($method === "UPDATE") {
     $new_name_album = $_GET['title'];
     $id_album = $_GET['id'];
 
-    $query_find_album = $dbh->prepare("SELECT * FROM `project_gallery_album` WHERE id_site = :id_site AND title = :title");
+    $query_find_album = $dbh->prepare("SELECT * FROM `site_gallery_album` WHERE id_site = :id_site AND title = :title");
     $query_find_album->execute([
         "id_site" => $id_site,
         "title" => $new_name_album
     ]);
 
     if ($query_find_album->rowCount() == 0) {
-        $query_get_album = $dbh->prepare("UPDATE `project_gallery_album` SET `title` = :title WHERE `id` = :id");
+        $query_get_album = $dbh->prepare("UPDATE `site_gallery_album` SET `title` = :title WHERE `id` = :id");
         $query_get_album->execute(["title" => $new_name_album, "id" => $id_album]);
 
         if ($query_get_album->rowCount() > 0) {
@@ -136,7 +136,7 @@ if ($method === "DELETE") {
     $id_album = $_GET['id_album'];
     $deleteCount = 0;
 
-    $query_find_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE id_site = :id_site AND id_album = :id_album");
+    $query_find_images = $dbh->prepare("SELECT * FROM `site_gallery_image` WHERE id_site = :id_site AND id_album = :id_album");
     $query_find_images->execute([
         "id_site" => $id_site,
         "id_album" => $id_album
@@ -152,7 +152,7 @@ if ($method === "DELETE") {
         $delete_file = deleteFile($pathFile);
 
         if ($delete_file != "false") {
-            $query_delete_row = $dbh->prepare("DELETE FROM `project_gallery_image` WHERE `id` = :id");
+            $query_delete_row = $dbh->prepare("DELETE FROM `site_gallery_image` WHERE `id` = :id");
             $query_delete_row->execute(["id" => $image['id']]);
 
             if ($query_delete_row->rowCount() > 0) {
@@ -162,7 +162,7 @@ if ($method === "DELETE") {
     }
 
     if ($deleteCount == count($allImages)) {
-        $query_delete_album = $dbh->prepare("DELETE FROM `project_gallery_album` WHERE `id` = :id");
+        $query_delete_album = $dbh->prepare("DELETE FROM `site_gallery_album` WHERE `id` = :id");
         $query_delete_album->execute(["id" => $id_album]);
 
         if ($query_delete_album->rowCount() > 0) {

@@ -20,7 +20,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // получение
 if ($method === "GET") {
-    $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id_site` = :id_site AND `id_album` = :id_album");
+    $query_get_images = $dbh->prepare("SELECT * FROM `site_gallery_image` WHERE `id_site` = :id_site AND `id_album` = :id_album");
     $query_get_images->execute(["id_site" => $id_site, "id_album" => $id_album]);
     $getImages = $query_get_images->fetchAll(PDO::FETCH_ASSOC);
 
@@ -56,8 +56,8 @@ if ($method === "POST") {
         $filePath = "https://otal-estate.ru/" . $saveImgPath . "/" . $titleImg;
 
         if ($saveImg != "false") {
-            // добавляем фото в таблицу "project_photos"
-            $query_add_image = $dbh->prepare("INSERT INTO `project_gallery_image` SET
+            // добавляем фото в таблицу "site_photos"
+            $query_add_image = $dbh->prepare("INSERT INTO `site_gallery_image` SET
                 `id_album` = :id_album,
                 `id_site` = :id_site,
                 `name_album` = :name_album,
@@ -81,7 +81,7 @@ if ($method === "POST") {
             ]);
             $id_new_row_photo = $dbh->lastInsertId();
 
-            $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id` = :id");
+            $query_get_images = $dbh->prepare("SELECT * FROM `site_gallery_image` WHERE `id` = :id");
             $query_get_images->execute(["id" => $id_new_row_photo]);
             $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
 
@@ -108,7 +108,7 @@ function photoReplacement() {
 
     $id_image = $POST['id_image'];
 
-    $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id` = :id");
+    $query_get_images = $dbh->prepare("SELECT * FROM `site_gallery_image` WHERE `id` = :id");
     $query_get_images->execute(["id" => $id_image]);
     $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
 
@@ -140,8 +140,8 @@ function photoReplacement() {
 
         if ($saveImg != "false") {
 
-            // обновляем запись (фото) в таблице "project_photos"
-            $query_add_image = $dbh->prepare("UPDATE `project_gallery_image` SET
+            // обновляем запись (фото) в таблице "site_photos"
+            $query_add_image = $dbh->prepare("UPDATE `site_gallery_image` SET
                 `title` = :title,
                 `extension` = :extension,
                 `weight` = :weight,
@@ -170,7 +170,7 @@ function photoReplacement() {
     }
 
     if ($replaceCount == count($webpImages)) {
-        $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id` = :id");
+        $query_get_images = $dbh->prepare("SELECT * FROM `site_gallery_image` WHERE `id` = :id");
         $query_get_images->execute(["id" => $id_image]);
         $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
 
@@ -190,7 +190,7 @@ function photoReplacement() {
 if ($method === "DELETE") {
     $id_image = $POST['id_image'] ?? $_GET['id_image'];
 
-    $query_get_images = $dbh->prepare("SELECT * FROM `project_gallery_image` WHERE `id` = :id");
+    $query_get_images = $dbh->prepare("SELECT * FROM `site_gallery_image` WHERE `id` = :id");
     $query_get_images->execute(["id" => $id_image]);
     $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
 
@@ -204,7 +204,7 @@ if ($method === "DELETE") {
 
     if ($delete_file == "false") return false;
 
-    $query_delete = $dbh->prepare("DELETE FROM `project_gallery_image` WHERE `id` = :id");
+    $query_delete = $dbh->prepare("DELETE FROM `site_gallery_image` WHERE `id` = :id");
     $query_delete->execute(["id" => $getImages->id]);
 
     if ($query_delete->rowCount() > 0) {

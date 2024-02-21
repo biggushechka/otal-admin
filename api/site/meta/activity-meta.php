@@ -15,7 +15,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // изменяем активность сайта
 if ($method === "POST") {
-    $query_updateActivity = $dbh->prepare("UPDATE `project_meta` SET `activity` = :activity WHERE `id` = :id");
+    $query_updateActivity = $dbh->prepare("UPDATE `site_meta` SET `activity` = :activity WHERE `id` = :id");
     $query_updateActivity->execute(["activity" => $activity, "id" => $id_meta]);
 
     if ($query_updateActivity->rowCount() > 0) {

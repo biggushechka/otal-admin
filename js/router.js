@@ -18,9 +18,9 @@ async function initCarcass() {
     getPage();
 
     // Navigation
-    await import("/components/Navigation/Navigation.js?v="+version);
+    await importComponent(`/components/Navigation/Navigation.js`);
     // Header
-    await import("/components/Header/Header.js?v="+version).then(obj => obj.default);
+    await importComponent(`/components/Header/Header.js`);
     // page
     createCSSLink(`/pages/${page}/css/${page}.css`);
     await importComponent(`/pages/${page}/${page}.js`);

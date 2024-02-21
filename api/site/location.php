@@ -39,7 +39,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // Получение
 if ($method === "GET") {
-    $query_get = $dbh->prepare("SELECT * FROM `project_location` WHERE `id_site` = :id_site LIMIT 1");
+    $query_get = $dbh->prepare("SELECT * FROM `site_location` WHERE `id_site` = :id_site LIMIT 1");
     $query_get->execute(["id_site" => $id_site]);
     $location = $query_get->fetch(PDO::FETCH_OBJ);
 
@@ -56,7 +56,7 @@ if ($method === "GET") {
 
 // Запись
 if ($method === "POST") {
-    $query_update = $dbh->prepare("UPDATE `project_location` SET  
+    $query_update = $dbh->prepare("UPDATE `site_location` SET  
         `address` = :address,
         `country` = :country,
         `federal_district` = :federal_district,

@@ -18,7 +18,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // Получение
 if ($method === "GET") {
-    $query_get_desc = $dbh->prepare("SELECT * FROM `project_description` WHERE `id_site` = :id_site LIMIT 1");
+    $query_get_desc = $dbh->prepare("SELECT * FROM `site_description` WHERE `id_site` = :id_site LIMIT 1");
     $query_get_desc->execute(["id_site" => $id_site]);
     $desc = $query_get_desc->fetch(PDO::FETCH_OBJ);
 
@@ -31,60 +31,4 @@ if ($method === "GET") {
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Ошибка при получении", JSON_UNESCAPED_UNICODE);
     }
-}
-
-// отправить
-if ($method === "POST") {
-    $query_update_desc = typeDesc($target);
-    $rowCount = $query_update_desc->rowCount();
-
-    if ($rowCount > 0) {
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Данные были успешно обновлены", JSON_UNESCAPED_UNICODE);
-    } else {
-        header("HTTP/1.1 400 Bad Request");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Ошибка при обновлении данных", JSON_UNESCAPED_UNICODE);
-    }
-}
-
-function typeDesc($target) {
-    global $dbh, $id_site, $title_jk, $desc_jk, $title_territory, $desc_territory, $currentDateTime;
-    $query = "";
-
-    switch ($target) {
-        case "about":
-            $query = $dbh->prepare("UPDATE `project_description` SET  
-            `title_jk` = :title_jk, 
-            `desc_jk` = :desc_jk, 
-            `date_update` = :date_update 
-            WHERE `id_site` = :id_site");
-
-            $query->execute([
-                "id_site" => $id_site,
-                "title_jk" => $title_jk,
-                "desc_jk" => $desc_jk,
-                "date_update" => $currentDateTime
-            ]);
-
-            break;
-        case "territory":
-            $query = $dbh->prepare("UPDATE `project_description` SET  
-            `title_territory` = :title_territory, 
-            `desc_territory` = :desc_territory,
-            `date_update` = :date_update 
-            WHERE `id_site` = :id_site");
-
-            $query->execute([
-                "id_site" => $id_site,
-                "title_territory" => $title_territory,
-                "desc_territory" => $desc_territory,
-                "date_update" => $currentDateTime
-            ]);
-
-            break;
-    }
-
-    return $query;
 }

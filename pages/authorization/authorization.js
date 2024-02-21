@@ -26,7 +26,6 @@ export default function authorization() {
 
     var form = autorizHTML.querySelector("form");
 
-
     // добавляем поля
     form.append(
         formFields.inputText({label: "", name: "username", placeholder: "Email или номер телефона", autocomplete: "on", validate: "true"}),
@@ -68,6 +67,7 @@ export default function authorization() {
 
             btnSubmit.classList.remove('loading'); // запускаем анимацию в кнопке submit
 
+            // успешная авторизация
             if (sendLoginData.code === 200) {
                 setCookie({
                     name: "authorization",
@@ -76,7 +76,8 @@ export default function authorization() {
                     path: "/"
                 });
 
-                btnSubmit.classList.add('completed'); // при успешной авторизации, красим кнопку в зеленый цвет
+                // при успешной авторизации, красим кнопку в зеленый цвет
+                btnSubmit.classList.add('completed');
 
                 setTimeout(function () {
                     var formWrapper = form.closest(".form-container"); //
@@ -86,6 +87,7 @@ export default function authorization() {
                     });
                 }, 500);
             } else {
+                // показываем ошибку
                 error.querySelector(".text").innerHTML = sendLoginData.data;
                 error.classList.add("active");
             }

@@ -19,7 +19,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 // отправить
 if ($method === "POST") {
 
-    $query_update = $dbh->prepare("UPDATE `project_meta` SET
+    $query_update = $dbh->prepare("UPDATE `site_meta` SET
         `title` = :title,
         `code` = :code,
         `comment` = :comment,
@@ -36,7 +36,7 @@ if ($method === "POST") {
     ]);
 
     if ($query_update->rowCount() > 0) {
-        $query_get_meta = $dbh->prepare("SELECT * FROM `project_meta` WHERE `id` = :id");
+        $query_get_meta = $dbh->prepare("SELECT * FROM `site_meta` WHERE `id` = :id");
         $query_get_meta->execute(["id" => $id_meta]);
         $update_meta = $query_get_meta->fetch(PDO::FETCH_OBJ);
 

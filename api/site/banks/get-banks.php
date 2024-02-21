@@ -18,7 +18,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 // Получение
 if ($method === "GET") {
     // получаем все по проекту
-    $query_get_banks = $dbh->prepare("SELECT * FROM `project_banks` WHERE `id_site` = :id_site");
+    $query_get_banks = $dbh->prepare("SELECT * FROM `site_banks` WHERE `id_site` = :id_site");
     $query_get_banks->execute(["id_site" => $id_site]);
     $banks = $query_get_banks->fetchAll(PDO::FETCH_ASSOC);
 

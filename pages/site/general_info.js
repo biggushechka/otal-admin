@@ -3,7 +3,7 @@ export default function general_info(project) {
 
     // получаем данные
     var getGeneralInfo = XMLHttpRequestAJAX({
-        url: "/api/site/general/info",
+        url: "/api/site/general/get-info",
         method: "GET",
         body: {
             id_site: project.id
@@ -103,7 +103,7 @@ export default function general_info(project) {
             if (getValuesForm.status == false) return false;
 
             var updateGeneralInfo = XMLHttpRequestAJAX({
-                url: "/api/site/general/info",
+                url: "/api/site/general/update-info",
                 method: "POST",
                 body: getValuesForm.form
             });

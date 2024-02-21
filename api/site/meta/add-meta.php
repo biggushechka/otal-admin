@@ -18,7 +18,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // отправить
 if ($method === "POST") {
-    $query_add_meta = $dbh->prepare("INSERT INTO `project_meta` SET
+    $query_add_meta = $dbh->prepare("INSERT INTO `site_meta` SET
         `id_site` = :id_site,
         `title` = :title,
         `code` = :code,
@@ -38,7 +38,7 @@ if ($method === "POST") {
 
     if ($query_add_meta->rowCount() > 0) {
         $lastInsertIdMeta = $dbh->lastInsertId();
-        $query_get_meta = $dbh->prepare("SELECT * FROM `project_meta` WHERE `id` = :id");
+        $query_get_meta = $dbh->prepare("SELECT * FROM `site_meta` WHERE `id` = :id");
         $query_get_meta->execute(["id" => $lastInsertIdMeta]);
         $meta = $query_get_meta->fetch(PDO::FETCH_OBJ);
 

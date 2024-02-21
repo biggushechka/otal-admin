@@ -1,1 +1,1 @@
-["https:\/\/maxmax.ru"]
+["https:\/\/maxmax.ru","https:\/\/test-2.ru"]

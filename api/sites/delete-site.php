@@ -14,21 +14,20 @@ $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
 // Выполнение запроса на удаление записей из всех таблиц
 foreach ($tables as $table) {
-    if ($table == "project_gallery_image") deletePhoto("project_gallery_image", $id_site);;
-    if ($table == "project_photos") deletePhoto("project_photos", $id_site);;
+    if ($table == "site_gallery_image") deletePhoto("site_gallery_image", $id_site);;
+    if ($table == "site_photos") deletePhoto("site_photos", $id_site);;
+    if ($table == "site_general") deletePhoto("site_general", $id_site);;
 
     $query_remove = $dbh->prepare("DELETE FROM $table WHERE `id_site` = :id_site");
     $query_remove->execute(["id_site" => $id_site]);
     $count = $query_remove->rowCount();
-
-    echo "($id_site): Удалено $count записей из таблицы - $table\n";
 }
 
 $query_removeProject = $dbh->prepare("DELETE FROM `my_sites` WHERE `id` = :id");
 $query_removeProject->execute(["id" => $id_site]);
 
 if ($query_removeProject->rowCount() > 0) {
-    header("HTTP/1.1 200 UPDATE");
+    header("HTTP/1.1 204 DELETE");
     header('Content-Type: application/json; charset=UTF-8');
 }
 
@@ -40,14 +39,12 @@ function deletePhoto($nameTable, $id_site) {
     $query_find_images->execute(["id_site" => $id_site]);
     $allImages = $query_find_images->fetchAll(PDO::FETCH_ASSOC);
 
-    echo "кол-во: ".count($allImages)." \n";
+    print_r($allImages);
 
     foreach ($allImages as &$image) {
-        $parsed_url = parse_url($image['image']);
+        $parsed_url = parse_url($image['image'] ?? $image['preview_photo']);
         $pathFile = $parsed_url['path'];
         $pathFile = ltrim($pathFile, '/');
-
-        echo $pathFile . "\n";
 
         // удаляем файл на сервере
         $delete_file = deleteFile($pathFile);
@@ -59,11 +56,10 @@ function deletePhoto($nameTable, $id_site) {
 
             if ($query_delete_row->rowCount() > 0) {
                 $deleteCount++;
-
-                echo "удалено: $deleteCount \n";
             }
         }
     }
 }
 
+$dbh = null;
 die();

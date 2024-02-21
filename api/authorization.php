@@ -23,7 +23,7 @@ if ($findUser->rowCount() > 0) {
         header("HTTP/1.1 200 OK");
         echo json_encode($user, JSON_UNESCAPED_UNICODE);
     } else {
-        header("HTTP/1.1 400 Bad Request");
+        header("HTTP/1.1 401 Unauthorized");
         echo json_encode("Неверный логин или пароль, попробуйте заново", JSON_UNESCAPED_UNICODE);
     }
 } else {

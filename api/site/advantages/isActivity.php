@@ -14,7 +14,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 // изменяем активность сайта
 if ($method === "POST") {
-    $query_updateActivity = $dbh->prepare("UPDATE `project_advantages` SET `activity` = :activity WHERE `id` = :id");
+    $query_updateActivity = $dbh->prepare("UPDATE `site_advantages` SET `activity` = :activity WHERE `id` = :id");
     $query_updateActivity->execute(["activity" => $changeActivity, "id" => $id_site]);
 
     header("HTTP/1.1 200 OK");

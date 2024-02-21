@@ -17,7 +17,7 @@ if ($method === "POST") {
     $query_updateActivity = $dbh->prepare("UPDATE `my_sites` SET `activity` = :activity WHERE `id` = :id");
     $query_updateActivity->execute(["activity" => $changeActivity, "id" => $id_site]);
 
-    header("HTTP/1.1 200 OK");
+    header("HTTP/1.1 200 UPDATE");
     header('Content-Type: application/json; charset=UTF-8');
     echo json_encode(["activity"=>$changeActivity], JSON_UNESCAPED_UNICODE);
 }

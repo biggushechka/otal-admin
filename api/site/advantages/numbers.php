@@ -28,7 +28,7 @@ $desc_4 = $POST['description_4'];
 
 // Получение
 if ($method === "GET") {
-    $query_get_row = $dbh->prepare("SELECT * FROM `project_advantages_num` WHERE `id_site` = :id_site");
+    $query_get_row = $dbh->prepare("SELECT * FROM `site_advantages_num` WHERE `id_site` = :id_site");
     $query_get_row->execute(["id_site" => $id_site]);
     $adv_num = $query_get_row->fetch(PDO::FETCH_OBJ);
 
@@ -45,12 +45,12 @@ if ($method === "GET") {
 
 // Запись
 if ($method === "POST") {
-    $query_get_row = $dbh->prepare("SELECT * FROM `project_advantages_num` WHERE `id_site` = :id_site");
+    $query_get_row = $dbh->prepare("SELECT * FROM `site_advantages_num` WHERE `id_site` = :id_site");
     $query_get_row->execute(["id_site" => $id_site]);
     $adv_num = $query_get_row->fetchAll(PDO::FETCH_ASSOC);
 
     if (count($adv_num) == 0) {
-        $query_create_row = $dbh->prepare("INSERT INTO `project_advantages_num` SET
+        $query_create_row = $dbh->prepare("INSERT INTO `site_advantages_num` SET
             `id_site` = :id_site,
             `number_1` = :number_1,
             `value_1` = :value_1,
@@ -81,7 +81,7 @@ if ($method === "POST") {
             "description_4" => $desc_4
         ]);
     } else {
-        $query_create_row = $dbh->prepare("UPDATE `project_advantages_num` SET
+        $query_create_row = $dbh->prepare("UPDATE `site_advantages_num` SET
             `id_site` = :id_site,
             `number_1` = :number_1,
             `value_1` = :value_1,
