@@ -3,21 +3,21 @@ export default function location(project) {
 
     // получаем данные
     var getLocation = XMLHttpRequestAJAX({
-        url: "/api/site/location",
+        url: "/api/site/location/get-location",
         method: "GET",
         body: {
             id_site: project.id
         }
     });
-    getLocation = getLocation.data;
-    // console.log("getLocation", getLocation)
+    console.log("getLocation", getLocation)
 
-    if (getLocation.address == "") {
+    if (getLocation.code === 200) {
+        // выводим блок с адресом и картой
+        getLocation = getLocation.data
+        viewLocation();
+    } else {
         // если нет адреса, то отображаем пустой блок с возможностью добавить адрес
         noLocation();
-    } else {
-        // выводим блок с адресом и картой
-        viewLocation();
     }
 
     // если нет адреса, то отображаем пустой блок с возможностью добавить адрес
@@ -432,10 +432,9 @@ export default function location(project) {
                 longitude: address.data.geo_lon
             }
 
-
             // получаем данные
             var sendAddress = XMLHttpRequestAJAX({
-                url: "/api/site/location",
+                url: "/api/site/location/update-location",
                 method: "POST",
                 body: dataAddress
             });
