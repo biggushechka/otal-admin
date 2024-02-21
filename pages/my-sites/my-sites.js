@@ -5,7 +5,6 @@ export default function mySites() {
 
     var sitesHTML,
         tableHTML,
-        siteHTML,
         formFields = new FormFields();
 
     sitesHTML = document.createElement("div");
@@ -121,7 +120,7 @@ export default function mySites() {
 
         console.log("site", site)
 
-        siteHTML = document.createElement("tr");
+        var siteHTML = document.createElement("tr");
         var siteTMPL = `
         <td class="cell-id">${site.id}</td>
         <td class="cell-title"><a href="${linkEDIT}" class="link-to-site"><i class="ph-fill ph-folder-simple"></i>${site.title}</a></td>
@@ -192,7 +191,7 @@ export default function mySites() {
                     }
                 });
 
-                if (deleteSiteReq.code = 200) {
+                if (deleteSiteReq.code === 204) {
                     siteHTML.remove();
                 }
             }

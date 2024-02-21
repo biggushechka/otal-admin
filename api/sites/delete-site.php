@@ -29,7 +29,11 @@ $query_removeProject->execute(["id" => $id_site]);
 if ($query_removeProject->rowCount() > 0) {
     header("HTTP/1.1 204 DELETE");
     header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode("Сайт успешно удален", JSON_UNESCAPED_UNICODE);
 }
+
+$dbh = null;
+die();
 
 function deletePhoto($nameTable, $id_site) {
     global $dbh;
@@ -38,8 +42,6 @@ function deletePhoto($nameTable, $id_site) {
     $query_find_images = $dbh->prepare("SELECT * FROM $nameTable WHERE id_site = :id_site");
     $query_find_images->execute(["id_site" => $id_site]);
     $allImages = $query_find_images->fetchAll(PDO::FETCH_ASSOC);
-
-    print_r($allImages);
 
     foreach ($allImages as &$image) {
         $parsed_url = parse_url($image['image'] ?? $image['preview_photo']);
@@ -60,6 +62,3 @@ function deletePhoto($nameTable, $id_site) {
         }
     }
 }
-
-$dbh = null;
-die();
