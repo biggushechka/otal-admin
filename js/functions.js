@@ -421,7 +421,7 @@ function getSite(domain) {
     domain = "https://"+domain
 
     var getSite = XMLHttpRequestAJAX({
-        url: "/api/site/project",
+        url: "/api/sites/get-site",
         method: "GET",
         body: {
             domain: domain

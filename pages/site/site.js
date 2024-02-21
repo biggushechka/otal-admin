@@ -7,6 +7,8 @@ export default function site() {
 
     var get_site = getSite(domain);
 
+    console.log("get_site", get_site)
+
     if (get_site.code !== 200) {
         alert(get_site.data);
         return false;
