@@ -378,7 +378,7 @@ export default function location(project) {
             }
 
             var url = "http://suggestions.dadata.ru/suggestions/api/4_1/rs/"+type,
-                token = "bd4cc3685fa3829cd8f6e378447ca4d316cce6f9",
+                token = "c1a5b0b8469d08904b0a8297a70a3261762044a9",
                 body = value;
 
             var xhr = new XMLHttpRequest();
