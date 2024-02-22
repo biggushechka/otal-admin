@@ -223,6 +223,18 @@
     object-fit: contain;
 }
 
+.G-table tbody .col-title .desc {
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -moz-box;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    box-orient: vertical;
+}
+
 /* end - table */
 
 
