@@ -371,6 +371,8 @@ export default function location(project) {
         // запрос адреса по API в сервисе "DADATA"
         function requestDadata(value, type) {
 
+            console.log("new Date():", new Date());
+
             if (type == "address") {
                 type = "suggest/address";
             } else if (type == "geolocate") {
