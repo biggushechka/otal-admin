@@ -227,6 +227,8 @@ export default function location(project) {
                         resDadata = requestDadata({query: valueQuery}, data.dadata_type),
                         hintsRows = resDadata.suggestions;
 
+                    console.log("resDadata", resDadata)
+
                     // чистим dropdown перед каждым нажатием на клавишу
                     resultHint.innerHTML = "";
 
@@ -385,10 +387,14 @@ export default function location(project) {
 
             var xhr = new XMLHttpRequest();
 
+            console.log("url", url)
+
             xhr.open("POST", url, false);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader('Accept', 'application/json');
             xhr.setRequestHeader('Authorization', "Token " + token);
+
+            console.log("body", body)
 
             xhr.send(JSON.stringify(body));
 
