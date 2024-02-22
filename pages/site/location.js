@@ -381,7 +381,7 @@ export default function location(project) {
                 type = "geolocate/address";
             }
 
-            var url = "http://suggestions.dadata.ru/suggestions/api/4_1/rs/"+type,
+            var url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/"+type,
                 token = "c1a5b0b8469d08904b0a8297a70a3261762044a9",
                 body = value;
 
