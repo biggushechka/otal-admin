@@ -1,7 +1,7 @@
 <?php
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
-$origin = $_SERVER['HTTP_ORIGIN'];
+$domain = $_SERVER['HTTP_ORIGIN'];
 
 // разрешенные домены для подключения по API
 $allowedOrigins = [
@@ -19,11 +19,10 @@ foreach ($ao_json as $itemDomain) {
     $allowedOrigins[] = $itemDomain;
 }
 
-// разрешаем подключаться к API разрешенным доменам
-if ($origin != "") {
-    if (in_array($origin, $allowedOrigins)) {
-        header("Access-Control-Allow-Origin: " . $origin);
-//        header('Access-Control-Allow-Methods: POST');
+if ($domain != "") {
+    // разрешаем подключаться к API разрешенным доменам
+    if (in_array($domain, $allowedOrigins)) {
+        header("Access-Control-Allow-Origin: " . $domain);
         header("Access-Control-Allow-Credentials: true");
     } else {
         // Сайт, не входящий в список разрешенных, получит ошибку доступа

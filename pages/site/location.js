@@ -453,7 +453,6 @@ export default function location(project) {
         }
     }
 
-
     // выводим блок с адресом и картой
     function viewLocation() {
         var viewLocationHTML = document.createElement("section");
