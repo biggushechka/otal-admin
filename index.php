@@ -30,7 +30,6 @@ require_once $root . '/backend/template.php';
 <main id="app"></main>
 
 
-
 <script src="https://api-maps.yandex.ru/2.1/?apikey=ac7c6d4c-48ca-4019-af05-4911f2b78b9b&lang=ru_RU" type="text/javascript"></script>
 <script src="/plugins/uikit/uikit.min.js"></script>
 <script src="/assets/icons/index.js"></script>
