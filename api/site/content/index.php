@@ -1,9 +1,11 @@
 <?php
 
+$rootPath = $_SERVER['DOCUMENT_ROOT'];
 $referer = parse_url($_SERVER['HTTP_REFERER']);
 $refererDomain = $referer['host'];
 
-echo "домен: $refererDomain";
+file_put_contents($rootPath . "/api/config/refererDomain.txt", $refererDomain);
+
 
 //$ip = gethostbyname($domain);
 //$ip_orig = ip2long($ip);
