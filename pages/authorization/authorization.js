@@ -69,6 +69,7 @@ export default function authorization() {
 
             // успешная авторизация
             if (sendLoginData.code === 200) {
+
                 setCookie({
                     name: "authorization",
                     data: sendLoginData.data.id,
