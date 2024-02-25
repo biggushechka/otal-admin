@@ -1,6 +1,8 @@
 <?php
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
+require_once $rootPath . '/api/config/db_connect.php';
+
 $referer = parse_url($_SERVER['HTTP_REFERER']);
 $refererDomain = $referer['host'];
 
