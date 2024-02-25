@@ -4,8 +4,6 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $referer = parse_url($_SERVER['HTTP_REFERER']);
 $refererDomain = $referer['host'];
 
-echo "refererDomain: $refererDomain";
-
 file_put_contents($rootPath . "/api/config/max.txt", $refererDomain);
 
 // разрешаем подключаться к API разрешенным доменам
