@@ -2,7 +2,6 @@
 
 global $dbh;
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
-//require_once $rootPath . '/api/config/allowedOrigins.php';
 require_once $rootPath . '/api/config/db_connect.php';
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
@@ -20,16 +19,11 @@ if(isset($_SERVER['HTTP_REFERER'])) {
     if ($getSites->rowCount() > 0) {
         $site = $getSites->fetchAll(PDO::FETCH_ASSOC);
 
-        echo "<pre>";
-        print_r($site);
-        echo "</pre>";
-
         // разрешаем подключаться к API разрешенным доменам
         header("Access-Control-Allow-Origin: https://" . $refererDomain);
         header("Access-Control-Allow-Credentials: true");
     } else {
         $dbh = null;
-        echo $dbh;
         header("HTTP/1.1 403 Forbidden");
         exit("Доступ запрещен ((");
     }
