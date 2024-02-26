@@ -14,7 +14,7 @@ $ip_decod = long2ip($ip_convert);
 
 echo "refererDomain: $refererDomain <br>";
 echo "IP-адрес сайта: $ip <br>";
-echo "IP-адрес сайта (convert): $ip_convert";
+echo "IP-адрес сайта (convert): $ip_convert <br>";
 echo "IP-адрес сайта (decod): $ip_decod";
 
 
