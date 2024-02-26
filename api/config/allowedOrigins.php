@@ -1,5 +1,7 @@
 <?php
 
+global $dbh;
+
 header("Access-Control-Allow-Origin: https://alba-del-mare.ru");
 header("Access-Control-Allow-Credentials: true");
 
@@ -9,7 +11,8 @@ if(isset($_SERVER['HTTP_REFERER'])) {
     $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
     $refererDomain = $referer['host']; // получаем домен
     $ip = gethostbyname($refererDomain); // получаем IP-адрес по домену
-    $ip_convert = ip2long($ip); // конвертируем IP-адрес
+    $ip_convert = 51234123; // конвертируем IP-адрес
+//    $ip_convert = ip2long($ip); // конвертируем IP-адрес
 
 
     // получение сайта
