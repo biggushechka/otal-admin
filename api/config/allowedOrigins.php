@@ -32,16 +32,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
         header("Access-Control-Allow-Credentials: true");
     } else {
         $dbh = null;
-
         echo $dbh;
-
-        echo "<pre>";
-        print_r($dbh);
-        echo "</pre>";
-
-
-        header("HTTP/1.1 403 Forbidden");
-        exit("Доступ запрещен ((");
     }
 
 } else {
