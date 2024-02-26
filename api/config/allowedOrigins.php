@@ -18,9 +18,17 @@ if(isset($_SERVER['HTTP_REFERER'])) {
     // получение сайта
     $getSites = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain AND `ip_address` = :ip_address LIMIT 1");
     $getSites->execute(["domain" => "https://" . $refererDomain, "ip_address" => $ip_convert]);
-    $site = $getSites->fetchAll(PDO::FETCH_ASSOC);
 
-    print_r($site);
+    if ($getSites->rowCount() > 0) {
+        $site = $getSites->fetchAll(PDO::FETCH_ASSOC);
+
+        echo "<pre>";
+        print_r($site);
+        echo "</pre>";
+    } else {
+        $dbh = null;
+        exit("Доступ запрещен ((");
+    }
 
 } else {
     // Обработка случая, когда запрос не содержит HTTP_REFERER
