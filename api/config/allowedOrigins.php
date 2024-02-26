@@ -3,19 +3,19 @@
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
 if(isset($_SERVER['HTTP_REFERER'])) {
-    $referer = parse_url($_SERVER['HTTP_REFERER']);
-    $refererDomain = $referer['host'];
-    $ip = gethostbyname($refererDomain);
-    $ip_convert = ip2long($ip);
-    $ip_decod = long2ip($ip_convert);
+    $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
+    $refererDomain = $referer['host']; // получаем домен
+    $ip = gethostbyname($refererDomain); // получаем IP-адрес по домену
+    $ip_convert = ip2long($ip); // конвертируем IP-адрес
 
-    header("Access-Control-Allow-Origin: https://alba-del-mare.ru");
-    header("Access-Control-Allow-Credentials: true");
 
-    echo "refererDomain: $refererDomain <br>";
-    echo "IP-адрес сайта: $ip <br>";
-    echo "IP-адрес сайта (convert): $ip_convert <br>";
-    echo "IP-адрес сайта (decod): $ip_decod";
+    // получение сайта
+    $getSites = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain AND `ip_address` = :ip_address LIMIT 1");
+    $getSites->execute(["domain" => "https://" . $refererDomain, "ip_address" => $ip_convert]);
+    $site = $getSites->fetchAll(PDO::FETCH_ASSOC);
+
+    print_r($site);
+
 } else {
     // Обработка случая, когда запрос не содержит HTTP_REFERER
     echo "HTTP_REFERER не определен";
