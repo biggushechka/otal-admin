@@ -10,9 +10,8 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
     $refererDomain = $referer['host']; // получаем домен
-    $ip = gethostbyname($refererDomain); // получаем IP-адрес по домену
-//    $ip_convert = ip2long($ip); // конвертируем IP-адрес
-    $ip_convert = 412323; // конвертируем IP-адрес
+    $ip_address = gethostbyname($refererDomain); // получаем IP-адрес по домену
+    $ip_convert = ip2long($ip_address); // конвертируем IP-адрес
 
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain AND `ip_address` = :ip_address LIMIT 1");
@@ -38,6 +37,4 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 
 if ($dbh !== null) {
     echo "dbh";
-} else {
-    echo "dbh $dbh";
 }
