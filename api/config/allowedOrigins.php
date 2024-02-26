@@ -2,6 +2,9 @@
 
 global $dbh;
 
+header("Access-Control-Allow-Origin: https://alba-del-mare.ru");
+header("Access-Control-Allow-Credentials: true");
+
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
 if(isset($_SERVER['HTTP_REFERER'])) {
