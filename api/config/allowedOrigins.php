@@ -9,11 +9,12 @@ $refererDomain = $referer['host'];
 
 
 $ip = gethostbyname($refererDomain);
-$ip_orig = ip2long($ip);
-$ip_decod = long2ip($ip_orig);
+$ip_convert = ip2long($ip);
+$ip_decod = long2ip($ip_convert);
 
 echo "refererDomain: $refererDomain <br>";
-echo "IP-адрес сайта (orig): $ip_orig <br>";
+echo "IP-адрес сайта: $ip <br>";
+echo "IP-адрес сайта (convert): $ip_convert";
 echo "IP-адрес сайта (decod): $ip_decod";
 
 
