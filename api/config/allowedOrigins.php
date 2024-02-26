@@ -13,7 +13,6 @@ if(isset($_SERVER['HTTP_REFERER'])) {
     $ip = gethostbyname($refererDomain); // получаем IP-адрес по домену
     $ip_convert = ip2long($ip); // конвертируем IP-адрес
 
-
     // получение сайта
     $getSites = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain AND `ip_address` = :ip_address LIMIT 1");
     $getSites->execute(["domain" => "https://" . $refererDomain, "ip_address" => $ip_convert]);
@@ -21,30 +20,17 @@ if(isset($_SERVER['HTTP_REFERER'])) {
     if ($getSites->rowCount() > 0) {
         $site = $getSites->fetchAll(PDO::FETCH_ASSOC);
 
-        echo "<pre>";
-        print_r($site);
-        echo "</pre>";
+        // разрешаем подключаться к API разрешенным доменам
+        header("Access-Control-Allow-Origin: https://" . $refererDomain);
+        header("Access-Control-Allow-Credentials: true");
     } else {
         $dbh = null;
+        header("HTTP/1.1 403 Forbidden");
         exit("Доступ запрещен ((");
     }
 
 } else {
     $dbh = null;
+    header("HTTP/1.1 403 Forbidden");
     exit("Доступ запрещен 222");
 }
-
-
-
-
-
-
-// разрешаем подключаться к API разрешенным доменам
-//if (in_array($refererDomain, $allowedOrigins)) {
-//    header("Access-Control-Allow-Origin: " . $refererDomain);
-//    header("Access-Control-Allow-Credentials: true");
-//} else {
-//    // Сайт, не входящий в список разрешенных, получит ошибку доступа
-//    header("HTTP/1.1 403 Forbidden");
-//    exit("Доступ запрещен ((");
-//}
