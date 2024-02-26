@@ -1,7 +1,6 @@
 RewriteEngine on
 Header set Access-Control-Allow-Headers "Content-Type"
 
-#RewriteRule ^api/site/content$ /api/site/content/index.php [L]
 RewriteRule ^api/site/content$ /api/site/content/index.php [L,R=301]
 
 

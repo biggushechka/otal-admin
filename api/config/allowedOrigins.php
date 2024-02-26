@@ -6,7 +6,7 @@ $refererDomain = $referer['host'];
 
 echo "refererDomain: $refererDomain";
 
-file_put_contents($rootPath . "/api/config/refererDomain.txt", $refererDomain);
+file_put_contents($rootPath . "/api/config/allowedOrigins.txt", $refererDomain);
 
 // разрешаем подключаться к API разрешенным доменам
 //if (in_array($refererDomain, $allowedOrigins)) {
