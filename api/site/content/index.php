@@ -6,8 +6,8 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 require_once $rootPath . '/api/config/db_connect.php';
 
 
-header("Access-Control-Allow-Origin: https://alba-del-mare.ru");
-header("Access-Control-Allow-Credentials: true");
+//header("Access-Control-Allow-Origin: https://alba-del-mare.ru");
+//header("Access-Control-Allow-Credentials: true");
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
