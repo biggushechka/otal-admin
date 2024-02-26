@@ -1,9 +1,8 @@
 <?php
 
-global $dbh;
+global $dbh, $rootPath;
 
-header("Access-Control-Allow-Origin: https://alba-del-mare.ru");
-header("Access-Control-Allow-Credentials: true");
+require_once $rootPath . '/api/config/db_connect.php';
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
@@ -13,12 +12,6 @@ if(isset($_SERVER['HTTP_REFERER'])) {
     $ip = gethostbyname($refererDomain); // получаем IP-адрес по домену
 //    $ip_convert = ip2long($ip); // конвертируем IP-адрес
     $ip_convert = 123123; // конвертируем IP-адрес
-
-    echo $dbh;
-
-    echo "<pre>";
-    print_r($dbh);
-    echo "</pre>";
 
     // получение сайта
     $getSites = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain AND `ip_address` = :ip_address LIMIT 1");
