@@ -2,15 +2,15 @@
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
-//header("Access-Control-Allow-Origin: https://alba-del-mare.ru");
-//header("Access-Control-Allow-Credentials: true");
-
 if(isset($_SERVER['HTTP_REFERER'])) {
     $referer = parse_url($_SERVER['HTTP_REFERER']);
     $refererDomain = $referer['host'];
     $ip = gethostbyname($refererDomain);
     $ip_convert = ip2long($ip);
     $ip_decod = long2ip($ip_convert);
+
+    header("Access-Control-Allow-Origin: https://alba-del-mare.ru");
+    header("Access-Control-Allow-Credentials: true");
 
     echo "refererDomain: $refererDomain <br>";
     echo "IP-адрес сайта: $ip <br>";
