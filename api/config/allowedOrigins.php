@@ -13,8 +13,8 @@ $ip_orig = ip2long($ip);
 $ip_decod = long2ip($ip_orig);
 
 echo "refererDomain: $refererDomain <br>";
-echo "IP-адрес сайта (orig): $ip_decod <br>";
-echo "IP-адрес сайта (decod): $ip_orig";
+echo "IP-адрес сайта (orig): $ip_orig <br>";
+echo "IP-адрес сайта (decod): $ip_decod";
 
 
 //if(isset($_SERVER['HTTP_REFERER'])) {
