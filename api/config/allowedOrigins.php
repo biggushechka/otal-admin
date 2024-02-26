@@ -16,9 +16,6 @@ if(isset($_SERVER['HTTP_REFERER'])) {
     echo "IP-адрес сайта: $ip <br>";
     echo "IP-адрес сайта (convert): $ip_convert <br>";
     echo "IP-адрес сайта (decod): $ip_decod";
-
-    // Выполните необходимые действия на основе значения $refererDomain
-    echo "Запрос был отправлен с домена: " . $refererDomain;
 } else {
     // Обработка случая, когда запрос не содержит HTTP_REFERER
     echo "HTTP_REFERER не определен";
