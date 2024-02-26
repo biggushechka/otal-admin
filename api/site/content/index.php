@@ -2,7 +2,7 @@
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 require_once $rootPath . '/api/config/read.php';
-//require_once $rootPath . '/api/config/db_connect.php';
+require_once $rootPath . '/api/config/db_connect.php';
 
 //$ip = gethostbyname($domain);
 //$ip_orig = ip2long($ip);

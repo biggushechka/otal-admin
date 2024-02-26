@@ -1,6 +1,10 @@
 RewriteEngine on
 Header set Access-Control-Allow-Headers "Content-Type"
 
+#RewriteRule ^api/site/content$ /api/site/content/index.php [L]
+RewriteRule ^api/site/content$ /api/site/content/index.php [L,R=301]
+
+
 # Проверяем, что файл или директория с заданным именем не существует
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -14,4 +18,5 @@ RewriteCond %{REQUEST_URI} ^/api/
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
 
 # Правило для пути, чтобы получить данные по сайту
-RewriteRule ^api/site/content$ /api/site/content/index [L]
+
+
