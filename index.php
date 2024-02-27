@@ -12,7 +12,6 @@ require_once $root . '/backend/template.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="version" content="<?= $version ?>">
 
-
     <!-- Favicons -->
     <link rel="shortcut icon" href="/static/favicon.png">
     <link rel="icon" href="/static/favicon.png">
