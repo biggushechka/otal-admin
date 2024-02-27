@@ -1,7 +1,5 @@
 <?php
 
-$rootPath = $_SERVER['DOCUMENT_ROOT'];
-
 $dbhost = "novato1v.beget.tech";
 $dbuser = "novato1v_otales";
 $dbpass = "7HASCI&w";

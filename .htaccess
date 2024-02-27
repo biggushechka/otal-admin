@@ -15,6 +15,3 @@ RewriteRule . index.php [L]
 # Правило для путей, где есть папка "api"
 RewriteCond %{REQUEST_URI} ^/api/
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
-
-# Правило для пути, чтобы получить данные по сайту
-RewriteRule ^/api/site/content /api/site/content/index.php [L,R=301]
