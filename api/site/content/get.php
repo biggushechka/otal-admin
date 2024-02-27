@@ -50,7 +50,7 @@ if ($dbh !== null) {
             $dbh = null;
             header("HTTP/1.1 400 Bad request");
             header('Content-Type: application/json; charset=UTF-8');
-            echo json_encode("Такого сайта не существует", JSON_UNESCAPED_UNICODE);
+            echo json_encode("Bad request", JSON_UNESCAPED_UNICODE);
             exit();
     }
 }
