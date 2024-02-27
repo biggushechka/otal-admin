@@ -34,5 +34,6 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 }
 
 if ($dbh !== null) {
-    echo "dbh";
+    $getContent = $_GET['content'];
+    echo "запросил: $getContent";
 }
