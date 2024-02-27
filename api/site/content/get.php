@@ -35,5 +35,22 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 
 if ($dbh !== null) {
     $getContent = $_GET['content'];
-    echo "запросил: $getContent";
+
+    switch ($getContent) {
+        case "global":
+            echo "global";
+            break;
+        case "advantages":
+            echo "advantages";
+            break;
+        case "gallery":
+            echo "gallery";
+            break;
+        default:
+            $dbh = null;
+            header("HTTP/1.1 400 Bad request");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode("Такого сайта не существует", JSON_UNESCAPED_UNICODE);
+            exit();
+    }
 }
