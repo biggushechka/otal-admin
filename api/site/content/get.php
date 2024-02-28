@@ -5,10 +5,9 @@ header("Access-Control-Allow-Origin: http://odal-jk");
 header("Access-Control-Allow-Credentials: true");
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
-$refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
-if (isset($refererDom) && isset($_GET["domain"])) {
+if (isset($_SERVER['HTTP_REFERER']) && isset($_GET["domain"])) {
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
     $getSite->execute(["domain" => "https://" . $_GET['domain']]);
