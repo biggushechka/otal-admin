@@ -10,7 +10,6 @@ $id_site = 0;
 
 require_once "$rootPath/api/config/db_connect.php";
 
-
 if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-jk/") {
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
