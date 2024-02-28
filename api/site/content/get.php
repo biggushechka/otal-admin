@@ -61,10 +61,12 @@ if ($dbh !== null) {
             getGeneral($id_site);
             break;
         case "advantages":
-            require_once "gallery.php";
+            require_once "mainSlider.php";
+            getMainSlider($id_site);
             break;
         case "gallery":
             require_once "advantages.php";
+            getAdvantages($id_site);
             break;
         default:
             $dbh = null;

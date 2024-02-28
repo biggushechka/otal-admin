@@ -1,50 +1,25 @@
 <?php
 
-$rootPath = $_SERVER['DOCUMENT_ROOT'];
-$method = $_SERVER['REQUEST_METHOD'];
-
-require_once $rootPath . '/api/config/db_connect.php';
-
-global $dbh;
-
-$get_post_data = file_get_contents("php://input");
-$POST = json_decode($get_post_data, true);
-
-$domain = $POST['domain'];
-
-if ($method === "POST") {
-    if ($domain == "") return false;
-
+function getAdvantages($id_site) {
     $generalInfo = new stdClass();
-
-    $query_get_site = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain");
-    $query_get_site->execute(["domain" => $domain]);
-    $get_site = $query_get_site->fetch(PDO::FETCH_OBJ);
-    $id_site = $get_site->id;
 
     // собираем дату
     $generalInfo->id_site = $id_site;
-    $generalInfo->domain = $get_site->domain;
-    $generalInfo->activity = $get_site->activity;
     // end - собираем дату
 
+    // получаем общую информацию по проекту и контакты
+    $query_get_general = $dbh->prepare("SELECT * FROM `site_general` WHERE `id_site` = :id_site");
+    $query_get_general->execute(["id_site" => $id_site]);
+    $data_general = $query_get_general->fetch(PDO::FETCH_OBJ);
 
-    if ($query_get_site->rowCount() > 0) {
+    if ($query_get_general->rowCount() > 0) {
+        unset($data_general->id);
+        unset($data_general->id_site);
+        unset($data_general->preview_photo);
+        unset($data_general->date_update);
 
-        // получаем общую информацию по проекту и контакты
-        $query_get_general = $dbh->prepare("SELECT * FROM `site_general` WHERE `id_site` = :id_site");
-        $query_get_general->execute(["id_site" => $id_site]);
-        $data_general = $query_get_general->fetch(PDO::FETCH_OBJ);
-
-        if ($query_get_general->rowCount() > 0) {
-            unset($data_general->id);
-            unset($data_general->id_site);
-            unset($data_general->preview_photo);
-            unset($data_general->date_update);
-
-            $generalInfo->title = $data_general->title_project;
-            $generalInfo->contacts = $data_general;
-        }
+        $generalInfo->title = $data_general->title_project;
+        $generalInfo->contacts = $data_general;
 
         // получаем список параметров по проекту
         $query_get_parameters = $dbh->prepare("SELECT * FROM `site_parameters` WHERE `id_site` = :id_site");
@@ -65,5 +40,4 @@ if ($method === "POST") {
         header("HTTP/1.1 404 Not Found");
         echo json_encode("Site not found", JSON_UNESCAPED_UNICODE);
     }
-
 }
