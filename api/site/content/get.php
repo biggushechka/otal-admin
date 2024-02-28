@@ -6,7 +6,7 @@ header("Access-Control-Allow-Credentials: true");
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
-$id_site = 0;
+$IDsite = 0;
 
 require_once "$rootPath/api/config/db_connect.php";
 
@@ -17,7 +17,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
 
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetchAll(PDO::FETCH_ASSOC);
-        $id_site = $site["title"];
+        $IDsite = $site["title"];
     } else {
         $dbh = null;
         header("HTTP/1.1 403 Forbidden");
@@ -58,7 +58,7 @@ if ($dbh !== null) {
         case "global":
             header("HTTP/1.1 200 OK");
             header('Content-Type: application/json; charset=UTF-8');
-            echo json_encode(["сайт"=>$id_site], JSON_UNESCAPED_UNICODE);
+            echo json_encode(["сайт"=>$IDsite], JSON_UNESCAPED_UNICODE);
             break;
         case "advantages":
             echo "advantages";
