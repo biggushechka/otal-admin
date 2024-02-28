@@ -5,9 +5,13 @@ header("Access-Control-Allow-Origin: http://odal-jk");
 header("Access-Control-Allow-Credentials: true");
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
+$refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
-if (isset($_SERVER['HTTP_REFERER']) && isset($_GET["domain"])) {
+require_once "$rootPath/api/config/db_connect.php";
+
+
+if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-jk/") {
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
     $getSite->execute(["domain" => "https://" . $_GET['domain']]);
@@ -22,7 +26,6 @@ if (isset($_SERVER['HTTP_REFERER']) && isset($_GET["domain"])) {
     }
 
 } else if (isset($_SERVER['HTTP_REFERER']) && !isset($_GET['domain'])) {
-    require_once "$rootPath/api/config/db_connect.php";
 
     $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
     $refererDomain = $referer['host']; // получаем домен
