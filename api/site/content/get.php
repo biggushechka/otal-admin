@@ -60,10 +60,10 @@ if ($dbh !== null) {
             require_once "general.php";
             break;
         case "advantages":
-            echo "advantages";
+            require_once "gallery.php";
             break;
         case "gallery":
-            echo "gallery";
+            require_once "advantages.php";
             break;
         default:
             $dbh = null;
