@@ -1,5 +1,8 @@
 <?php
 
+header("Access-Control-Allow-Origin: http://odal-jk");
+header("Access-Control-Allow-Credentials: true");
+
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
@@ -10,8 +13,7 @@ return false;
 
 if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-jk/") {
     // разрешаем подключаться к API разрешенным доменам
-    header("Access-Control-Allow-Origin: http://odal-jk");
-    header("Access-Control-Allow-Credentials: true");
+
 
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
