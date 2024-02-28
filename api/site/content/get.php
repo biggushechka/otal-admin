@@ -7,6 +7,13 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
 if (isset($_SERVER['HTTP_REFERER'])) {
 
+    $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
+    $refererDomain = $referer['host']; // получаем домен
+
+    // разрешаем подключаться к API разрешенным доменам
+    header("Access-Control-Allow-Origin: https://" . $refererDomain);
+    header("Access-Control-Allow-Credentials: true");
+
     header("HTTP/1.1 200 OK");
     header('Content-Type: application/json; charset=UTF-8');
     echo json_encode($_SERVER['HTTP_REFERER'], JSON_UNESCAPED_UNICODE);
