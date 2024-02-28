@@ -14,6 +14,7 @@ if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-
     $getSite->execute(["domain" => "https://" . $_GET['domain']]);
 
     if ($getSite->rowCount() > 0) {
+        echo "2222";
         $site = $getSite->fetchAll(PDO::FETCH_ASSOC);
         $id_site = 1111;
     } else {
