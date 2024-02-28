@@ -9,7 +9,6 @@ $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
 if (isset($refererDom) && $refererDom == "http://odal-jk/") {
-
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
     $getSite->execute(["domain" => "https://" . $_GET['domain']]);
