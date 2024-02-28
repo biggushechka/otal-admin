@@ -8,8 +8,6 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $id_site = 0;
 
 if (isset($_SERVER['HTTP_REFERER']) && isset($_GET["domain"])) {
-    echo "zashhhh";
-
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
     $getSite->execute(["domain" => "https://" . $_GET['domain']]);
