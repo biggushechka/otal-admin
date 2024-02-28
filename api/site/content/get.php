@@ -14,7 +14,7 @@ require_once "$rootPath/api/config/db_connect.php";
 if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-jk/") {
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
-    $getSite->execute(["domain" => "httpss://" . $_GET['domain']]);
+    $getSite->execute(["domain" => "https://" . $_GET['domain']]);
 
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetchAll(PDO::FETCH_ASSOC);
