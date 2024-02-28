@@ -52,6 +52,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
     exit("Доступ запрещен");
 }
 
+
 if ($dbh !== null) {
     switch ($_GET['content']) {
         case "global":
