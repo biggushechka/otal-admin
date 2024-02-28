@@ -55,6 +55,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
 if ($dbh !== null) {
     switch ($_GET['content']) {
         case "global":
+            header("HTTP/1.1 200 OK");
             header('Content-Type: application/json; charset=UTF-8');
             echo json_encode(["сайт"=>$id_site], JSON_UNESCAPED_UNICODE);
             break;
