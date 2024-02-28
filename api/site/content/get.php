@@ -4,7 +4,7 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
-if (isset($refererDom) && $_GET['domain'] !== "" && $refererDom == "http://odal-jk/") {
+if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-jk/") {
     // разрешаем подключаться к API разрешенным доменам
     header("Access-Control-Allow-Origin: http://odal-jk");
     header("Access-Control-Allow-Credentials: true");
