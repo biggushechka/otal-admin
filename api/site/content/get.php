@@ -7,9 +7,6 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
-echo "2222";
-
-return false;
 
 if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-jk/") {
     // разрешаем подключаться к API разрешенным доменам
