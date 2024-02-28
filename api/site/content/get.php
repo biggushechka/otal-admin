@@ -15,7 +15,7 @@ if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-
 
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetchAll(PDO::FETCH_ASSOC);
-        $id_site = $site->id;
+        $id_site = 1111;
     } else {
         $dbh = null;
         header("HTTP/1.1 403 Forbidden");
