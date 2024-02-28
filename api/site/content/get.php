@@ -1,9 +1,6 @@
 <?php
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
-require_once $rootPath . '/api/config/db_connect.php';
-
-$rootPath = $_SERVER['DOCUMENT_ROOT'];
 
 if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] === "http://odal-jk/") {
     // разрешаем подключаться к API разрешенным доменам
@@ -13,11 +10,10 @@ if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] === "http://odal
     header("HTTP/1.1 200 OK");
     header('Content-Type: application/json; charset=UTF-8');
     echo json_encode("200 OK", JSON_UNESCAPED_UNICODE);
-}
 
-return false;
+} else if (isset($_SERVER['HTTP_REFERER'])) {
+    require_once "$rootPath/api/config/db_connect.php";
 
-if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
     $refererDomain = $referer['host']; // получаем домен
     $ip_address = gethostbyname($refererDomain); // получаем IP-адрес по домену
