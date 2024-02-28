@@ -4,6 +4,10 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
+echo "2222";
+
+return false;
+
 if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-jk/") {
     // разрешаем подключаться к API разрешенным доменам
     header("Access-Control-Allow-Origin: http://odal-jk");
@@ -13,7 +17,6 @@ if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
     $getSite->execute(["domain" => "https://" . $_GET['domain']]);
 
-    echo "2222";
 
 
     if ($getSite->rowCount() > 0) {
