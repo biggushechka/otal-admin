@@ -37,8 +37,8 @@ if ($dbh !== null) {
     $getContent = $_GET['content'];
 
     switch ($getContent) {
-        case "global: ascas":
-            echo "global";
+        case "global":
+            echo "global $refererDomain";
             break;
         case "advantages":
             echo "advantages";
