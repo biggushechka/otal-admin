@@ -22,7 +22,7 @@ if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-
         exit("Доступ запрещен ((");
     }
 
-} else if (isset($_SERVER['HTTP_REFERER'])) {
+} else if (isset($_SERVER['HTTP_REFERER']) && !isset($_GET['domain'])) {
     require_once "$rootPath/api/config/db_connect.php";
 
     $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
@@ -53,9 +53,7 @@ if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-
 }
 
 if ($dbh !== null) {
-    $getContent = $_GET['content'];
-
-    switch ($getContent) {
+    switch ($_GET['content']) {
         case "global":
             echo "global $id_site";
             break;
