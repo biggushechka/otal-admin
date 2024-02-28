@@ -7,11 +7,6 @@ if (isset($refererDom) && $refererDom == "http://odal-jk/") {
     // разрешаем подключаться к API разрешенным доменам
     header("Access-Control-Allow-Origin: http://odal-jk");
     header("Access-Control-Allow-Credentials: true");
-
-    header("HTTP/1.1 200 OK");
-    header('Content-Type: application/json; charset=UTF-8');
-    echo json_encode("200 OK", JSON_UNESCAPED_UNICODE);
-
 } else if (isset($_SERVER['HTTP_REFERER'])) {
     require_once "$rootPath/api/config/db_connect.php";
 
