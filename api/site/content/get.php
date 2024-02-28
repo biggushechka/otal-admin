@@ -7,17 +7,15 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
+echo $refererDom;
 
-if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-jk/") {
+if (isset($refererDom) && $refererDom == "http://odal-jk/") {
     // разрешаем подключаться к API разрешенным доменам
 
 
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
     $getSite->execute(["domain" => "https://" . $_GET['domain']]);
-
-
-    echo "1231231";
 
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetchAll(PDO::FETCH_ASSOC);
