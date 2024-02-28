@@ -1,16 +1,13 @@
 <?php
 
-header("Access-Control-Allow-Origin: http://odal-jk");
-header("Access-Control-Allow-Credentials: true");
-
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
-echo $refererDom;
-
 if (isset($refererDom) && $refererDom == "http://odal-jk/") {
-    // разрешаем подключаться к API разрешенным доменам
+    // разрешаем подключаться к API
+    header("Access-Control-Allow-Origin: http://odal-jk");
+    header("Access-Control-Allow-Credentials: true");
 
 
     // получение сайта
