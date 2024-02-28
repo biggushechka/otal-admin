@@ -1,6 +1,5 @@
 <?php
 
-global $dbh;
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $method = $_SERVER['REQUEST_METHOD'];
 

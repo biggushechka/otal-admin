@@ -1,8 +1,4 @@
 RewriteEngine on
-Header set Access-Control-Allow-Headers "Content-Type"
-Header set Cache-Control "no-cache, no-store, must-revalidate"
-Header set Pragma "no-cache"
-Header set Expires 0
 
 # Проверяем, что файл или директория с заданным именем не существует
 RewriteCond %{REQUEST_FILENAME} !-f
