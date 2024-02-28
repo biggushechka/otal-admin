@@ -18,7 +18,7 @@ logs
 *.sw*
 
 #ngnix
-*.conf
+#*.conf
 
 #project files
 api/media/
