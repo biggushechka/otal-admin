@@ -6,7 +6,7 @@ header("Access-Control-Allow-Credentials: true");
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 
-echo json_encode($refererDom, JSON_UNESCAPED_UNICODE);
+echo json_encode(["domain"=>$refererDom], JSON_UNESCAPED_UNICODE);
 
 
 return false;
