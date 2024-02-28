@@ -75,7 +75,4 @@ if ($dbh !== null) {
             echo json_encode("Bad request", JSON_UNESCAPED_UNICODE);
             exit();
     }
-
-    $dbh = null;
-    exit();
 }
