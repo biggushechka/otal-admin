@@ -38,7 +38,7 @@ if ($dbh !== null) {
 
     switch ($getContent) {
         case "global":
-            echo "global";
+            echo "global - " . parse_url($_SERVER['HTTP_REFERER']);
             break;
         case "advantages":
             echo "advantages";
