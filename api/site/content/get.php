@@ -17,7 +17,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
 
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetch(PDO::FETCH_OBJ);
-        $id_max = $site["id"];
+        $id_max = $site->id;
 
     } else {
         $dbh = null;
