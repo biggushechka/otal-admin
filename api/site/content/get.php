@@ -8,6 +8,14 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
+if (isset($_GET["domain"])) {
+    echo "true";
+} else {
+    echo "false";
+}
+
+return false;
+
 if (isset($refererDom) && $refererDom == "http://odal-jk/") {
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
