@@ -13,8 +13,10 @@ if (isset($refererDom) && isset($_GET['domain']) && $refererDom == "http://odal-
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
     $getSite->execute(["domain" => "https://" . $_GET['domain']]);
 
+    echo "2222";
+
+
     if ($getSite->rowCount() > 0) {
-        echo "2222";
         $site = $getSite->fetchAll(PDO::FETCH_ASSOC);
         $id_site = 1111;
     } else {
