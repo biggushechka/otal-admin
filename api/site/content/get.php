@@ -1,21 +1,18 @@
 <?php
 
-// разрешаем подключаться к API разрешенным доменам
-header("Access-Control-Allow-Origin: http://odal-jk");
-header("Access-Control-Allow-Credentials: true");
-
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 require_once $rootPath . '/api/config/db_connect.php';
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
-if (isset($_SERVER['HTTP_REFERER'])) {
-    $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
-    $refererDomain = $referer['host']; // получаем домен
+if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] === "http://odal-jk/") {
+    // разрешаем подключаться к API разрешенным доменам
+    header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_REFERER']);
+    header("Access-Control-Allow-Credentials: true");
 
     header("HTTP/1.1 200 OK");
     header('Content-Type: application/json; charset=UTF-8');
-    echo json_encode(["referer"=>$_SERVER['HTTP_REFERER'], "host"=>$refererDomain], JSON_UNESCAPED_UNICODE);
+    echo json_encode("200 OK", JSON_UNESCAPED_UNICODE);
 }
 
 return false;
