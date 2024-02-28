@@ -17,7 +17,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
 
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetchAll(PDO::FETCH_ASSOC);
-        $id_site = $site["id"];
+        $id_site = $site;
     } else {
         $dbh = null;
         header("HTTP/1.1 403 Forbidden");
@@ -55,7 +55,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
 if ($dbh !== null) {
     switch ($_GET['content']) {
         case "global":
-            echo "global $id_site";
+            echo json_encode($id_site, JSON_UNESCAPED_UNICODE);
             break;
         case "advantages":
             echo "advantages";
