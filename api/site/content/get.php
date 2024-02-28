@@ -58,6 +58,7 @@ if ($dbh !== null) {
     switch ($_GET['content']) {
         case "global":
             require_once "general.php";
+            getGeneral($id_site);
             break;
         case "advantages":
             require_once "gallery.php";

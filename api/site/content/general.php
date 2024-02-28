@@ -1,33 +1,18 @@
 <?php
 
-$rootPath = $_SERVER['DOCUMENT_ROOT'];
-$method = $_SERVER['REQUEST_METHOD'];
-
-require_once $rootPath . '/api/config/db_connect.php';
-
-global $dbh;
-
-$get_post_data = file_get_contents("php://input");
-$POST = json_decode($get_post_data, true);
-
-$domain = $POST['domain'];
-
-if ($method === "POST") {
-    if ($domain == "") return false;
-
+function getGeneral($id_site) {
+    global $dbh;
     $generalInfo = new stdClass();
 
-    $query_get_site = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain");
-    $query_get_site->execute(["domain" => $domain]);
+    $query_get_site = $dbh->prepare("SELECT * FROM `my_sites` WHERE `id` = :id");
+    $query_get_site->execute(["id" => $id_site]);
     $get_site = $query_get_site->fetch(PDO::FETCH_OBJ);
-    $id_site = $get_site->id;
 
     // собираем дату
     $generalInfo->id_site = $id_site;
     $generalInfo->domain = $get_site->domain;
     $generalInfo->activity = $get_site->activity;
     // end - собираем дату
-
 
     if ($query_get_site->rowCount() > 0) {
 
@@ -65,5 +50,4 @@ if ($method === "POST") {
         header("HTTP/1.1 404 Not Found");
         echo json_encode("Site not found", JSON_UNESCAPED_UNICODE);
     }
-
 }
