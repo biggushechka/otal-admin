@@ -68,6 +68,10 @@ if ($dbh !== null) {
             require_once "mainSlider.php";
             getMainSlider($id_site);
             break;
+        case "about":
+            require_once "about-project.php";
+            aboutProject($id_site);
+            break;
         default:
             $dbh = null;
             header("HTTP/1.1 400 Bad request");
