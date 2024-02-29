@@ -28,4 +28,7 @@ function getMainSlider($id_site) {
     } else {
         header("HTTP/1.1 404 Not Found");
     }
+
+    $dbh = null;
+    die();
 }

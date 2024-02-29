@@ -51,4 +51,7 @@ function getGeneral($id_site) {
         header("HTTP/1.1 404 Not Found");
         echo json_encode("Site not found", JSON_UNESCAPED_UNICODE);
     }
+
+    $dbh = null;
+    die();
 }

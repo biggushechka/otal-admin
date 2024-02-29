@@ -32,4 +32,7 @@ function aboutProject($id_site) {
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode($about, JSON_UNESCAPED_UNICODE);
     }
+
+    $dbh = null;
+    die();
 }
