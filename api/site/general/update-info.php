@@ -10,6 +10,7 @@ $POST = json_decode($get_post_data, true);
 
 $siteID = $POST['id_site'];
 $title_project = $POST['title_project'];
+$slogan = $POST['slogan'];
 $phone = $POST['phone'];
 $email = $POST['email'];
 $telegram_phone = $POST['telegram_phone'];
@@ -18,10 +19,11 @@ $whatsapp_phone = $POST['whatsapp_phone'];
 $whatsapp_link = $POST['whatsapp_link'];
 $currentDateTime = date('Y-m-d H:i:s');
 
-$query_update_general = $dbh->prepare("UPDATE `site_general` SET `title_project` = :title_project, `phone` = :phone, `email` = :email, `telegram_phone` = :telegram_phone, `telegram_link` = :telegram_link, `whatsapp_phone` = :whatsapp_phone, `whatsapp_link` = :whatsapp_link, `date_update` = :date_update WHERE `id_site` = :id_site");
+$query_update_general = $dbh->prepare("UPDATE `site_general` SET `title_project` = :title_project, `slogan` = :slogan, `phone` = :phone, `email` = :email, `telegram_phone` = :telegram_phone, `telegram_link` = :telegram_link, `whatsapp_phone` = :whatsapp_phone, `whatsapp_link` = :whatsapp_link, `date_update` = :date_update WHERE `id_site` = :id_site");
 $query_update_general->execute([
     "id_site" => $siteID,
     "title_project" => $title_project,
+    "slogan" => $slogan,
     "phone" => $phone,
     "email" => $email,
     "telegram_phone" => $telegram_phone,

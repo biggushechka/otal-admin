@@ -84,6 +84,7 @@ export default function general_info(project) {
         // вставляем поля формы
         blockTAG.querySelector("form").append(
             formFields.inputText({label: "Название ЖК", name: "title_project", validate: "true"}),
+            formFields.inputText({label: "Слоган", name: "slogan", validate: "true"}),
             formFields.inputText({label: "Телефон (офис продаж)", name: "phone", mask: "phone", validate: "true"}),
             formFields.inputText({label: "E-mail", name: "email", mask: "email", validate: "false"}),
             formFields.inputText({label: "Telegram (номер)", name: "telegram_phone", mask: "phone", validate: "false"}),
