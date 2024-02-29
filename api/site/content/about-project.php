@@ -31,6 +31,10 @@ function aboutProject($id_site) {
         header("HTTP/1.1 200 OK");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode($about, JSON_UNESCAPED_UNICODE);
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode("Ошибка", JSON_UNESCAPED_UNICODE);
     }
 
     $dbh = null;
