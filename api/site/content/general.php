@@ -28,6 +28,7 @@ function getGeneral($id_site) {
             unset($data_general->date_update);
 
             $generalInfo->title = $data_general->title_project;
+            $generalInfo->slogan = $data_general->slogan;
             $generalInfo->contacts = $data_general;
         }
 
