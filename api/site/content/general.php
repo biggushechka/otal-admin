@@ -1,7 +1,6 @@
 <?php
 
 function getGeneral($id_site) {
-    global $dbh;
     $generalInfo = new stdClass();
 
     $query_get_site = $dbh->prepare("SELECT * FROM `my_sites` WHERE `id` = :id");
