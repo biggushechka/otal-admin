@@ -11,8 +11,8 @@ function aboutProject($id_site) {
         $aboutProject = $query_get_about->fetch(PDO::FETCH_OBJ);
 
         // собираем дату
-        $about->about->title = $aboutProject["title"];
-        $about->about->desc = $aboutProject["desc"];
+        $about->about->title = $aboutProject->title;
+        $about->about->desc = $aboutProject->desc;
     }
 
     $query_get_territory = $dbh->prepare("SELECT * FROM `site_desc_territory` WHERE `id_site` = :id_site");
@@ -22,8 +22,8 @@ function aboutProject($id_site) {
         $descTerritory = $query_get_territory->fetch(PDO::FETCH_OBJ);
 
         // собираем дату
-        $about->territory->title = $descTerritory["title"];
-        $about->territory->desc = $descTerritory["desc"];
+        $about->territory->title = $descTerritory->title;
+        $about->territory->desc = $descTerritory->desc;
     }
 
 
