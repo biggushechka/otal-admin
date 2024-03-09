@@ -2,6 +2,7 @@
 
 function getMainSlider($id_site) {
     global $dbh;
+
     $query_get_album = $dbh->prepare("SELECT * FROM `site_gallery_album` WHERE `id_site` = :id_site AND `title` = :title LIMIT 1");
     $query_get_album->execute(["id_site" => $id_site, "title" => "Основной альбом"]);
 

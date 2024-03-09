@@ -72,6 +72,10 @@ if ($dbh !== null) {
             require_once "about-project.php";
             aboutProject($id_site);
             break;
+        case "meta": // Meta
+            require_once "meta.php";
+            meta($id_site);
+            break;
         default:
             $dbh = null;
             header("HTTP/1.1 400 Bad request");

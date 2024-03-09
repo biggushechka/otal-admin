@@ -6,7 +6,72 @@ export default function meta(project) {
     document.getElementById("app").append(sectionHTML);
 
     btnAddMeta();
+    outputTitle();
     getAllMeta();
+
+    function outputTitle() {
+        var titleHTML = document.createElement("div");
+        titleHTML.classList.add("meta-item");
+        titleHTML.classList.add("card-body");
+        titleHTML.setAttribute("meta-id", meta.id)
+        titleHTML.innerHTML = `
+        <div class="header-card-body">
+            <h4 class="title-card">Title страницы</h4>
+        </div>
+        <div class="content-card">
+            <form></form>
+        </div>
+        <div class="footer-events">
+            <button type="button" class="btn btn-primary btn-icon-left btn-edit-title"><i class="ph ph-check-circle"></i>Сохранить</button>
+        </div>`;
+        sectionHTML.querySelector(".btn-add-container").before(titleHTML);
+
+        var form = titleHTML.querySelector("form");
+
+        // добавляем поля
+        form.append(
+            formFields.inputText({name: "code", validate: "true"}),
+            formFields.inputHidden({name: "id", validate: "true"}),
+            formFields.inputHidden({name: "title", value: "title", validate: "true"}),
+            formFields.inputHidden({name: "comment", value: "", validate: "true"}),
+        );
+
+        // получаем данные
+        var getTitle = XMLHttpRequestAJAX({
+            url: "/api/site/meta/get-meta",
+            method: "GET",
+            body: {
+                type: "title",
+                id_site: project.id
+            }
+        });
+
+        if (getTitle.code === 200) {
+            getTitle = getTitle.data[0];
+
+            // заполняем поля формы из БД
+            formFields.setValuesForm(form, getTitle);
+        }
+
+        titleHTML.querySelector(".btn-edit-title").addEventListener("click", function () {
+            var getValuesForm = formFields.getValuesForm(form);
+
+            if (getValuesForm.status === false) return false;
+
+            // отправляем данные
+            var updateMeta = XMLHttpRequestAJAX({
+                url: "/api/site/meta/edit-meta",
+                method: "POST",
+                body: getValuesForm.form
+            });
+
+            if (updateMeta.code === 200) {
+                alertNotification({status: "success", text: "Запись успешно обновлена", pos: "top-center"});
+            } else {
+                alertNotification({status: "error", text: "Ошибка при обновлении записи", pos: "top-center"});
+            }
+        });
+    }
 
     function getAllMeta() {
         // получаем данные
@@ -14,11 +79,13 @@ export default function meta(project) {
             url: "/api/site/meta/get-meta",
             method: "GET",
             body: {
+                type: "meta",
                 id_site: project.id
             }
         });
 
         if (getMeta.code === 200) {
+            console.log("all-meta", getMeta.data)
             for (var i in getMeta.data) {
                 outputMetaItem(getMeta.data[i]);
             }
