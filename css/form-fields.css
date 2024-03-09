@@ -227,6 +227,18 @@ form .field-container .upload-photo {
     margin-top: 6px;
 }
 
+form .field-container.error .upload-photo {
+    border-color: var(--danger) !important;
+}
+
+form .field-container.error .upload-photo .title {
+    color: var(--danger) !important;
+}
+
+form .field-container.error .upload-photo i {
+    color: var(--danger) !important;
+}
+
 form .field-container .upload-photo .title {
     display: flex;
     align-items: center;

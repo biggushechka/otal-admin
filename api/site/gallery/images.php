@@ -113,12 +113,8 @@ function photoReplacement() {
     $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
 
     if ($query_get_images->rowCount() != 0) {
-        $parsed_url = parse_url($getImages->image);
-        $pathFile = $parsed_url['path'];
-        $pathFile = ltrim($pathFile, '/');
-
         // удаляем файл на сервере
-        $delete_file = deleteFile($pathFile);
+        $delete_file = deleteFile($getImages->image);
 
         if ($delete_file == "false") {
             header("HTTP/1.1 400 Bad Request");
@@ -194,13 +190,8 @@ if ($method === "DELETE") {
     $query_get_images->execute(["id" => $id_image]);
     $getImages = $query_get_images->fetch(PDO::FETCH_OBJ);
 
-
-    $parsed_url = parse_url($getImages->image);
-    $pathFile = $parsed_url['path'];
-    $pathFile = ltrim($pathFile, '/');
-
     // удаляем файл на сервере
-    $delete_file = deleteFile($pathFile);
+    $delete_file = deleteFile($getImages->image);
 
     if ($delete_file == "false") return false;
 

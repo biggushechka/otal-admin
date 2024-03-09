@@ -144,12 +144,8 @@ if ($method === "DELETE") {
     $allImages = $query_find_images->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($allImages as &$image) {
-        $parsed_url = parse_url($image['image']);
-        $pathFile = $parsed_url['path'];
-        $pathFile = ltrim($pathFile, '/');
-
         // удаляем файл на сервере
-        $delete_file = deleteFile($pathFile);
+        $delete_file = deleteFile($image['image']);
 
         if ($delete_file != "false") {
             $query_delete_row = $dbh->prepare("DELETE FROM `site_gallery_image` WHERE `id` = :id");

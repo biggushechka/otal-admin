@@ -56,19 +56,19 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
 
 if ($dbh !== null) {
     switch ($_GET['content']) {
-        case "global":
+        case "global": // Общая информация
             require_once "general.php";
             getGeneral($id_site);
             break;
-        case "advantages":
+        case "advantages": // преимущества
             require_once "advantages.php";
             getAdvantages($id_site);
             break;
-        case "mainSlider":
+        case "mainSlider": // верхний слайдер
             require_once "mainSlider.php";
             getMainSlider($id_site);
             break;
-        case "about":
+        case "about": // о проекте
             require_once "about-project.php";
             aboutProject($id_site);
             break;

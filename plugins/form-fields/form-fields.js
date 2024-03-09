@@ -268,19 +268,22 @@ class FormFields {
             multiple = input.getAttribute("multiple"),
             photoAdv = [];
 
-        if (multiple == "false") blockUploadPhoto.classList.add("hidden");
-
         previewUploadPhoto();
 
         if (typeof photos == "string") {
-            if (photos == "") return false;
+            if (photos === "") return false;
+
+            blockUploadPhoto.classList.add("hidden");
             photoItem(photos);
         } else {
-            if (photos.length == 0) return false;
+            if (photos === undefined || photos.length === 0) return false;
+
+            blockUploadPhoto.classList.add("hidden");
+
             for (var i in photos) {
                 var photo = photos[i];
 
-                if (input.value != "") photoAdv = JSON.parse(input.value);
+                if (input.value !== "") photoAdv = JSON.parse(input.value);
 
                 photoAdv.push(photo);
 
@@ -290,6 +293,7 @@ class FormFields {
             }
         }
 
+        // контейнер для отображения загруженных фотографий
         function previewUploadPhoto() {
             var resultList = fieldTAG.querySelector(".preview-photo");
             if (resultList) return false;
@@ -319,7 +323,11 @@ class FormFields {
                 input.value = JSON.stringify(photoAdv);
 
                 // если все фото удалены, то показываем кнопку "загрузить фото"
-                if (photoAdv.length == 0) blockUploadPhoto.classList.remove("hidden");
+                if (photoAdv.length == 0) {
+                    blockUploadPhoto.classList.remove("hidden");
+                    fieldTAG.querySelector(".preview-photo").remove();
+                    input.value = "";
+                }
             })
         }
     }
@@ -390,7 +398,10 @@ class FormFields {
                     name = input.getAttribute("name"),
                     photos = values[name];
 
-                this.photos_preview(photos, field);
+                if (photos !== undefined && photos !== "") {
+                    input.value = photos;
+                    this.photos_preview(photos, field);
+                }
             }
 
         });
@@ -484,7 +495,9 @@ class FormFields {
                     isUploadPhoto = container.querySelector(".preview-photo");
                     validate = input.getAttribute("validate");
 
-                if (!isUploadPhoto) fieldsValid.push(name);
+                console.log("isUploadPhoto", isUploadPhoto)
+
+                if (isUploadPhoto === null) fieldsValid.push(name);
 
                 formData[name] = value;
             }
@@ -507,6 +520,7 @@ class FormFields {
         fieldsValid.forEach(function (field) {
             if (formData[field] == "" || formData[field].length == 0) {
                 isValid = 1;
+                console.log("formData[field]", field)
                 form.querySelector("*[name='"+field+"']").closest(".field-container").classList.add("error");
             }
         });

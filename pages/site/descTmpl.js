@@ -13,7 +13,6 @@ export default function desc_about(data) {
 
     if (getDesc.code === 200) {
         getDesc = getDesc.data;
-        console.log(data.target, getDesc)
     } else {
         alert("error");
         return false;
@@ -37,19 +36,21 @@ export default function desc_about(data) {
     cardTAG.querySelector("form").append(
         formFields.inputText({label: "Заголовок", name: "title", validate: "false"}),
         formFields.textarea({label: "Описание", name: "desc", validate: "false"}),
+        formFields.photos({label: "Прикрепить фотографию", name: "photo", ext: "img", multiple: "false", validate: "true"}),
         formFields.inputHidden({name: "id", value: getDesc.id})
     );
 
-    console.log('maxmax', data.target)
+    console.log("getDesc", getDesc)
 
     // заполняем поля формы из БД
     formFields.setValuesForm(cardTAG.querySelector("form"), getDesc);
-
 
     cardTAG.querySelector(".btn-save-form").addEventListener("click", function () {
         var getBtnSave = this,
             getForm = this.closest(".content-card").querySelector("form"),
             getValuesForm = formFields.getValuesForm(getForm);
+
+        console.log("getValuesForm", getValuesForm);
 
         if (getValuesForm.status == false) return false;
 
@@ -66,7 +67,6 @@ export default function desc_about(data) {
             alertNotification({status: "success", text: "Данные успешно обновлены", pos: "top-center"});
         } else {
             alertNotification({status: "error", text: "Ошибка при сохранении данных", pos: "top-center"});
-            console.log(updateGeneralInfo.data);
         }
     });
 }

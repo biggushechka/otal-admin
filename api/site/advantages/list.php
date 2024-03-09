@@ -166,12 +166,8 @@ function updateRow() {
         $find_photo = $query_find_photo->fetch(PDO::FETCH_ASSOC);
         $find_photo_idAlbum = $find_photo["id_album"];
 
-        $parsed_url = parse_url($find_photo["image"]);
-        $pathFile = $parsed_url['path'];
-        $pathFile = ltrim($pathFile, '/');
-
         // удаляем файл на сервере
-        $delete_file = deleteFile($pathFile);
+        $delete_file = deleteFile($find_photo["image"]);
 
         if ($delete_file == "false") return false;
 
@@ -248,13 +244,10 @@ function updateRow() {
 
 // удаление записи
 if ($method === "DELETE") {
-    $photo = $POST['photo'] ?? $_GET['photo'];
-    $parsed_url = parse_url($photo);
-    $pathFile = $parsed_url['path'];
-    $pathFile = ltrim($pathFile, '/');
+    $photo = $_GET['photo'];
 
     // удаляем файл на сервере
-    $delete_file = deleteFile($pathFile);
+    $delete_file = deleteFile($photo);
 
     if ($delete_file == "false") return false;
 

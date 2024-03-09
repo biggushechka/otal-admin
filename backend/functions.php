@@ -168,8 +168,13 @@ function deleteDirectory($directory) {
 }
 
 // Функция для удаления конкретного файла
-function deleteFile($filePath) {
+function deleteFile($file) {
     global $rootPath;
+
+    $parsed_url = parse_url($file);
+    $filePath = $parsed_url['path'];
+    $filePath = ltrim($filePath, '/');
+
     $localPath = $rootPath . "/" . $filePath;
     $detele_file = "false";
 

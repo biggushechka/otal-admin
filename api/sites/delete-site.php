@@ -44,12 +44,10 @@ function deletePhoto($nameTable, $id_site) {
     $allImages = $query_find_images->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($allImages as &$image) {
-        $parsed_url = parse_url($image['image'] ?? $image['preview_photo']);
-        $pathFile = $parsed_url['path'];
-        $pathFile = ltrim($pathFile, '/');
+        $photo = $image['image'] ?? $image['preview_photo'];
 
         // удаляем файл на сервере
-        $delete_file = deleteFile($pathFile);
+        $delete_file = deleteFile($photo);
 
         // если файл был успешно удален, то удаляем запись из таблицы
         if ($delete_file != "false") {
