@@ -3,8 +3,8 @@
 function meta($id_site) {
     global $dbh;
 
-    $query_get_meta = $dbh->prepare("SELECT `title`, `code` FROM `site_meta` WHERE `id_site` = :id_site");
-    $query_get_meta->execute(["id_site" => $id_site]);
+    $query_get_meta = $dbh->prepare("SELECT `title`, `code` FROM `site_meta` WHERE `id_site` = :id_site AND `activity` = :activity");
+    $query_get_meta->execute(["id_site" => $id_site, "activity" => "on"]);
 
     if ($query_get_meta->rowCount() > 0) {
         $meta = $query_get_meta->fetchAll(PDO::FETCH_ASSOC);
