@@ -1,6 +1,6 @@
 <?php
 
-function aboutProject($id_site) {
+function getAboutProject($id_site) {
     global $dbh;
     $about = new stdClass();
 

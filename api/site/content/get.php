@@ -70,7 +70,11 @@ if ($dbh !== null) {
             break;
         case "about": // о проекте
             require_once "about-project.php";
-            aboutProject($id_site);
+            getAboutProject($id_site);
+            break;
+        case "infrastructure": // о проекте
+            require_once "infrastructure.php";
+            getInfrastructure($id_site);
             break;
         case "meta": // Meta
             require_once "meta.php";
