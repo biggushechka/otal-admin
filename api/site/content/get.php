@@ -50,7 +50,7 @@ if (isset($refererDom) && isset($fakeDomain) && $refererDom == "http://odal-jk/"
     } else {
         $dbh = null;
         header("HTTP/1.1 403 Forbidden");
-        exit("Доступ запрещен-1 (( $refererDom");
+        exit("Доступ запрещен-1 (( $refererDomain");
     }
 
 } else {
