@@ -4,6 +4,12 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
 
+$referrerMax = isset($_SERVER['HTTP_REFERER']);
+$domainMax = isset($_GET['domain']);
+
+echo "referrerMax: $referrerMax " . $_SERVER['HTTP_REFERER'] . "\n";
+echo "domainMax: $domainMax " . $_GET['domain'];
+
 require_once "$rootPath/api/config/db_connect.php";
 
 if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-jk/") {
@@ -44,16 +50,14 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
         header("Access-Control-Allow-Credentials: true");
     } else {
         $dbh = null;
-        echo "exit-1";
-//        header("HTTP/1.1 100 Forbidden");
-//        exit("Доступ запрещен ((");
+        header("HTTP/1.1 403 Forbidden");
+        exit("Доступ запрещен ((");
     }
 
 } else {
     $dbh = null;
-    echo "exit-2";
-//    header("HTTP/1.1 403-2 Forbidden");
-//    exit("Доступ запрещен");
+    header("HTTP/1.1 403 Forbidden");
+    exit("Доступ запрещен");
 }
 
 
