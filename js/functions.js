@@ -487,7 +487,11 @@ function getUploadFiles(data, callback) {
                 id_file = generateRandomNumber(10),
                 fileExtension = file.name.split(".").pop().toLowerCase(),
                 extensionIndex = file.name.lastIndexOf("."),
-                file_name = file.name.slice(0, extensionIndex) + "_" + id_file;
+                file_name = file.name.replace(/\s/g, "-");
+
+            file_name = file_name.slice(0, extensionIndex) + "_" + id_file;
+
+            console.log("file_name", file_name);
 
             reader.onload = function() {
                 var dataFile = {
