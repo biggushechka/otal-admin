@@ -6,11 +6,12 @@ header("Access-Control-Allow-Credentials: true");
 
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
+$fakeDomain = $_GET["domain"];
 $id_site = 0;
 
 require_once "$rootPath/api/config/db_connect.php";
 
-if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-jk/") {
+if (isset($refererDom) && isset($fakeDomain) && $refererDom == "http://odal-jk/") {
 
     // разрешаем подключаться к API
     header("Access-Control-Allow-Origin: http://odal-jk");
@@ -18,7 +19,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
 
     // получение сайта
     $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
-    $getSite->execute(["domain" => "https://" . $_GET['domain']]);
+    $getSite->execute(["domain" => "https://$fakeDomain"]);
 
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetch(PDO::FETCH_OBJ);
@@ -26,7 +27,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
     } else {
         $dbh = null;
         header("HTTP/1.1 403 Forbidden");
-        exit("Доступ запрещен ((");
+        exit("Доступ запрещен-0 (( $refererDom");
     }
 
 } else if (isset($refererDom)) {
@@ -49,13 +50,13 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
     } else {
         $dbh = null;
         header("HTTP/1.1 403 Forbidden");
-        exit("Доступ запрещен ((");
+        exit("Доступ запрещен-1 (( $refererDom");
     }
 
 } else {
     $dbh = null;
     header("HTTP/1.1 403 Forbidden");
-    exit("Доступ запрещен");
+    exit("Доступ запрещен-2");
 }
 
 
