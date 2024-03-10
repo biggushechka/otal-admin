@@ -193,8 +193,6 @@ if ($method === "DELETE") {
     // удаляем файл на сервере
     $delete_file = deleteFile($getImages->image);
 
-    echo $delete_file;
-
     if ($delete_file == "false") return false;
 
     $query_delete = $dbh->prepare("DELETE FROM `site_gallery_image` WHERE `id` = :id");

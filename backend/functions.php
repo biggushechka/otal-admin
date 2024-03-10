@@ -178,6 +178,11 @@ function deleteFile($file) {
     $localPath = $rootPath . "/" . $filePath;
     $detele_file = "false";
 
+    echo "<pre>";
+    echo $localPath;
+    echo $rootPath;
+    echo "</pre>";
+
     if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
         $serverConnect = connectServerFTP();
 
