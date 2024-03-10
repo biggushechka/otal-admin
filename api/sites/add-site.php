@@ -22,10 +22,16 @@ if ($isSite) {
     header("HTTP/1.1 304 Not Modified");
     echo json_encode("Сайт с таким названием или доменом уже существует", JSON_UNESCAPED_UNICODE);
 } else {
+    $referer = parse_url($domain); // конвертирует URL в строку
+    $refererDomain = $referer['host']; // получаем домен
+    $ip_address = gethostbyname($refererDomain); // получаем IP-адрес по домену
+    $ip_convert = ip2long($ip_address); // конвертируем IP-адрес
+
     $query_create_site = $dbh->prepare("INSERT INTO `my_sites` SET `title` = :title, `domain` = :domain, `date_create` = :date_create, `activity` = :activity");
     $query_create_site->execute([
         "title" => $title,
         "domain" => $domain,
+        "ip_address" => $ip_convert,
         "date_create" => $currentDateTime,
         "activity" => "on"
     ]);
