@@ -29,7 +29,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
         exit("Доступ запрещен ((");
     }
 
-} else if (isset($_SERVER['HTTP_REFERER'])) {
+} else if (isset($refererDom)) {
     $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
     $refererDomain = $referer['host']; // получаем домен
     $ip_address = gethostbyname($refererDomain); // получаем IP-адрес по домену
