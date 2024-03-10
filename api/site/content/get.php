@@ -1,17 +1,8 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Credentials: true");
-
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
-
-$referrerMax = isset($_SERVER['HTTP_REFERER']);
-$domainMax = isset($_GET['domain']);
-
-echo "referrerMax: $referrerMax " . $_SERVER['HTTP_REFERER'] . "\n";
-echo "domainMax: $domainMax " . $_GET['domain'];
 
 require_once "$rootPath/api/config/db_connect.php";
 
@@ -34,7 +25,7 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
         exit("Доступ запрещен ((");
     }
 
-} else if (isset($_SERVER['HTTP_REFERER']) && !isset($_GET['domain'])) {
+} else if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
     $refererDomain = $referer['host']; // получаем домен
     $ip_address = gethostbyname($refererDomain); // получаем IP-адрес по домену
