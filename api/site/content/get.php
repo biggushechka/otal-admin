@@ -1,5 +1,9 @@
 <?php
 
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Credentials: true");
+
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $id_site = 0;
@@ -44,13 +48,13 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
         header("Access-Control-Allow-Credentials: true");
     } else {
         $dbh = null;
-        header("HTTP/1.1 403 Forbidden1");
+        header("HTTP/1.1 403 Forbidden");
         exit("Доступ запрещен ((");
     }
 
 } else {
     $dbh = null;
-    header("HTTP/1.1 403 Forbidden2");
+    header("HTTP/1.1 403 Forbidden");
     exit("Доступ запрещен");
 }
 
