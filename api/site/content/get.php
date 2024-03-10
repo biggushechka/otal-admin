@@ -44,14 +44,16 @@ if (isset($refererDom) && isset($_GET["domain"]) && $refererDom == "http://odal-
         header("Access-Control-Allow-Credentials: true");
     } else {
         $dbh = null;
-        header("HTTP/1.1 100 Forbidden");
-        exit("Доступ запрещен ((");
+        echo "exit-1";
+//        header("HTTP/1.1 100 Forbidden");
+//        exit("Доступ запрещен ((");
     }
 
 } else {
     $dbh = null;
-    header("HTTP/1.1 204 Forbidden");
-    exit("Доступ запрещен");
+    echo "exit-2";
+//    header("HTTP/1.1 403-2 Forbidden");
+//    exit("Доступ запрещен");
 }
 
 
