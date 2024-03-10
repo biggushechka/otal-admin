@@ -15,11 +15,36 @@ export default function gallery(project) {
             }
         });
 
+        // getAllGallery();
+
         if (getAllAlbum.code === 200) {
             for (var i in getAllAlbum.data) {
                 ItemAlbum(getAllAlbum.data[i]);
             }
         }
+    }
+
+    function getAllGallery() {
+        var albumItemHTML = document.createElement("div");
+        albumItemHTML.classList.add("P-item-album");
+        var html = `
+        <div class="card-body">
+            <div class="content-card">
+                <button type="button" class="btn btn-primary btn-get">Получить</button>
+            </div>
+        </div>`;
+        albumItemHTML.innerHTML = html;
+        document.querySelector("#app").prepend(albumItemHTML);
+
+            var getAlbum = XMLHttpRequestAJAX({
+                url: "/api/site/content/gallery",
+                method: "GET",
+                body: {
+                    id_site: 83,
+                }
+            });
+
+            console.log("getAlbum", getAlbum)
     }
 
     function ItemAlbum(album) {
@@ -348,6 +373,8 @@ export default function gallery(project) {
                     method: "DELETE",
                     body: {id_image: image.id}
                 });
+
+                console.log("deleteImage", deleteImage)
 
                 if (deleteImage.code === 200) {
                     rowHTML.remove();

@@ -10,6 +10,7 @@
 
 #app {
     padding-top: 150px;
+    padding-bottom: 40px;
 }
 
 #app > section {

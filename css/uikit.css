@@ -2,6 +2,7 @@
 
 /* кнопки */
 .btn {
+    position: relative;
     font-family: "Ubuntu", sans-serif;
     display: flex;
     align-items: center;
@@ -26,6 +27,21 @@
     cursor: pointer;
 }
 
+.btn.loading:after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 10px);
+    left: calc(50% - 10px);
+
+    width: 20px;
+    height: 20px;
+    border: 3px solid transparent;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    -webkit-animation: rotation 1s linear infinite;
+    animation: rotation 1s linear infinite;
+}
 /* primary */
 .btn.btn-primary {
     color: var(--text-constant);
@@ -44,6 +60,20 @@
     background: #ccc;
 }
 
+.btn.btn-primary.loading {
+    pointer-events: none;
+    cursor: default;
+    color: transparent !important;
+}
+
+.btn.btn-primary.loading > * {
+    opacity: 0 !important;
+}
+
+.btn.btn-primary.loading:after {
+    border-color: #fff;
+    border-bottom-color: transparent;
+}
 
 /* secondary */
 .btn.btn-secondary {
@@ -64,6 +94,11 @@
 .btn.btn-secondary[disabled] {
     color: var(--text-secondary);
     background: var(--button-secondary-light);
+}
+
+.btn.btn-secondary.loading:after {
+    border-color: var(--global-primary);
+    border-bottom-color: #fff;
 }
 
 /* outline-primary */
@@ -133,6 +168,15 @@
 
 .btn.btn-square i {
     font-size: 150%;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* table */

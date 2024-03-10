@@ -148,6 +148,7 @@ class Modal {
         if (this.data.footerEvents.submit.callback != undefined && btnSubmit !== null) {
             btnSubmit.addEventListener("click", () => {
                 this.submit_res = this.data.footerEvents.submit.callback(this, this.data.footerEvents.submit.callback_params);
+                btnSubmit.classList.add("loading");
             });
         }
     }

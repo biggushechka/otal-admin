@@ -76,6 +76,10 @@ if ($dbh !== null) {
             require_once "infrastructure.php";
             getInfrastructure($id_site);
             break;
+        case "gallery": // о проекте
+            require_once "gallery.php";
+            getGallery($id_site);
+            break;
         case "meta": // Meta
             require_once "meta.php";
             meta($id_site);
