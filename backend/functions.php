@@ -176,7 +176,6 @@ function deleteFile($file) {
     $filePath = ltrim($filePath, '/');
 
     $localPath = $rootPath . "/" . $filePath;
-    $detele_file = "false";
 
     if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
         $serverConnect = connectServerFTP();
@@ -190,8 +189,7 @@ function deleteFile($file) {
         ftp_close($serverConnect);
     } else {
         unlink($localPath);
-        $detele_file = "true";
     }
 
-    return $detele_file;
+    return "true";
 }
