@@ -178,35 +178,19 @@ function deleteFile($file) {
     $localPath = $rootPath . "/" . $filePath;
     $detele_file = "false";
 
-    echo "<pre>";
-    echo "rootPath: $rootPath \n";
-    echo "localPath: $localPath \n";
-    echo "</pre>";
-
     if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
         $serverConnect = connectServerFTP();
 
         ftp_pasv($serverConnect, true);
 
         // Проверяем наличие файла на FTP сервере
-        if (ftp_size($serverConnect, $filePath) != -1) {
-            // Файл существует, удаляем его
-            if (ftp_delete($serverConnect, $filePath)) {
-                $detele_file = "true";
-            } else {
-                $detele_file = "false";
-            }
-        } else {
-            $detele_file = "true";
-        }
+        ftp_delete($serverConnect, $filePath);
 
         // закрываем FTP
         ftp_close($serverConnect);
     } else {
-        if (is_file($localPath)) {
-            $detele_file = "true";
-            unlink($localPath);
-        }
+        unlink($localPath);
+        $detele_file = "true";
     }
 
     return $detele_file;
