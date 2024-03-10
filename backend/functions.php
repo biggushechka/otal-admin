@@ -179,8 +179,8 @@ function deleteFile($file) {
     $detele_file = "false";
 
     echo "<pre>";
-    echo $localPath;
-    echo $rootPath;
+    echo "rootPath: $rootPath \n";
+    echo "localPath: $localPath \n";
     echo "</pre>";
 
     if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
