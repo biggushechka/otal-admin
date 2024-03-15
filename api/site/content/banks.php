@@ -10,15 +10,23 @@ function getBanks($id_site) {
     if ($query_get_banks->rowCount() > 0) {
         $arrayBanks = $query_get_banks->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($arrayBanks as $bank) {
-            $bankItem = new stdClass();
+        $query_get_AllBanks = $dbh->prepare("SELECT * FROM `banks`");
+        $query_get_AllBanks->execute();
 
-            $bankItem->title = $bank["title"];
-            $bankItem->rate = $bank["rate"];
-            $bankItem->initial_payment = $bank["initial_payment"];
-            $bankItem->photo = "";
+        if ($query_get_AllBanks->rowCount() > 0) {
 
-            $banks[] = $bankItem;
+
+
+            foreach ($arrayBanks as $bank) {
+                $bankItem = new stdClass();
+
+                $bankItem->title = $bank["title"];
+                $bankItem->photo = "";
+                $bankItem->rate = $bank["rate"];
+                $bankItem->initial_payment = $bank["initial_payment"];
+
+                $banks[] = $bankItem;
+            }
         }
     }
 
