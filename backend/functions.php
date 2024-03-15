@@ -53,6 +53,30 @@ function convertImagesToWebP($images) {
         // Создаем изображение из бинарных данных
         $newImage = imagecreatefromstring($imageData);
 
+
+
+
+
+        // Получаем размеры оригинального изображения
+        $originalWidth = imagesx($newImage);
+        $originalHeight = imagesy($newImage);
+
+        // Проверяем размер изображения и изменяем его при необходимости
+        if ($originalWidth > 2000) {
+            $newWidth = 1920;
+            $newHeight = round($originalHeight * (1920 / $originalWidth));
+
+            // Создаем новое изображение с измененным размером
+            $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($resizedImage, $newImage, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
+
+            // Используем измененное изображение для конвертации
+            $newImage = $resizedImage;
+        }
+
+
+        
+
         // Создаем пустой ресурс для нового изображения
         $newImageResource = imagecreatetruecolor(imagesx($newImage), imagesy($newImage));
 
