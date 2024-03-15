@@ -21,8 +21,8 @@ function getGeneral($id_site) {
         $query_get_general->execute(["id_site" => $id_site]);
         $data_general = $query_get_general->fetch(PDO::FETCH_OBJ);
 
-        // получаем общую информацию по проекту и контакты
-        $query_get_address = $dbh->prepare("SELECT * FROM `site_general` WHERE `id_site` = :id_site");
+        // получаем адрес
+        $query_get_address = $dbh->prepare("SELECT * FROM `site_location` WHERE `id_site` = :id_site");
         $query_get_address->execute(["id_site" => $id_site]);
         $getAddress = $query_get_address->fetch(PDO::FETCH_OBJ);
 
