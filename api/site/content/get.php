@@ -76,13 +76,17 @@ if ($dbh !== null) {
             require_once "about-project.php";
             getAboutProject($id_site);
             break;
-        case "infrastructure": // о проекте
+        case "infrastructure": // инфраструктура
             require_once "infrastructure.php";
             getInfrastructure($id_site);
             break;
-        case "gallery": // о проекте
+        case "gallery": // галерея
             require_once "gallery.php";
             getGallery($id_site);
+            break;
+        case "banks": // банки
+            require_once "banks.php";
+            getBanks($id_site);
             break;
         case "meta": // Meta
             require_once "meta.php";
