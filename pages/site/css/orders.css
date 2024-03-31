@@ -13,6 +13,12 @@
     grid-gap: 20px;
 }
 
+.P-orders > .card-body .header-card-body .target-block .btn-send-setting {
+    color: var(--global-primary);
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
 .P-orders > .card-body .header-card-body .target-block > .sort-item {
     display: flex;
     align-items: center;
@@ -36,4 +42,99 @@
 .P-orders > .card-body .header-card-body .target-block > .sort-item select:hover {
     border-color: var(--global-primary);
     cursor: pointer;
+}
+
+
+/* ----------------------------------- */
+/* ----------------------------------- */
+/* ----------------------------------- */
+
+.P-modal-send-setting .table-container {
+    display: flex;
+    border: 1px solid #ccc;
+    min-height: 300px;
+}
+
+.P-modal-send-setting .table-container .col-item {
+    flex: 1;
+    border-right: 1px solid #ccc;
+}
+
+.P-modal-send-setting .table-container .col-item:last-child {
+    border-right: 1px solid transparent;
+}
+
+.P-modal-send-setting .table-container .col-item .title-col {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    padding-left: 20px;
+}
+
+.P-modal-send-setting .table-container .col-item .container-field {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    grid-gap: 5px;
+    height: 40px;
+    padding: 5px;
+}
+
+.P-modal-send-setting .table-container .col-item .container-field .input-filed {
+    width: 100%;
+    height: 100%;
+    padding: 0 10px;
+    font-size: 14px;
+}
+
+.P-modal-send-setting .table-container .col-item .container-field .btn {
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+}
+
+.P-modal-send-setting .table-container .col-item .list-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.P-modal-send-setting .table-container .col-item .list-content > .item {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    padding-left: 20px;
+    padding-right: 5px;
+}
+
+.P-modal-send-setting .table-container .col-item .list-content > .item:hover {
+    background-color: #f2f2f2;
+}
+
+.P-modal-send-setting .table-container .col-item .list-content > .item .number-count {
+    font-size: 12px;
+    color: #b1b1b1;
+    margin-right: 10px;
+}
+
+.P-modal-send-setting .table-container .col-item .list-content > .item .content {
+    font-size: 14px;
+}
+
+.P-modal-send-setting .table-container .col-item .list-content > .item .btn-delete-row {
+    padding: 0;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: transparent;
+    margin-left: auto;
+    opacity: 0;
+}
+
+.P-modal-send-setting .table-container .col-item .list-content > .item .btn-delete-row i {
+    color: red;
+    font-size: 15px;
+}
+
+.P-modal-send-setting .table-container .col-item .list-content > .item:hover .btn-delete-row {
+    opacity: 1;
 }

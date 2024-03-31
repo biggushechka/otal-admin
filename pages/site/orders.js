@@ -14,11 +14,17 @@ export default function orders(project) {
         <div class="card-body">
             <div class="header-card-body">
                 <h4 class="title-card">Заявки <span class="count-all"></span></h4>
-                <div class="target-block"></div>
+                <div class="target-block">
+                    <button type="button" class="btn btn-send-setting">Куда отправлять заявки?</button>
+                </div>
             </div>
             <div class="content-card"></div>
         </div>`;
         document.getElementById("app").append(sectionHTML);
+
+        sectionHTML.querySelector(".btn-send-setting").addEventListener("click", function () {
+            modalSendSetting();
+        });
 
         // сортировка по "Дате"
         sortSelect({
@@ -137,5 +143,145 @@ export default function orders(project) {
             <td class="col-email">${order.email}</td>
             <td class="col-comment">${order.comment}</td>`;
         tableHTML.querySelector("tbody").append(rowHTML);
+    }
+
+    function modalSendSetting() {
+        var modalTAG = document.createElement("div");
+        modalTAG.classList.add("table-container");
+
+        modalTAG.append(tmplTable("email"));
+        modalTAG.append(tmplTable("telegram"));
+
+        var modal = new Modal({
+            title: 'Куда отправлять заявки?',
+            classModal: 'P-modal-send-setting',
+            content: modalTAG,
+            mode: 'center',
+            width: '800px',
+            footerEvents:{
+                cancel: {
+                    active: true,
+                },
+                submit: {
+                    active: true,
+                    title: "Сохранить",
+                    nameClass: "",
+                    callback: function(modalClass) {
+
+                    },
+                },
+            }
+        });
+
+        function tmplTable(type) {
+            var titleCol = (type === "email") ? "Почта" : (type === "telegram") ? "Телеграм" : "NaN";
+            var placeholder = (type === "email") ? "Введите почтовый адрес.." : (type === "telegram") ? "ID канала или группы.." : "NaN";
+
+            var getSourceSend = XMLHttpRequestAJAX({
+                url: "/api/site/orders/get-source-send",
+                method: "GET",
+                body: {
+                    id_site: project.id,
+                    source: type
+                }
+            });
+
+            var tableColHTML = document.createElement("div");
+            tableColHTML.classList.add("col-item");
+            tableColHTML.innerHTML = `
+            <span class="title-col">${titleCol}</span>
+            <form class="container-field">
+                <input type="text" class="input-filed" placeholder="${placeholder}">
+                <button type="button" class="btn btn-primary btn-add-row"><i class="ph ph-plus"></i></button>
+            </form>
+            <div class="list-content"></div>`;
+
+            if (getSourceSend.code === 200) {
+                for (var i in getSourceSend.data) {
+                    var getTmpl = tmplRow(getSourceSend.data[i]);
+                    tableColHTML.querySelector(".list-content").append(getTmpl);
+                }
+            }
+
+            if (type == "email") {
+                var pattern = /^([a-z0-9_\.-])+[@][a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
+
+                var input = tableColHTML.querySelector("input");
+                input.onblur = function() {
+                    if (!pattern.test(input.value)) {
+                        input.value = "";
+                    }
+                };
+            }
+
+            // добавить запись в бд
+            tableColHTML.querySelector(".btn-add-row").addEventListener("click", function () {
+                var contentField = tableColHTML.querySelector(".input-filed").value,
+                    sendSource = {
+                        id_site: project.id,
+                        source: type,
+                    };
+
+                if (contentField === "") return false;
+
+                if (type === "email") {
+                    sendSource.email = contentField;
+                }
+
+                var addSourceSend = XMLHttpRequestAJAX({
+                    url: "/api/site/orders/add-source-send",
+                    method: "POST",
+                    body: sendSource
+                });
+
+                console.log("добавил:", addSourceSend)
+
+                if (addSourceSend.code === 200) {
+                    contentField.value = "";
+                    var getTmpl = tmplRow(addSourceSend.data);
+                    tableColHTML.querySelector(".list-content").append(getTmpl);
+
+                } else {
+                    alertNotification({status: "error", text: addSourceSend.data, pos: "top-center"});
+                }
+
+            });
+
+            function tmplRow(data) {
+                var content;
+
+                if (type === "email") {
+                    content = data.email;
+                }
+
+                var rowHTML = document.createElement("div");
+                rowHTML.classList.add("item");
+                rowHTML.innerHTML = `
+                <span class="number-count">${data.id}</span>
+                <span class="content">${content}</span>
+                <button type="button" class="btn btn-primary btn-delete-row"><i class="ph ph-x"></i></button>`;
+
+                rowHTML.querySelector(".btn-delete-row").addEventListener("click", function () {
+                    var deleteSourceSend = XMLHttpRequestAJAX({
+                        url: "/api/site/orders/delete-source-send",
+                        method: "DELETE",
+                        body: {
+                            id_source: data.id,
+                            id_site: project.id,
+                        }
+                    });
+
+                    if (deleteSourceSend.code === 200) {
+                        rowHTML.remove();
+                    } else {
+                        alertNotification({status: "error", text: deleteSourceSend.data, pos: "top-center"});
+                    }
+                });
+
+                return rowHTML;
+            }
+
+            return tableColHTML;
+        }
     }
 }
