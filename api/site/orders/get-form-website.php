@@ -37,11 +37,11 @@ if (isset($refererDom)) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $type = (isset($POST["type"]) === true) ? isset($POST["type"]) : "";
-    $name = (isset($POST["name"]) === true) ? isset($POST["name"]) : "";
-    $phone = (isset($POST["phone"]) === true) ? isset($POST["phone"]) : "";
-    $email = (isset($POST["email"]) === true) ? isset($POST["email"]) : "";
-    $comment = (isset($POST["comment"]) === true) ? isset($POST["comment"]) : "";
+    $type = (isset($POST["type"]) === true) ? $POST["type"] : "";
+    $name = (isset($POST["name"]) === true) ? $POST["name"] : "";
+    $phone = (isset($POST["phone"]) === true) ? $POST["phone"] : "";
+    $email = (isset($POST["email"]) === true) ? $POST["email"] : "";
+    $comment = (isset($POST["comment"]) === true) ? $POST["comment"] : "";
     $currentDateTime = date('Y-m-d H:i:s');
 
 
