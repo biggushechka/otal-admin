@@ -42,7 +42,6 @@ if ($method === "POST") {
         $query_get_bank->execute(["id" => $new_bank_id]);
         $new_bank = $query_get_bank->fetch(PDO::FETCH_OBJ);
 
-
         // получаем все банки
         $query_get_allBanks = $dbh->prepare("SELECT * FROM `banks`");
         $query_get_allBanks->execute();

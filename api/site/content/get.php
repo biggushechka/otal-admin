@@ -1,7 +1,4 @@
 <?php
-//header("Access-Control-Allow-Origin: *");
-//header("Access-Control-Allow-Credentials: true");
-
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 $fakeDomain = $_GET["domain"];
