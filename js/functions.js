@@ -491,7 +491,6 @@ function getUploadFiles(data, callback) {
 
             file_name = file_name.slice(0, extensionIndex) + "_" + id_file;
 
-
             reader.onload = function() {
                 var dataFile = {
                     id: id_file,
