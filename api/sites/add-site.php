@@ -4,6 +4,8 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 require_once $rootPath . '/api/config/db_connect.php';
+require_once $rootPath . '/vendor/autoload.php'; // Подключаем автозагрузчик Composer
+use phpseclib3\Net\SSH2;
 
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
@@ -36,13 +38,27 @@ if ($isSite) {
         "activity" => "on"
     ]);
 
-    $query_get_site = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title AND `domain` = :domain LIMIT 1");
-    $query_get_site->execute(["title" => $title, "domain" => $domain]);
-    $newSite = $query_get_site->fetch(PDO::FETCH_OBJ);
+    if ($query_create_site->rowCount() > 0) {
+        $query_get_site = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title AND `domain` = :domain LIMIT 1");
+        $query_get_site->execute(["title" => $title, "domain" => $domain]);
+        $newSite = $query_get_site->fetch(PDO::FETCH_OBJ);
+        $pureDomain = preg_replace("(^https?://)", "", $domain);
 
-    header("HTTP/1.1 201 Created");
-    header('Content-Type: application/json; charset=UTF-8');
-    echo json_encode($newSite, JSON_UNESCAPED_UNICODE);
+
+        $ssh = new SSH2('s744875.smrtp.ru', 22122);
+        if (!$ssh->login('user744875', 'm3WfF65xoCpG')) exit('Login Failed');
+        $ssh->exec("cd www && cd $pureDomain && rm -r * && git clone https://github.com/biggushechka/odal-jk.git .");
+
+        header("HTTP/1.1 201 Created");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode($newSite, JSON_UNESCAPED_UNICODE);
+    } else {
+        header("HTTP/1.1 400 Bad request");
+        echo json_encode("Ошибка при создании сайта", JSON_UNESCAPED_UNICODE);
+
+        $dbh = null;
+        die();
+    }
 }
 
 $dbh = null;

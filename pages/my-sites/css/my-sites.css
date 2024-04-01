@@ -29,7 +29,8 @@
 }
 
 .P-my-sites > .wrapper-container .P-table-my-sites tbody .cell-domain a {
-    color: inherit;
+    color: var(--global-primary);
+    border-bottom: 1px solid var(--global-primary);
 }
 
 .P-my-sites > .wrapper-container .P-table-my-sites tbody .cell-domain a:hover {
