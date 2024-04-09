@@ -13,7 +13,7 @@ if ($method === "DELETE") {
     $query_deleteBank->execute(["id" => $id_meta]);
 
     if ($query_deleteBank->rowCount() > 0) {
-        header("HTTP/1.1 200 Delete");
+        header("HTTP/1.1 200 DELETE");
         echo json_encode("Банк был успешно удален", JSON_UNESCAPED_UNICODE);
     } else {
         header("HTTP/1.1 400 Bad Request");

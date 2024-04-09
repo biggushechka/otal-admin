@@ -4,6 +4,8 @@ global $dbh;
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 require_once $rootPath . '/api/config/db_connect.php';
 require_once $rootPath . '/backend/functions.php';
+require_once $rootPath . '/vendor/autoload.php'; // Подключаем автозагрузчик Composer
+use phpseclib3\Net\SSH2;
 
 // удаление проекта
 $id_site = $_GET['id_site'];
@@ -14,26 +16,28 @@ $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
 // Выполнение запроса на удаление записей из всех таблиц
 foreach ($tables as $table) {
-    if ($table == "site_gallery_image") deletePhoto("site_gallery_image", $id_site);;
-    if ($table == "site_photos") deletePhoto("site_photos", $id_site);;
-    if ($table == "site_general") deletePhoto("site_general", $id_site);;
+    if ($table == "site_gallery_image") deletePhoto("site_gallery_image", $id_site);
+    if ($table == "site_photos") deletePhoto("site_photos", $id_site);
+    if ($table == "site_general") deletePhoto("site_general", $id_site);
 
     $query_remove = $dbh->prepare("DELETE FROM $table WHERE `id_site` = :id_site");
     $query_remove->execute(["id_site" => $id_site]);
     $count = $query_remove->rowCount();
 }
 
+// удаляем сайт из бд
 $query_removeProject = $dbh->prepare("DELETE FROM `my_sites` WHERE `id` = :id");
 $query_removeProject->execute(["id" => $id_site]);
 
+// если сайт был успешно удален
 if ($query_removeProject->rowCount() > 0) {
-    header("HTTP/1.1 204 DELETE");
+    header("HTTP/1.1 200 DELETE");
     header('Content-Type: application/json; charset=UTF-8');
-    echo json_encode("Сайт успешно удален", JSON_UNESCAPED_UNICODE);
+    echo json_encode("Сайт был успешно удален", JSON_UNESCAPED_UNICODE);
+} else {
+    header("HTTP/1.1 400 Bad request");
+    echo json_encode("Ошибка при удалении сайта", JSON_UNESCAPED_UNICODE);
 }
-
-$dbh = null;
-die();
 
 function deletePhoto($nameTable, $id_site) {
     global $dbh;
@@ -60,3 +64,6 @@ function deletePhoto($nameTable, $id_site) {
         }
     }
 }
+
+$dbh = null;
+die();

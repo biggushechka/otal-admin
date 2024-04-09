@@ -1,5 +1,9 @@
 {
     "require": {
-        "phpseclib/phpseclib": "^3.0"
+        "phpseclib/phpseclib": "^3.0",
+      "ext-json": "*",
+      "ext-ftp": "*",
+      "ext-gd": "*",
+      "ext-pdo": "*"
     }
 }

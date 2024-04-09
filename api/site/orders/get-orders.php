@@ -8,7 +8,6 @@ $id_site = $_GET['id_site'];
 $date = $_GET['date'];
 $type = $_GET['type'];
 
-$queryTable = "SELECT * FROM `site_orders` ";
 $queryDate = "";
 $queryType = "";
 $queryProject = "";
@@ -16,7 +15,9 @@ $queryProject = "";
 switch ($date) {
     case "today":
         $todayDate = date("Y-m-d");
-        $queryDate = "WHERE date_create = '{$todayDate}'";
+//        $queryDate = "WHERE date_create = '{$todayDate}'";
+//        $queryDate = "WHERE DATE(date_create) = '$todayDate'";
+        $queryDate = "WHERE date_create >= CURRENT_DATE()";
         break;
     case "week":
         $week_start = date('Y-m-d', strtotime('this week'));
@@ -52,7 +53,7 @@ if ($type == "all" && $date == "all") {
     $queryProject = " AND id_site = '{$id_site}'";
 }
 
-$queryGetOrders = $queryTable . $queryDate . $queryType . $queryProject . " ORDER BY date_create DESC";
+$queryGetOrders = "SELECT * FROM `site_orders` " . $queryDate . $queryType . $queryProject . " ORDER BY date_create DESC";
 
 //echo $queryGetOrders;
 //return false;

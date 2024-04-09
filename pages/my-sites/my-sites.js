@@ -73,6 +73,8 @@ export default function mySites() {
                 errorTAG.innerHTML = `<span>${createSite.data.error}</span>`;
                 modalHTML.append(errorTAG);
             }
+
+            return createSite.code;
         }
     });
 
@@ -117,8 +119,6 @@ export default function mySites() {
         var domain = site.domain.replace(/^https?:\/\//, ""),
             linkEDIT = `/my-sites/${domain}`,
             linkTOSITE = `${site.domain}/`;
-
-        console.log("site", site)
 
         var siteHTML = document.createElement("tr");
         var siteTMPL = `
@@ -191,8 +191,11 @@ export default function mySites() {
                     }
                 });
 
-                if (deleteSiteReq.code === 204) {
+                if (deleteSiteReq.code === 200) {
                     siteHTML.remove();
+                    alertNotification({status: "success", text: deleteSiteReq.data, pos: "top-center"});
+                } else {
+                    alertNotification({status: "error", text: deleteSiteReq.data, pos: "top-center"});
                 }
             }
         });

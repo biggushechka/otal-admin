@@ -13,7 +13,7 @@ if ($method === "DELETE") {
     $query_delete->execute(["id" => $id_source, "id_site" => $id_site]);
 
     if ($query_delete->rowCount() > 0) {
-        header("HTTP/1.1 200 Delete");
+        header("HTTP/1.1 200 DELETE");
         echo json_encode("Запись была успешно удалена", JSON_UNESCAPED_UNICODE);
     } else {
         header("HTTP/1.1 400 Bad Request");

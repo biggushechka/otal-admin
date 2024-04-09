@@ -520,7 +520,6 @@ class FormFields {
         fieldsValid.forEach(function (field) {
             if (formData[field] == "" || formData[field].length == 0) {
                 isValid = 1;
-                console.log("formData[field]", field)
                 form.querySelector("*[name='"+field+"']").closest(".field-container").classList.add("error");
             }
         });

@@ -48,6 +48,7 @@ if ($isSite) {
         $ssh = new SSH2('s744875.smrtp.ru', 22122);
         if (!$ssh->login('user744875', 'm3WfF65xoCpG')) exit('Login Failed');
         $ssh->exec("cd www && cd $pureDomain && rm -r * && git clone https://github.com/biggushechka/odal-jk.git .");
+        $ssh->disconnect();
 
         header("HTTP/1.1 201 Created");
         header('Content-Type: application/json; charset=UTF-8');
