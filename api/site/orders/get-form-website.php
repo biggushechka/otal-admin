@@ -78,6 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->Subject = "Новая заявка ($refererDom)";
         $mail->Body = 'Тут будет таблица с данными';
 
+        if (!$mail->send()) {
+            echo '❌ Ошибка при отправке....';
+        }
+
         header("HTTP/1.1 200 OK");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Отправлено 222 !", JSON_UNESCAPED_UNICODE);
