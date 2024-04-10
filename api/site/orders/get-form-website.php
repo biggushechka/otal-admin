@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function sendMail() {
-    global $refererDom, $phone;
+    global $refererDom, $phone, $type, $name, $email;
     $mail = new PHPMailer();
 
     $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
@@ -87,8 +87,26 @@ function sendMail() {
     $mail->isHTML(true);
     $mail->Subject = "Новая заявка ($refererDom)";
     $mail->Body = '
-    <h1>Привет, это HTML-письмо!</h1>
-    <p>Тел '.$phone.'</p>';
+    <table style="border: 1px solid #000; border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td style="border: 1px solid #000; padding: 5px;">Тип</td>
+                <td style="border: 1px solid #000; padding: 5px;">'.$type.'</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding: 5px;">Имя</td>
+                <td style="border: 1px solid #000; padding: 5px;">'.$name.'</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding: 5px;">Телефон</td>
+                <td style="border: 1px solid #000; padding: 5px;">'.$phone.'</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding: 5px;">E-Mail</td>
+                <td style="border: 1px solid #000; padding: 5px;">'.$email.'</td>
+            </tr>
+        </tbody>
+    </table>';
 
 
     if (!$mail->send()) {
