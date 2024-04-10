@@ -78,8 +78,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->Subject = "Новая заявка ($refererDom)";
         $mail->Body = 'Тут будет таблица с данными';
 
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Отправлено 222 !", JSON_UNESCAPED_UNICODE);
+        if (!$mail->send()) {
+            header("HTTP/1.1 200 OK");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode($mail->ErrorInfo, JSON_UNESCAPED_UNICODE);
+
+        } else {
+            header("HTTP/1.1 200 OK");
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode("Отправлено 222 !", JSON_UNESCAPED_UNICODE);
+        }
     }
 }
