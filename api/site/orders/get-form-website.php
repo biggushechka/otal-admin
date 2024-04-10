@@ -13,6 +13,7 @@ require_once $rootPath . '/api/config/db_connect.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 require $rootPath . '/vendor/autoload.php';
+$mail = new PHPMailer();
 
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
@@ -75,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     function sendEmail() {
-        $mail = new PHPMailer();
+        global $mail;
 
         $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
         $mail->setLanguage('ru', 'path_to_phpmailer/PHPMailer/language/'); // Задание языка сообщения (русский)
@@ -86,6 +87,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->isHTML(true);
         $mail->Subject = "Новая заявка";
         $mail->Body = 'Тут будет таблица с данными';
-
     }
 }
