@@ -4,7 +4,6 @@ $rootPath = $_SERVER['DOCUMENT_ROOT'];
 
 // Подключаем библиотеку PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 require $rootPath . '/vendor/autoload.php';
 
 $mail = new PHPMailer();
