@@ -10,10 +10,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 
 require_once $rootPath . '/api/config/db_connect.php';
-
 use PHPMailer\PHPMailer\PHPMailer;
 require $rootPath . '/vendor/autoload.php';
-$mail = new PHPMailer();
 
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
@@ -68,15 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     if ($query_add->rowCount() > 0) {
-        sendEmail();
-
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Отправлено 444 !", JSON_UNESCAPED_UNICODE);
-    }
-
-    function sendEmail() {
-        global $mail;
+        $mail = new PHPMailer();
 
         $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
         $mail->setLanguage('ru', 'path_to_phpmailer/PHPMailer/language/'); // Задание языка сообщения (русский)
@@ -85,7 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
 
         $mail->isHTML(true);
-        $mail->Subject = "Новая заявка";
+        $mail->Subject = "Новая заявка ($refererDom)";
         $mail->Body = 'Тут будет таблица с данными';
+
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode("Отправлено 222 !", JSON_UNESCAPED_UNICODE);
     }
 }
