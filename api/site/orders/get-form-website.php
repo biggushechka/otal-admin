@@ -66,24 +66,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     if ($query_add->rowCount() > 0) {
-        $mail = new PHPMailer();
-
-        $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
-        $mail->setLanguage('ru', 'path_to_phpmailer/PHPMailer/language/'); // Задание языка сообщения (русский)
-
-        $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
-        $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
-
-        $mail->isHTML(true);
-        $mail->Subject = "Новая заявка ($refererDom)";
-        $mail->Body = 'Тут будет таблица с данными';
-
-        if (!$mail->send()) {
-            echo '❌ Ошибка при отправке....';
-        }
+        sendMail();
 
         header("HTTP/1.1 200 OK");
         header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Отправлено 222 !", JSON_UNESCAPED_UNICODE);
+        echo json_encode("Отправлено 3131 !", JSON_UNESCAPED_UNICODE);
+    }
+}
+
+function sendMail() {
+    global $refererDom;
+    $mail = new PHPMailer();
+
+    $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
+    $mail->setLanguage('ru', 'path_to_phpmailer/PHPMailer/language/'); // Задание языка сообщения (русский)
+
+    $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
+    $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
+
+    $mail->isHTML(true);
+    $mail->Subject = "Новая заявка ($refererDom)";
+    $mail->Body = 'Тут будет таблица с данными';
+
+    if (!$mail->send()) {
+        echo '❌ Ошибка при отправке....';
     }
 }
