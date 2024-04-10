@@ -86,7 +86,7 @@ var navBtns = [
     // {title: "Новости", tab: "news"},
     {title: "Банки", tab: "banks"},
     // {title: "Документы", tab: "docs"},
-    {title: "Квиз", tab: "kviz"},
+    // {title: "Квиз", tab: "kviz"},
     {title: "Meta-теги", tab: "meta"},
     {title: "Заявки", tab: "orders"}
 ];
