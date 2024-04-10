@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             header("HTTP/1.1 200 OK");
             header('Content-Type: application/json; charset=UTF-8');
-            echo json_encode("Отправлено 222 !", JSON_UNESCAPED_UNICODE);
+            echo json_encode("Отправлено 3333 !", JSON_UNESCAPED_UNICODE);
         }
     }
 }
