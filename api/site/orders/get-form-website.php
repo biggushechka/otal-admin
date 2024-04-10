@@ -15,7 +15,14 @@ require $rootPath . '/vendor/autoload.php';
 
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
+
 $id_site = 0;
+$type = (isset($POST["type"]) === true) ? $POST["type"] : "";
+$name = (isset($POST["name"]) === true) ? $POST["name"] : "";
+$phone = (isset($POST["phone"]) === true) ? $POST["phone"] : "";
+$email = (isset($POST["email"]) === true) ? $POST["email"] : "";
+$comment = (isset($POST["comment"]) === true) ? $POST["comment"] : "";
+$currentDateTime = date('Y-m-d H:i:s');
 
 if (isset($refererDom)) {
     $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
@@ -38,15 +45,6 @@ if (isset($refererDom)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $type = (isset($POST["type"]) === true) ? $POST["type"] : "";
-    $name = (isset($POST["name"]) === true) ? $POST["name"] : "";
-    $phone = (isset($POST["phone"]) === true) ? $POST["phone"] : "";
-    $email = (isset($POST["email"]) === true) ? $POST["email"] : "";
-    $comment = (isset($POST["comment"]) === true) ? $POST["comment"] : "";
-    $currentDateTime = date('Y-m-d H:i:s');
-
-
     $query_add = $dbh->prepare("INSERT INTO `site_orders` SET
         `id_site` = :id_site,
         `type` = :type,
@@ -68,30 +66,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     if ($query_add->rowCount() > 0) {
-        sendEmail();
+        $mail = new PHPMailer();
+
+        $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
+        $mail->setLanguage('ru', 'path_to_phpmailer/PHPMailer/language/'); // Задание языка сообщения (русский)
+
+        $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
+        $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
+
+        $mail->isHTML(true);
+        $mail->Subject = "Новая заявка ($refererDom)";
+        $mail->Body = 'Тут будет таблица с данными';
 
         header("HTTP/1.1 200 OK");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Отправлено!", JSON_UNESCAPED_UNICODE);
     }
-}
-
-function sendEmail() {
-    $mail = new PHPMailer();
-
-    $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
-    $mail->setLanguage('ru', 'path_to_phpmailer/PHPMailer/language/'); // Задание языка сообщения (русский)
-
-    $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
-    $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
-
-    $mail->isHTML(true);
-    $mail->Subject = 'Новая заявка';
-    $mail->Body = 'Тут будет таблица с данными';
-
-//    if ($mail->send()) {
-//        echo '✅ Письмо отправлено ))))';
-//    } else {
-//        echo '❌ Ошибка при отправке....';
-//    }
 }
