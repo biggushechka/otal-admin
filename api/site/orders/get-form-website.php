@@ -87,8 +87,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->Subject = "Новая заявка";
         $mail->Body = 'Тут будет таблица с данными';
 
-        if (!$mail->send()) {
-            echo $mail->ErrorInfo;
-        }
     }
 }
