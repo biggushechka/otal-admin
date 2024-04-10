@@ -18,8 +18,11 @@ if ($_SERVER['HTTP_HOST'] != 'otal-estate.ru') {
         file_put_contents($root."/backend/version.txt", implode(PHP_EOL, $getFileVersion));
 
         clearCash($root . "/assets", $version);
+        clearCash($root . "/css", $version);
+        clearCash($root . "/js", $version);
         clearCash($root . "/components", $version);
         clearCash($root . "/pages", $version);
         clearCash($root . "/plugins/modal", $version);
+        clearCash($root . "/plugins/form-fields", $version);
     }
 }
