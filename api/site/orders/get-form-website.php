@@ -82,7 +82,7 @@ function sendMail() {
     $mail->setLanguage('ru', 'path_to_phpmailer/PHPMailer/language/'); // Задание языка сообщения (русский)
 
     $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
-    $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
+    $mail->addAddress('crym.nedvizhimost@yandex.ru', 'Recipient Name'); // кому (email и имя)
 
     $mail->isHTML(true);
     $mail->Subject = "Новая заявка ($refererDom)";
