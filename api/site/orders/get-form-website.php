@@ -66,6 +66,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     if ($query_add->rowCount() > 0) {
+        sendEmail();
+
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode("Отправлено 3333 !", JSON_UNESCAPED_UNICODE);
+    }
+
+    function sendEmail() {
+        global $refererDom;
         $mail = new PHPMailer();
 
         $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
@@ -79,14 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->Body = 'Тут будет таблица с данными';
 
         if (!$mail->send()) {
-            header("HTTP/1.1 200 OK");
-            header('Content-Type: application/json; charset=UTF-8');
-            echo json_encode($mail->ErrorInfo, JSON_UNESCAPED_UNICODE);
-
-        } else {
-            header("HTTP/1.1 200 OK");
-            header('Content-Type: application/json; charset=UTF-8');
-            echo json_encode("Отправлено 3333 !", JSON_UNESCAPED_UNICODE);
+            echo $mail->ErrorInfo;
         }
     }
 }
