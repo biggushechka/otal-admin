@@ -10,6 +10,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $refererDom = $_SERVER['HTTP_REFERER'];
 
 require_once $rootPath . '/api/config/db_connect.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 require $rootPath . '/vendor/autoload.php';
 
@@ -70,11 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         header("HTTP/1.1 200 OK");
         header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Отправлено 3333 !", JSON_UNESCAPED_UNICODE);
+        echo json_encode("Отправлено 444 !", JSON_UNESCAPED_UNICODE);
     }
 
     function sendEmail() {
-        global $refererDom;
         $mail = new PHPMailer();
 
         $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
 
         $mail->isHTML(true);
-        $mail->Subject = "Новая заявка ($refererDom)";
+        $mail->Subject = "Новая заявка";
         $mail->Body = 'Тут будет таблица с данными';
 
         if (!$mail->send()) {
