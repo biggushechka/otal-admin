@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function sendMail() {
-    global $refererDom;
+    global $refererDom, $phone;
     $mail = new PHPMailer();
 
     $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
@@ -86,7 +86,10 @@ function sendMail() {
 
     $mail->isHTML(true);
     $mail->Subject = "Новая заявка ($refererDom)";
-    $mail->Body = 'Тут будет таблица с данными';
+    $mail->Body = '
+    <h1>Привет, это HTML-письмо!</h1>
+    <p>Тел '.$phone.'</p>';
+
 
     if (!$mail->send()) {
         echo '❌ Ошибка при отправке....';
