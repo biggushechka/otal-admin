@@ -34,6 +34,8 @@ function getPage() {
         page = "my-sites";
     } else if (paths.length == 3 && paths[1] == "my-sites") {
         page = "site";
+    } else if (paths.length == 2 && paths[1] == "orders") {
+        page = "orders";
     } else {
         page = "404";
     }

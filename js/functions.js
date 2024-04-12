@@ -247,6 +247,12 @@ function XMLHttpRequestAJAX(data) {
         xhr.open(sendData.method, sendData.url + "?" + new URLSearchParams(sendData.body).toString(), false);
     }
 
+    if (data.headers) {
+        for (var h in data.headers) {
+            xhr.setRequestHeader(h, data.headers[h]);
+        }
+    }
+
     if (sendData.method === "POST") {
         sendData.body = JSON.stringify(sendData.body);
         xhr.open("POST", sendData.url, false);
