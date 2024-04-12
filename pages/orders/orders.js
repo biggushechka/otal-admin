@@ -1,5 +1,5 @@
 export default function orders() {
-    const accessToken = 'your_access_token';
+    const accessToken = '7edeef28895a8bacd3b5ae2e21578ed23eb2a58f';
 
     const getTovar = XMLHttpRequestAJAX({
         url: "https://online.moysklad.ru/api/remap/1.2/entity/product",
