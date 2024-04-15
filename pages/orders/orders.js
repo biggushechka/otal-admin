@@ -11,13 +11,11 @@ export default function orders() {
         const myHeaders = new Headers();
         myHeaders.append("X-Api-Key", "uNb8f87WSiQht53OeUO3HK6WFjppmMPL");
 
-        const requestOptions = {
+        fetch("https://musorhren.retailcrm.ru/api/v5/store/products", {
             method: "GET",
             headers: myHeaders,
             redirect: "manual"
-        };
-
-        fetch("https://musorhren.retailcrm.ru/api/v5/store/products", requestOptions)
+        })
             .then((response) => response.text())
             .then((result) => console.log(result))
             .catch((error) => console.error(error));
