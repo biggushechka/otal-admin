@@ -7,19 +7,17 @@ export default function orders() {
     const token = 'uNb8f87WSiQht53OeUO3HK6WFjppmMPL';
     const urlGetProducts = 'https://musorhren.retailcrm.ru/api/api-versions';
 
-        fetch(urlGetProducts, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'X-Api-Key': token
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-            });
+    const myHeaders = new Headers();
+    myHeaders.append("X-Api-Key", "uNb8f87WSiQht53OeUO3HK6WFjppmMPL");
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "manual"
+    };
+
+    fetch("https://musorhren.retailcrm.ru/api/api-versions", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
 }
