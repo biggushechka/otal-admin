@@ -5,19 +5,21 @@ export default function orders() {
     document.querySelector("#app").append(btn);
 
     const token = 'uNb8f87WSiQht53OeUO3HK6WFjppmMPL';
-    const urlGetProducts = 'https://musorhren.retailcrm.ru/api/v5/store/products';
+    const urlGetProducts = 'https://musorhren.retailcrm.ru/api/api-versions';
 
-    btn.addEventListener("click", function () {
-        const myHeaders = new Headers();
-        myHeaders.append("X-Api-Key", "uNb8f87WSiQht53OeUO3HK6WFjppmMPL");
-
-        fetch("https://musorhren.retailcrm.ru/api/v5/store/products", {
-            method: "GET",
-            headers: myHeaders,
-            redirect: "manual"
+        fetch(urlGetProducts, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'X-Api-Key': token
+            }
         })
-            .then((response) => response.text())
-            .then((result) => console.log(result))
-            .catch((error) => console.error(error));
-    });
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
 }
