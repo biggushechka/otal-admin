@@ -108,7 +108,6 @@ function sendMail() {
         </tbody>
     </table>';
 
-
     if (!$mail->send()) {
         echo '❌ Ошибка при отправке....';
     }
