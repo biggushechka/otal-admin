@@ -38,7 +38,6 @@ function createCSSLink(path) {
 function createScriptLink(path) {
     let script = document.createElement('script');
     script.setAttribute("src", path+"?v="+version);
-
     document.body.append(script);
 }
 
@@ -131,7 +130,6 @@ function deleteCookie(nameCookie) {
         }
     }
 }
-
 
 function dropdownWidget(data) {
     let classWrapper = (data.classWrapper != '' && data.classWrapper != undefined) ? data.classWrapper : null,
