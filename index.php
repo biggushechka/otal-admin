@@ -23,7 +23,6 @@ require_once $root . '/backend/template.php';
 
     <link rel="stylesheet" href="/plugins/highlight/styles/atom-one-dark.min.css">
     <script src="/plugins/highlight/highlight.min.js"></script>
-
 </head>
 <body>
 <main id="app"></main>
