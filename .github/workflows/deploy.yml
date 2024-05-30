@@ -1,0 +1,81 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+
+env:
+  SERVER_HOST: "novato1v.beget.tech"
+  SERVER_USER: "novato1v"
+  SERVER_PASS: "F8t5vkza"
+  SERVER_PORT: "22"
+  SERVER_PATH: "/home/n/novato1v/otal-estate.ru/public_html"
+
+  GIT_LOGIN: "MaxXam715"
+  GIT_PASSWORD: ""
+  GIT_REP: "luxury_world_web"
+  GIT_OWNER_REP: "Guva99"
+
+  TG_BOT_TOKEN: "7208914864:AAE03jASMF8B0C-P8NWokK__ZH722u6B0gk"
+  TG_ID_CHANEL: "-1002204160156"
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect to server and deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.SERVER_HOST }}
+          port: ${{ env.SERVER_PORT }}
+          username: ${{ env.SERVER_USER }}
+          password: ${{ env.SERVER_PASS }}
+          key: ${{ secrets.MAX_SSH_KEY }}
+          script: |
+            cd ${{ env.SERVER_PATH }};
+            git remote set-url origin https://${{ env.GIT_LOGIN }}:${{ env.GIT_PASSWORD }}@github.com/${{ env.GIT_OWNER_REP }}/${{ env.GIT_REP }}.git;
+            git reset --hard
+            git pull origin master;
+            cd backend;
+
+            timestamp=$(date +%s)
+            sed -i '2s/.*/'$timestamp'/' version.txt
+
+  telegram:
+    needs: deploy
+    if: always()
+    name: Send a message to Telegram
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send a message error to Telegram
+        if: ${{ needs.deploy.result != 'success' }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ env.TG_ID_CHANEL }}
+          token: ${{ env.TG_BOT_TOKEN }}
+          message: |
+            ❌ Action CI/CD завершился с ошибкой :(
+            
+            Проверьте логи для получения подробностей.
+            
+            📂 Репозиторий: https://github.com/${{ github.repository }}
+            👤 "${{ github.actor }}" сделал коммит:
+            📝 ${{ github.event.commits[0].message }}
+            
+            Посмотреть изменения: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+
+      - name: Send a message success to Telegram
+        if: ${{ needs.deploy.result == 'success' }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ env.TG_ID_CHANEL }}
+          token: ${{ env.TG_BOT_TOKEN }}
+          message: |
+            ✅ Action CI/CD успешно выполнен!
+            
+            📂 Репозиторий: https://github.com/${{ github.repository }}
+            👤 "${{ github.actor }}" сделал коммит:
+            📝 ${{ github.event.commits[0].message }}
+            
+            Посмотреть изменения: https://github.com/${{ github.repository }}/commit/${{ github.sha }}

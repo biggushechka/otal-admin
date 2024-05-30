@@ -29,6 +29,7 @@ export default function parameters(project) {
 
     function initForm() {
 
+
         var classProject = [
             {title: "Эконом", value: "economy"},
             {title: "Бизнес", value: "business"},
