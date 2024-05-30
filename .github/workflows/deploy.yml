@@ -12,7 +12,6 @@ env:
   SERVER_PATH: "/home/n/novato1v/otal-estate.ru/public_html"
 
   GIT_LOGIN: "MaxXam715"
-  GIT_PASSWORD: ""
   GIT_REP: "luxury_world_web"
   GIT_OWNER_REP: "Guva99"
 
@@ -34,7 +33,7 @@ jobs:
           key: ${{ secrets.MAX_SSH_KEY }}
           script: |
             cd ${{ env.SERVER_PATH }};
-            git remote set-url origin https://${{ env.GIT_LOGIN }}:${{ env.GIT_PASSWORD }}@github.com/${{ env.GIT_OWNER_REP }}/${{ env.GIT_REP }}.git;
+            git remote set-url origin https://${{ env.GIT_LOGIN }}:${{ secrets.PASS_TOKEN }}@github.com/${{ env.GIT_OWNER_REP }}/${{ env.GIT_REP }}.git;
             git reset --hard
             git pull origin master;
             cd backend;
