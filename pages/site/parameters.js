@@ -52,7 +52,7 @@ export default function parameters(project) {
         var finishing = [
             {title: "Черновая отделка", value: "rough-finish"},
             {title: "Предчистовая", value: "pre-cleaning"},
-            {title: "WhiteBox", value: "cleaning"},
+            {title: "White box", value: "cleaning"},
             {title: "Под ключ", value: "turnkey"},
             {title: "Евроремонт", value: "renovation"},
             {title: "Дизайнерский ремонт", value: "designer-renovation"},
