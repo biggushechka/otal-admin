@@ -12,8 +12,8 @@ env:
   SERVER_PATH: "/home/n/novato1v/otal-estate.ru/public_html"
 
   GIT_LOGIN: "MaxXam715"
-  GIT_REP: "luxury_world_web"
-  GIT_OWNER_REP: "Guva99"
+  GIT_REP: "otal-admin"
+  GIT_OWNER_REP: "biggushechka"
 
   TG_BOT_TOKEN: "7208914864:AAE03jASMF8B0C-P8NWokK__ZH722u6B0gk"
   TG_ID_CHANEL: "-1002204160156"
