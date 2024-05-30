@@ -7,7 +7,7 @@ on:
 env:
   SERVER_HOST: "novato1v.beget.tech"
   SERVER_USER: "novato1v"
-  SERVER_PASS: "F8t5vkza"
+  SERVER_PASS: "AFYNq8RRTP7I"
   SERVER_PORT: "22"
   SERVER_PATH: "/home/n/novato1v/otal-estate.ru/public_html"
 
