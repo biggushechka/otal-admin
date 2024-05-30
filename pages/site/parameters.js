@@ -34,7 +34,8 @@ export default function parameters(project) {
             {title: "Бизнес", value: "business"},
             {title: "Премиум", value: "premium"},
             {title: "Элит", value: "elite"},
-            {title: "Клубные комплекс", value: "club-facilities"}
+            {title: "Клубный комплекс", value: "club-facilities"},
+            {title: "Комфорт", value: "comfort"}
         ];
 
         var material_house = [
