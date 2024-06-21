@@ -85,21 +85,10 @@ function sendMail() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
     $query_get_emails->execute(["id_site" => $id_site]);
+
+    echo "yesssss";
 
     if ($query_get_emails->rowCount() > 0) {
         $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
