@@ -20,7 +20,7 @@ $id_site = 0;
 $type = (isset($POST["type"]) === true) ? $POST["type"] : "";
 $name = (isset($POST["name"]) === true) ? $POST["name"] : "";
 $phone = (isset($POST["phone"]) === true) ? $POST["phone"] : "";
-$email = (isset($POST["email"]) === true) ? $POST["email"] : "";
+$client_email = (isset($POST["email"]) === true) ? $POST["email"] : "";
 $comment = (isset($POST["comment"]) === true) ? $POST["comment"] : "";
 $currentDateTime = date('Y-m-d H:i:s');
 
@@ -72,10 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function sendTelegram() {
-    global $dbh, $id_site, $refererDom, $phone, $type, $name, $email;
+    global $dbh, $id_site, $refererDom, $phone, $type, $name, $client_email;
 
     $botToken = '6992664105:AAGlVd1qXIqcUpZEXCcfF1qFI-Z3i32vWz0';
-    $message = "Новая заявка ($refererDom)\n\nТип: *$type*;\nИмя: *$name*;\nТелефон: *$phone*;\nE-Mail: *$email*;";
+    $message = "Новая заявка ($refererDom)\n\nТип: *$type*;\nИмя: *$name*;\nТелефон: *$phone*;\nE-Mail: *$client_email*;";
 
     $query_get_tg = $dbh->prepare("SELECT `tg_chad_id` FROM `site_orders_source_telegram` WHERE `id_site` = :id_site");
     $query_get_tg->execute(["id_site" => $id_site]);
@@ -102,7 +102,7 @@ function sendTelegram() {
 }
 
 function sendMail() {
-    global $dbh, $id_site, $refererDom, $phone, $type, $name, $email;
+    global $dbh, $id_site, $refererDom, $phone, $type, $name, $client_email;
     $mail = new PHPMailer();
 
     $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
@@ -142,7 +142,7 @@ function sendMail() {
             </tr>
             <tr>
                 <td style="border: 1px solid #000; padding: 5px;">E-Mail</td>
-                <td style="border: 1px solid #000; padding: 5px;">'.$email.'</td>
+                <td style="border: 1px solid #000; padding: 5px;">'.$client_email.'</td>
             </tr>
         </tbody>
     </table>';
