@@ -21,7 +21,7 @@ $type = (isset($POST["type"]) === true) ? $POST["type"] : "";
 $name = (isset($POST["name"]) === true) ? $POST["name"] : "не указано";
 $phone = (isset($POST["phone"]) === true) ? $POST["phone"] : "не указан";
 $client_email = (isset($POST["email"]) === true) ? $POST["email"] : "не указано";
-$comment = (isset($POST["comment"]) === true) ? $POST["comment"] : "не указано";
+$comment = (isset($POST["comment"]) === true) ? $POST["comment"] : "не указан";
 $currentDateTime = date('Y-m-d H:i:s');
 
 if (isset($refererDom)) {

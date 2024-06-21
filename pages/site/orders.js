@@ -16,7 +16,7 @@ export default function orders(project) {
                 <h4 class="title-card">Заявки <span class="count-all"></span></h4>
                 <div class="target-block">
                     <button type="button" class="btn btn-send-setting">Куда отправлять заявки?</button>
-                    <button type="button" class="btn btn-primary btn-send-tg">Отправить в ТГ</button>
+<!--                    <button type="button" class="btn btn-primary btn-send-tg">Отправить в ТГ</button>-->
                 </div>
             </div>
             <div class="content-card"></div>
@@ -27,14 +27,17 @@ export default function orders(project) {
             modalSendSetting();
         });
 
-        sectionHTML.querySelector(".btn-send-tg").addEventListener("click", function () {
-            var sendOrder = XMLHttpRequestAJAX({
-                url: "/api/site/orders/send-tg",
-                method: "GET"
-            });
-
-            console.log("sendOrder", sendOrder)
-        });
+        // sectionHTML.querySelector(".btn-send-tg").addEventListener("click", function () {
+        //     const groupId = "-1002160719822";
+        //     const token = '6992664105:AAGlVd1qXIqcUpZEXCcfF1qFI-Z3i32vWz0';
+        //
+        //     var getNameTG = XMLHttpRequestAJAX({
+        //         url: `https://api.telegram.org/bot${token}/getChat?chat_id=${groupId}`,
+        //         method: "GET"
+        //     });
+        //
+        //     console.log("getNameTG:", getNameTG.data.result.title)
+        // });
 
         // сортировка по "Дате"
         sortSelect({
