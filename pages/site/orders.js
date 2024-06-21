@@ -16,6 +16,7 @@ export default function orders(project) {
                 <h4 class="title-card">Заявки <span class="count-all"></span></h4>
                 <div class="target-block">
                     <button type="button" class="btn btn-send-setting">Куда отправлять заявки?</button>
+                    <button type="button" class="btn btn-primary btn-send-tg">Отправить в ТГ</button>
                 </div>
             </div>
             <div class="content-card"></div>
@@ -24,6 +25,15 @@ export default function orders(project) {
 
         sectionHTML.querySelector(".btn-send-setting").addEventListener("click", function () {
             modalSendSetting();
+        });
+
+        sectionHTML.querySelector(".btn-send-tg").addEventListener("click", function () {
+            var sendOrder = XMLHttpRequestAJAX({
+                url: "/api/site/orders/send-tg",
+                method: "GET"
+            });
+
+            console.log("sendOrder", sendOrder)
         });
 
         // сортировка по "Дате"

@@ -67,6 +67,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($query_add->rowCount() > 0) {
         sendMail();
+        sendTelegram();
+    }
+}
+
+function sendTelegram() {
+    global $dbh, $id_site, $refererDom, $phone, $type, $name, $email;
+
+    $botToken = '6992664105:AAGlVd1qXIqcUpZEXCcfF1qFI-Z3i32vWz0';
+    $message = "Новая заявка ($refererDom)\n\nТип: *$type*;\nИмя: *$name*;\nТелефон: *$phone*;\nE-Mail: *$email*;";
+
+    $query_get_tg = $dbh->prepare("SELECT `tg_chad_id` FROM `site_orders_source_telegram` WHERE `id_site` = :id_site");
+    $query_get_tg->execute(["id_site" => $id_site]);
+
+    if ($query_get_tg->rowCount() > 0) {
+        $getSours = $query_get_tg->fetchAll(PDO::FETCH_ASSOC);
+
+        // Проходим по каждому email и добавляем его как получателя
+        foreach ($getSours as $source) {
+            // Отправляем POST-запрос на API Telegram для отправки сообщения
+            $url = 'https://api.telegram.org/bot' . $botToken . '/sendMessage';
+            $data = array('chat_id' => $source['tg_chad_id'], 'text' => $message, 'parse_mode' => 'Markdown');
+            $options = array(
+                'http' => array(
+                    'method'  => 'POST',
+                    'header'  => 'Content-type: application/x-www-form-urlencoded',
+                    'content' => http_build_query($data)
+                )
+            );
+            $context  = stream_context_create($options);
+            $result = file_get_contents($url, false, $context);
+        }
     }
 }
 
@@ -79,7 +110,6 @@ function sendMail() {
 
     $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
 
-
     $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
     $query_get_emails->execute(["id_site" => $id_site]);
 
@@ -91,7 +121,6 @@ function sendMail() {
             $mail->addAddress($email['email'], 'Recipient Name'); // кому (email и имя)
         }
     }
-
 
 
     $mail->isHTML(true);
