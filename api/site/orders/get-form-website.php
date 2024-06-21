@@ -88,13 +88,10 @@ function sendMail() {
 
         // Проходим по каждому email и добавляем его как получателя
         foreach ($emails as $email) {
-            echo $email['email'];
+            $mail->addAddress($email['email'], 'Recipient Name'); // кому (email и имя)
         }
-    } else {
-        echo "nooo";
     }
 
-    $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
 
 
     $mail->isHTML(true);
