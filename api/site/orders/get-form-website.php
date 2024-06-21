@@ -85,17 +85,17 @@ function sendMail() {
 
 
 
-//    $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
-//    $query_get_emails->execute(["id_site" => $id_site]);
-//
-//    if ($query_get_emails->rowCount() > 0) {
-//        $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
-//
-//        // Проходим по каждому email и добавляем его как получателя
-//        foreach ($emails as $email) {
-//            $mail->addAddress($email['email'], 'Recipient Name'); // кому (email и имя)
-//        }
-//    }
+    $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
+    $query_get_emails->execute(["id_site" => $id_site]);
+
+    if ($query_get_emails->rowCount() > 0) {
+        $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
+
+        // Проходим по каждому email и добавляем его как получателя
+        foreach ($emails as $email) {
+            echo $email['email'];
+        }
+    }
 
     $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
 
