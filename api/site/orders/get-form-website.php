@@ -80,19 +80,17 @@ function sendMail() {
     $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
 
 
-    $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
-    $query_get_emails->execute(["id_site" => $id_site]);
-
-    echo $query_get_emails;
-
-    if ($query_get_emails->rowCount() > 0) {
-        $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
-
-        // Проходим по каждому email и добавляем его как получателя
-        foreach ($emails as $email) {
-            echo $email['email'];
-        }
-    }
+//    $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
+//    $query_get_emails->execute(["id_site" => $id_site]);
+//
+//    if ($query_get_emails->rowCount() > 0) {
+//        $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
+//
+//        // Проходим по каждому email и добавляем его как получателя
+//        foreach ($emails as $email) {
+//            echo $email['email'];
+//        }
+//    }
 
     $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
 
