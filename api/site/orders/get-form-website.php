@@ -37,6 +37,7 @@ if (isset($refererDom)) {
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetch(PDO::FETCH_OBJ);
         $id_site = $site->id;
+        echo $id_site;
     } else {
         $dbh = null;
         header("HTTP/1.1 403 Forbidden");
@@ -87,8 +88,6 @@ function sendMail() {
 
     $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
     $query_get_emails->execute(["id_site" => $id_site]);
-
-    echo "yesssss";
 
     if ($query_get_emails->rowCount() > 0) {
         $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
