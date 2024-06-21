@@ -65,12 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         "date_create" => $currentDateTime
     ]);
 
-    if ($query_add->rowCount() > 0) {
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode("Отправлено 3131 !", JSON_UNESCAPED_UNICODE);
-    }
-
     sendMail();
 }
 
