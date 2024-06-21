@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function sendMail() {
-    global $id_site, $refererDom, $phone, $type, $name, $email;
+    global $dbh, $id_site, $refererDom, $phone, $type, $name, $email;
     $mail = new PHPMailer();
 
     $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
@@ -80,9 +80,10 @@ function sendMail() {
     $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
 
 
-
     $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
     $query_get_emails->execute(["id_site" => $id_site]);
+
+    echo $query_get_emails;
 
     if ($query_get_emails->rowCount() > 0) {
         $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
