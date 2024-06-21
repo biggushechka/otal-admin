@@ -37,7 +37,6 @@ if (isset($refererDom)) {
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetch(PDO::FETCH_OBJ);
         $id_site = $site->id;
-        echo $id_site;
     } else {
         $dbh = null;
         header("HTTP/1.1 403 Forbidden");
@@ -67,12 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     if ($query_add->rowCount() > 0) {
-        sendMail();
-
         header("HTTP/1.1 200 OK");
         header('Content-Type: application/json; charset=UTF-8');
         echo json_encode("Отправлено 3131 !", JSON_UNESCAPED_UNICODE);
     }
+
+    sendMail();
 }
 
 function sendMail() {
@@ -86,17 +85,19 @@ function sendMail() {
 
 
 
-    $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
-    $query_get_emails->execute(["id_site" => $id_site]);
+//    $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
+//    $query_get_emails->execute(["id_site" => $id_site]);
+//
+//    if ($query_get_emails->rowCount() > 0) {
+//        $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
+//
+//        // Проходим по каждому email и добавляем его как получателя
+//        foreach ($emails as $email) {
+//            $mail->addAddress($email['email'], 'Recipient Name'); // кому (email и имя)
+//        }
+//    }
 
-    if ($query_get_emails->rowCount() > 0) {
-        $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
-
-        // Проходим по каждому email и добавляем его как получателя
-        foreach ($emails as $email) {
-            $mail->addAddress($email['email'], 'Recipient Name'); // кому (email и имя)
-        }
-    }
+    $mail->addAddress('gorbatenkomax@yandex.ru', 'Recipient Name'); // кому (email и имя)
 
 
     $mail->isHTML(true);
