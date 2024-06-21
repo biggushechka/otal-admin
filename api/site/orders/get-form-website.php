@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         "type" => $type,
         "name" => $name,
         "phone" => $phone,
-        "email" => $email,
+        "email" => $client_email,
         "comment" => $comment,
         "date_create" => $currentDateTime
     ]);
