@@ -102,8 +102,7 @@ function sendMail() {
     $query_get_emails->execute(["id_site" => $id_site]);
 
     if ($query_get_emails->rowCount() > 0) {
-        $email = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
-        echo "yessss";
+        $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
 
         // Проходим по каждому email и добавляем его как получателя
         foreach ($emails as $email) {
