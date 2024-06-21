@@ -18,10 +18,10 @@ $POST = json_decode($get_post_data, true);
 
 $id_site = 0;
 $type = (isset($POST["type"]) === true) ? $POST["type"] : "";
-$name = (isset($POST["name"]) === true) ? $POST["name"] : "";
-$phone = (isset($POST["phone"]) === true) ? $POST["phone"] : "";
-$client_email = (isset($POST["email"]) === true) ? $POST["email"] : "";
-$comment = (isset($POST["comment"]) === true) ? $POST["comment"] : "";
+$name = (isset($POST["name"]) === true) ? $POST["name"] : "не указано";
+$phone = (isset($POST["phone"]) === true) ? $POST["phone"] : "не указан";
+$client_email = (isset($POST["email"]) === true) ? $POST["email"] : "не указано";
+$comment = (isset($POST["comment"]) === true) ? $POST["comment"] : "не указано";
 $currentDateTime = date('Y-m-d H:i:s');
 
 if (isset($refererDom)) {
