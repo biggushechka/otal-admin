@@ -177,6 +177,23 @@ export default function orders(project) {
             var titleCol = (type === "email") ? "Почта" : (type === "telegram") ? "Телеграм" : "NaN";
             var placeholder = (type === "email") ? "Введите почтовый адрес.." : (type === "telegram") ? "ID канала или группы.." : "NaN";
 
+            var tableColHTML = document.createElement("div");
+            tableColHTML.classList.add("col-item");
+            tableColHTML.innerHTML = `
+            <span class="title-col">${titleCol}</span>
+            <form class="container-field">
+                <button type="button" class="btn btn-primary btn-add-row"><i class="ph ph-plus"></i></button>
+            </form>
+            <div class="list-content"></div>`;
+
+            const form = tableColHTML.querySelector("form");
+
+            if (type === "email") {
+                form.prepend(formFields.inputText({name: type, placeholder: placeholder, mask: "email", validate: "true"}))
+            } else {
+                form.prepend(formFields.inputText({name: type, placeholder: placeholder, mask: "", validate: "true"}))
+            }
+
             var getSourceSend = XMLHttpRequestAJAX({
                 url: "/api/site/orders/get-source-send",
                 method: "GET",
@@ -186,16 +203,6 @@ export default function orders(project) {
                 }
             });
 
-            var tableColHTML = document.createElement("div");
-            tableColHTML.classList.add("col-item");
-            tableColHTML.innerHTML = `
-            <span class="title-col">${titleCol}</span>
-            <form class="container-field">
-                <input type="text" class="input-filed" placeholder="${placeholder}">
-                <button type="button" class="btn btn-primary btn-add-row"><i class="ph ph-plus"></i></button>
-            </form>
-            <div class="list-content"></div>`;
-
             if (getSourceSend.code === 200) {
                 for (var i in getSourceSend.data) {
                     var getTmpl = tmplRow(getSourceSend.data[i]);
@@ -203,30 +210,24 @@ export default function orders(project) {
                 }
             }
 
-            if (type == "email") {
-                var pattern = /^([a-z0-9_\.-])+[@][a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
-
-                var input = tableColHTML.querySelector("input");
-                input.onblur = function() {
-                    if (!pattern.test(input.value)) {
-                        input.value = "";
-                    }
-                };
-            }
-
             // добавить запись в бд
             tableColHTML.querySelector(".btn-add-row").addEventListener("click", function () {
-                var contentField = tableColHTML.querySelector(".input-filed").value,
+                var contentField = tableColHTML.querySelector(".field-input"),
+                    getValuesForm = formFields.getValuesForm(form),
                     sendSource = {
                         id_site: project.id,
                         source: type,
                     };
 
-                if (contentField === "") return false;
+                if (getValuesForm.status === false) return false;
 
                 if (type === "email") {
-                    sendSource.email = contentField;
+                    sendSource['email'] = getValuesForm.form['email'];
+                } else {
+                    sendSource['telegram'] = getValuesForm.form['telegram'];
                 }
+
+                contentField.value = "";
 
                 var addSourceSend = XMLHttpRequestAJAX({
                     url: "/api/site/orders/add-source-send",
@@ -234,10 +235,7 @@ export default function orders(project) {
                     body: sendSource
                 });
 
-                console.log("добавил:", addSourceSend)
-
                 if (addSourceSend.code === 200) {
-                    contentField.value = "";
                     var getTmpl = tmplRow(addSourceSend.data);
                     tableColHTML.querySelector(".list-content").append(getTmpl);
 
@@ -250,8 +248,12 @@ export default function orders(project) {
             function tmplRow(data) {
                 var content;
 
+                console.log(type, data)
+
                 if (type === "email") {
-                    content = data.email;
+                    content = data['email'];
+                } else if (type === "telegram") {
+                    content = data['tg_chad_id'];
                 }
 
                 var rowHTML = document.createElement("div");
@@ -266,7 +268,8 @@ export default function orders(project) {
                         url: "/api/site/orders/delete-source-send",
                         method: "DELETE",
                         body: {
-                            id_source: data.id,
+                            id: data.id,
+                            source: type,
                             id_site: project.id,
                         }
                     });

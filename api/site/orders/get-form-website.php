@@ -75,14 +75,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function sendMail() {
-    global $refererDom, $phone, $type, $name, $email;
+    global $id_site, $refererDom, $phone, $type, $name, $email;
     $mail = new PHPMailer();
 
     $mail->CharSet = 'UTF-8'; // Установка кодировки UTF-8
     $mail->setLanguage('ru', 'path_to_phpmailer/PHPMailer/language/'); // Задание языка сообщения (русский)
 
     $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
-    $mail->addAddress('crym.nedvizhimost@yandex.ru', 'Recipient Name'); // кому (email и имя)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
+    $query_get_emails->execute(["id_site" => $id_site]);
+
+    if ($query_get_emails->rowCount() > 0) {
+        $email = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
+
+        // Проходим по каждому email и добавляем его как получателя
+        foreach ($emails as $email) {
+            $mail->addAddress($email['email'], 'Recipient Name');
+        }
+    }
+
+
+
+
+
+
+
+
 
     $mail->isHTML(true);
     $mail->Subject = "Новая заявка ($refererDom)";

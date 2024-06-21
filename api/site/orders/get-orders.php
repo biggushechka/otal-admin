@@ -62,6 +62,9 @@ $query_get_mata = $dbh->prepare($queryGetOrders);
 $query_get_mata->execute();
 
 $meta = $query_get_mata->fetchAll(PDO::FETCH_ASSOC);
-echo json_encode($meta, JSON_UNESCAPED_UNICODE);
-header("HTTP/1.1 200 OK");
-header('Content-Type: application/json; charset=UTF-8');
+
+if ($meta) {
+    header("HTTP/1.1 200 OK");
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode($meta, JSON_UNESCAPED_UNICODE);
+}
