@@ -80,9 +80,9 @@ function sendMail() {
     $mail->setFrom('otalestate@support.com', 'Система'); // от кого (email и имя)
 
 
-//    $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
-//    $query_get_emails->execute(["id_site" => $id_site]);
-//
+    $query_get_emails = $dbh->prepare("SELECT `email` FROM `site_orders_source_email` WHERE `id_site` = :id_site");
+    $query_get_emails->execute(["id_site" => $id_site]);
+
 //    if ($query_get_emails->rowCount() > 0) {
 //        $emails = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
 //
