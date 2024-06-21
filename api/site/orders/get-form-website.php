@@ -103,19 +103,13 @@ function sendMail() {
 
     if ($query_get_emails->rowCount() > 0) {
         $email = $query_get_emails->fetchAll(PDO::FETCH_ASSOC);
+        echo "yessss";
 
         // Проходим по каждому email и добавляем его как получателя
         foreach ($emails as $email) {
-            $mail->addAddress($email['email'], 'Recipient Name');
+            $mail->addAddress($email['email'], 'Recipient Name'); // кому (email и имя)
         }
     }
-
-
-
-
-
-
-
 
 
     $mail->isHTML(true);
