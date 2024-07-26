@@ -176,12 +176,7 @@ export default function orders(project) {
                     active: true,
                 },
                 submit: {
-                    active: true,
-                    title: "Сохранить",
-                    nameClass: "",
-                    callback: function(modalClass) {
-
-                    },
+                    active: false
                 },
             }
         });

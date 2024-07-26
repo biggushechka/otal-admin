@@ -321,8 +321,6 @@ export default function gallery(project) {
                         allItem = listContainer.querySelectorAll(".row-image"),
                         newItem = allItem[allItem.length - 1];
 
-                    console.log("pastUpdateRow", pastUpdateRow)
-
                     listContainer.replaceChild(newItem, replaceableItem);
 
                     alertNotification({status: "success", text: "Обложка успешно обновлена", pos: "top-center"});
