@@ -26,6 +26,5 @@ $result = file_get_contents($url, false, $context);
 // Выводим результат отправки сообщения
 print_r($result);
 
-
 $dbh = null;
 die();

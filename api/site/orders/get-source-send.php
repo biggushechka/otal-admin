@@ -30,10 +30,10 @@ if ($method === "GET") {
         $query_get_row->execute(["id_site" => $id_site]);
 
         if ($query_get_row->rowCount() > 0) {
-            $email = $query_get_row->fetchAll(PDO::FETCH_ASSOC);
+            $tg = $query_get_row->fetchAll(PDO::FETCH_ASSOC);
             header("HTTP/1.1 200 OK");
             header('Content-Type: application/json; charset=UTF-8');
-            echo json_encode($email, JSON_UNESCAPED_UNICODE);
+            echo json_encode($tg, JSON_UNESCAPED_UNICODE);
         } else {
             header("HTTP/1.1 404 NF");
             header('Content-Type: application/json; charset=UTF-8');

@@ -27,18 +27,6 @@ export default function orders(project) {
             modalSendSetting();
         });
 
-        // sectionHTML.querySelector(".btn-send-tg").addEventListener("click", function () {
-        //     const groupId = "-1002160719822";
-        //     const token = '6992664105:AAGlVd1qXIqcUpZEXCcfF1qFI-Z3i32vWz0';
-        //
-        //     var getNameTG = XMLHttpRequestAJAX({
-        //         url: `https://api.telegram.org/bot${token}/getChat?chat_id=${groupId}`,
-        //         method: "GET"
-        //     });
-        //
-        //     console.log("getNameTG:", getNameTG.data.result.title)
-        // });
-
         // сортировка по "Дате"
         sortSelect({
             title: "Дата",
@@ -173,6 +161,7 @@ export default function orders(project) {
             width: '800px',
             footerEvents:{
                 cancel: {
+                    title: 'Закрыть',
                     active: true,
                 },
                 submit: {
@@ -256,12 +245,24 @@ export default function orders(project) {
             function tmplRow(data) {
                 var content;
 
-                console.log(type, data)
+                console.log(type, data);
+
 
                 if (type === "email") {
                     content = data['email'];
                 } else if (type === "telegram") {
                     content = data['tg_chad_id'];
+
+
+                    const groupId = content;
+                    const token = '6992664105:AAGlVd1qXIqcUpZEXCcfF1qFI-Z3i32vWz0';
+
+                    var getNameTG = XMLHttpRequestAJAX({
+                        url: `https://api.telegram.org/bot${token}/getChat?chat_id=${groupId}`,
+                        method: "GET"
+                    });
+
+                    console.log("getNameTG:", getNameTG.data)
                 }
 
                 var rowHTML = document.createElement("div");
@@ -271,6 +272,7 @@ export default function orders(project) {
                 <span class="content">${content}</span>
                 <button type="button" class="btn btn-primary btn-delete-row"><i class="ph ph-x"></i></button>`;
 
+                // удалить строку
                 rowHTML.querySelector(".btn-delete-row").addEventListener("click", function () {
                     var deleteSourceSend = XMLHttpRequestAJAX({
                         url: "/api/site/orders/delete-source-send",
