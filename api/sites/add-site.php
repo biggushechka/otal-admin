@@ -28,7 +28,7 @@ if (!$ssh->login('user744875', 'm3WfF65xoCpG')) {
 }
 
 // Перейдем в папку www
-$ssh->exec('cd www');
+$ssh->exec('cd ./www');
 
 $fileList = $ssh->exec('ls');
 echo 'Содержимое директории '.$ssh->exec('pwd').': ' . trim($fileList);
