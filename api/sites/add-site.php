@@ -29,7 +29,9 @@ if (!$ssh->login('user744875', 'm3WfF65xoCpG')) {
 
 // Выполняем команду pwd для получения текущей директории
 $currentDirectory = $ssh->exec('pwd');
-echo 'Текущая директория: ' . trim($currentDirectory);
+$currentDirectory = $ssh->exec('cd www');
+$ls = $ssh->exec('ls');
+echo 'Текущая директория: ' . trim($currentDirectory) . '<br>' . trim($ls);
 
 
 
