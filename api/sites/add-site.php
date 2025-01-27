@@ -10,44 +10,14 @@ use phpseclib3\Net\SSH2;
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
 
-//$title = $POST['title'];
-//$domain = $POST['domain'];
-//$currentDateTime = date('Y-m-d H:i:s');
-//
-//// проверяем, есть ли уже такой сайт в БД по (title, domain)
-//$query_findSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title OR `domain` = :domain LIMIT 1");
-//$query_findSite->execute(["title" => $title, "domain" => $domain]);
-//$isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
+$title = $POST['title'];
+$domain = $POST['domain'];
+$currentDateTime = date('Y-m-d H:i:s');
 
-
-
-
-$ssh = new SSH2('s744875.smrtp.ru', 22122);
-if (!$ssh->login('user744875', 'm3WfF65xoCpG')) {
-    exit('Login Failed');
-}
-
-// Перейдем в папку www
-$ssh->exec('cd ./www');
-
-$fileList = $ssh->exec('ls');
-echo 'Содержимое директории '.$ssh->exec('pwd').': ' . trim($fileList);
-
-
-
-exit();
-
-
-
-
-
-
-
-
-
-
-
-
+// проверяем, есть ли уже такой сайт в БД по (title, domain)
+$query_findSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title OR `domain` = :domain LIMIT 1");
+$query_findSite->execute(["title" => $title, "domain" => $domain]);
+$isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
 
 
 
