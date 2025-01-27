@@ -19,6 +19,36 @@ $query_findSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title
 $query_findSite->execute(["title" => $title, "domain" => $domain]);
 $isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
 
+
+
+
+$ssh = new SSH2('s744875.smrtp.ru', 22122);
+if (!$ssh->login('user744875', 'm3WfF65xoCpG')) {
+    exit('Login Failed');
+}
+
+// Выполняем команду pwd для получения текущей директории
+$currentDirectory = $ssh->exec('pwd');
+echo 'Текущая директория: ' . trim($currentDirectory);
+
+
+
+exit();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // если сайт уже существет, то выдаем ошибку
 if ($isSite) {
     header("HTTP/1.1 304 Not Modified");
@@ -47,6 +77,8 @@ if ($isSite) {
 
         $ssh = new SSH2('s744875.smrtp.ru', 22122);
         if (!$ssh->login('user744875', 'm3WfF65xoCpG')) exit('Login Failed');
+
+
         $ssh->exec("cd www && cd $pureDomain && rm -r * && git clone https://github.com/biggushechka/odal-jk.git .");
         $ssh->disconnect();
 

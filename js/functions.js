@@ -59,6 +59,8 @@ function setCookie(data) {
         name,
         expires;
 
+    console.log('setCookie', data)
+
     // проверка данных
     if (data.data == "" || data.data == undefined) {
         console.error('%c ERROR: set Cookie ', 'background: red; color: #fff; border-radius: 50px;', "Нет данных для сохранения");

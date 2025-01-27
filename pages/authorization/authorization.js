@@ -67,6 +67,8 @@ export default function authorization() {
 
             btnSubmit.classList.remove('loading'); // запускаем анимацию в кнопке submit
 
+            console.log('sendLoginData', sendLoginData)
+
             // успешная авторизация
             if (sendLoginData.code === 200) {
 
@@ -80,13 +82,13 @@ export default function authorization() {
                 // при успешной авторизации, красим кнопку в зеленый цвет
                 btnSubmit.classList.add('completed');
 
-                setTimeout(function () {
-                    var formWrapper = form.closest(".form-container"); //
-                    formWrapper.classList.add('fadeOut');
-                    formWrapper.addEventListener('transitionend', function(e) {
-                        location.reload();
-                    });
-                }, 500);
+                // setTimeout(function () {
+                //     var formWrapper = form.closest(".form-container"); //
+                //     formWrapper.classList.add('fadeOut');
+                //     formWrapper.addEventListener('transitionend', function(e) {
+                //         location.reload();
+                //     });
+                // }, 500);
             } else {
                 // показываем ошибку
                 error.querySelector(".text").innerHTML = sendLoginData.data;
