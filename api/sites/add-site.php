@@ -27,10 +27,16 @@ if (!$ssh->login('user744875', 'm3WfF65xoCpG')) {
     exit('Login Failed');
 }
 
-// Выполняем команду pwd для получения текущей директории
+// Перейдем в папку www
 $ssh->exec('cd www');
-$currentDirectory = $ssh->exec('ls');
+
+// Теперь выполняем команды в папке www
+$currentDirectory = $ssh->exec('pwd'); // Получаем текущую директорию
 echo 'Текущая директория: ' . trim($currentDirectory);
+
+// Или вы можете выполнять другую команду, например список файлов в www
+$fileList = $ssh->exec('ls');
+echo 'Содержимое директории www: ' . trim($fileList);
 
 
 
