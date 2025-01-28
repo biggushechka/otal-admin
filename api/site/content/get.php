@@ -6,10 +6,10 @@ $id_site = 0;
 
 require_once "$rootPath/api/config/db_connect.php";
 
-if (isset($refererDom) && isset($fakeDomain) && $refererDom == "http://odal-jk/") {
+if (isset($refererDom) && isset($fakeDomain) && $refererDom == "http://localhost/") {
 
     // разрешаем подключаться к API
-    header("Access-Control-Allow-Origin: http://odal-jk");
+    header("Access-Control-Allow-Origin: http://localhost/");
     header("Access-Control-Allow-Credentials: true");
 
     // получение сайта
