@@ -235,42 +235,39 @@ function alertNotification(data) {
 
 
 function XMLHttpRequestAJAX(data) {
+    var getData = {};
     var sendData = {
-        url: (data.url != undefined && data.url != "") ? data.url : "",
-        method: (data.method != undefined && data.method != "") ? data.method : "POST",
-        body: (data.body != undefined && data.body != "") ? data.body : ""
+        url: data.url || "",
+        method: data.method || "POST",
+        body: data.body || ""
     }
 
     var xhr = new XMLHttpRequest();
 
-    if (sendData.method === "GET" || sendData.method === "DELETE" || sendData.method === "UPDATE") {
-        xhr.open(sendData.method, sendData.url + "?" + new URLSearchParams(sendData.body).toString(), false);
-    }
-
-    if (data.headers) {
-        for (var h in data.headers) {
-            xhr.setRequestHeader(h, data.headers[h]);
-        }
-    }
-
     if (sendData.method === "POST") {
         sendData.body = JSON.stringify(sendData.body);
-        xhr.open("POST", sendData.url, false);
-        xhr.setRequestHeader('Content-Type', 'multipart/form-data');
-        xhr.setRequestHeader('Content-Type', 'text/plain');
+        xhr.open("POST", sendData.url, (data.async) ? data.async : false);
+    } else {
+        xhr.open(sendData.method, sendData.url + "?" + new URLSearchParams(sendData.body).toString(), (data.async) ? data.async : false);
     }
 
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
     xhr.send(sendData.body);
 
-    var getData = {};
-    getData.code = xhr.status;
-
-    try {
-        getData.data = JSON.parse(xhr.responseText);
-    } catch (error) {
-        getData.data = xhr.responseText;
+    if (data.async && data.callback) {
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                data.callback(xhr.responseText)
+            }
+        };
+    } else {
+        getData.code = xhr.status;
+        try {
+            getData.data = JSON.parse(xhr.responseText);
+        } catch (error) {
+            getData.data = xhr.responseText;
+        }
     }
 
     return getData;

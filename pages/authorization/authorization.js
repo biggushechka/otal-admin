@@ -58,14 +58,14 @@ export default function authorization() {
         btnSubmit.classList.add('loading'); // запускаем анимацию в кнопке submit
 
         setTimeout(function () {
+            btnSubmit.classList.remove('loading'); // запускаем анимацию в кнопке submit
+
             // отправляем форму на сервер
             var sendLoginData = XMLHttpRequestAJAX({
                 url: "/api/authorization",
                 method: "POST",
                 body: getValuesForm.form
             });
-
-            btnSubmit.classList.remove('loading'); // запускаем анимацию в кнопке submit
 
             console.log('sendLoginData', sendLoginData)
 

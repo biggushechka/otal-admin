@@ -32,8 +32,12 @@ if (isset($refererDom) && isset($fakeDomain) && $refererDom == "http://odal-jk/"
     $ip_convert = ip2long($ip_address); // конвертируем IP-адрес
 
     // получение сайта
-    $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain AND `ip_address` = :ip_address LIMIT 1");
-    $getSite->execute(["domain" => "https://$refererDomain", "ip_address" => $ip_convert]);
+//    $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain AND `ip_address` = :ip_address LIMIT 1");
+    $getSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `domain` = :domain LIMIT 1");
+    $getSite->execute([
+        "domain" => "https://$refererDomain",
+//        "ip_address" => $ip_convert
+    ]);
 
     if ($getSite->rowCount() > 0) {
         $site = $getSite->fetch(PDO::FETCH_OBJ);

@@ -15,58 +15,9 @@ $domain = $POST['domain'];
 $currentDateTime = date('Y-m-d H:i:s');
 
 // проверяем, есть ли уже такой сайт в БД по (title, domain)
-//$query_findSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title OR `domain` = :domain LIMIT 1");
-//$query_findSite->execute(["title" => $title, "domain" => $domain]);
-//$isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
-
-
-
-
-
-
-
-//$ssh = new SSH2('s744875.smrtp.ru', 22122);
-//if (!$ssh->login('user744875', 'm3WfF65xoCpG')) exit('Login Failed');
-
-
-
-// Параметры FTP-соединения
-$hostname = 's744875.smrtp.ru';
-$port = 22122;
-$ftpUsername = 'user744875';
-$ftpPassword = 'm3WfF65xoCpG';
-
-// Создание подключения FTP
-$connId = ftp_connect($hostname, $port);
-$loginResult = ftp_login($connId, $ftpUsername, $ftpPassword);
-
-
-if ($connId && $loginResult) {
-    if (!ftp_chdir($connId, "www")) {
-        echo 'Не удалось перейти по указанному пути на сервере';
-    } else {
-        echo 'перешел в www';
-    }
-} else {
-    echo "Не удалось соединиться с удаленным сервером.";
-}
-
-
-
-
-exit();
-
-
-
-
-
-
-
-
-
-
-
-
+$query_findSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title OR `domain` = :domain LIMIT 1");
+$query_findSite->execute(["title" => $title, "domain" => $domain]);
+$isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
 
 
 
@@ -96,12 +47,21 @@ if ($isSite) {
         $pureDomain = preg_replace("(^https?://)", "", $domain);
 
 
-        $ssh = new SSH2('s744875.smrtp.ru', 22122);
-        if (!$ssh->login('user744875', 'm3WfF65xoCpG')) exit('Login Failed');
+        $sftp = new SSH2("s744875.smrtp.ru", 22122);
+        $sftp->login('user744875', 'm3WfF65xoCpG');
 
 
-        $ssh->exec("cd www && cd $pureDomain && rm -r * && git clone https://github.com/biggushechka/odal-jk.git .");
-        $ssh->disconnect();
+        // Проверяем, существует ли директория
+        $folderExists = $sftp->exec("cd www && if [ -d $pureDomain ]; then echo 'exists'; fi");
+
+        if (trim($folderExists) === 'exists') {
+            // Если директория существует, очищаем её
+            $sftp->exec("cd www/$pureDomain && rm -rf ./* && git clone https://github.com/biggushechka/odal-jk.git .");
+        } else {
+            // Если директории нет, создаем ее
+            $sftp->exec("cd www && mkdir $pureDomain && cd $pureDomain && git clone https://github.com/biggushechka/odal-jk.git .");
+        }
+        $sftp->disconnect();
 
         header("HTTP/1.1 201 Created");
         header('Content-Type: application/json; charset=UTF-8');
