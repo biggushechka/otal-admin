@@ -15,9 +15,9 @@ $domain = $POST['domain'];
 $currentDateTime = date('Y-m-d H:i:s');
 
 // проверяем, есть ли уже такой сайт в БД по (title, domain)
-$query_findSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title OR `domain` = :domain LIMIT 1");
-$query_findSite->execute(["title" => $title, "domain" => $domain]);
-$isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
+//$query_findSite = $dbh->prepare("SELECT * FROM `my_sites` WHERE `title` = :title OR `domain` = :domain LIMIT 1");
+//$query_findSite->execute(["title" => $title, "domain" => $domain]);
+//$isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
 
 
 
@@ -25,8 +25,8 @@ $isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
 
 
 
-$ssh = new SSH2('s744875.smrtp.ru', 22122);
-if (!$ssh->login('user744875', 'm3WfF65xoCpG')) exit('Login Failed');
+//$ssh = new SSH2('s744875.smrtp.ru', 22122);
+//if (!$ssh->login('user744875', 'm3WfF65xoCpG')) exit('Login Failed');
 
 
 
