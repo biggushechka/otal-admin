@@ -21,6 +21,55 @@ $isSite = $query_findSite->fetch(PDO::FETCH_OBJ);
 
 
 
+
+
+
+
+$ssh = new SSH2('s744875.smrtp.ru', 22122);
+if (!$ssh->login('user744875', 'm3WfF65xoCpG')) exit('Login Failed');
+
+
+
+// Параметры FTP-соединения
+$hostname = 's744875.smrtp.ru';
+$port = 22122;
+$ftpUsername = 'user744875';
+$ftpPassword = 'm3WfF65xoCpG';
+
+// Создание подключения FTP
+$connId = ftp_connect($hostname, $port);
+$loginResult = ftp_login($connId, $ftpUsername, $ftpPassword);
+
+
+if ($connId && $loginResult) {
+    if (!ftp_chdir($connId, "www")) {
+        echo 'Не удалось перейти по указанному пути на сервере';
+    } else {
+        echo 'перешел в www';
+    }
+} else {
+    echo "Не удалось соединиться с удаленным сервером.";
+}
+
+
+
+
+exit();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // если сайт уже существет, то выдаем ошибку
 if ($isSite) {
     header("HTTP/1.1 304 Not Modified");
