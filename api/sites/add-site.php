@@ -31,11 +31,10 @@ if ($isSite) {
     $ip_address = gethostbyname($refererDomain); // получаем IP-адрес по домену
     $ip_convert = ip2long($ip_address); // конвертируем IP-адрес
 
-    $query_create_site = $dbh->prepare("INSERT INTO `my_sites` SET `title` = :title, `domain` = :domain, `date_create` = :date_create, `ip_address` = :ip_address, `activity` = :activity");
+    $query_create_site = $dbh->prepare("INSERT INTO `my_sites` SET `title` = :title, `domain` = :domain, `date_create` = :date_create, `activity` = :activity");
     $query_create_site->execute([
         "title" => $title,
         "domain" => $domain,
-        "ip_address" => $ip_convert,
         "date_create" => $currentDateTime,
         "activity" => "on"
     ]);
