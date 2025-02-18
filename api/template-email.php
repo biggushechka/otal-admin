@@ -1,5 +1,10 @@
 <?php
 
+// разрешаем подключаться к API
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Credentials: true");
+
 $rootPath = $_SERVER['DOCUMENT_ROOT'];
 $method = $_SERVER['REQUEST_METHOD'];
 
