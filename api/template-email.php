@@ -6,6 +6,10 @@ header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");
 
 $method = $_SERVER['REQUEST_METHOD'];
+$rootPath = $_SERVER['DOCUMENT_ROOT'];
+
+require_once $rootPath . '/api/config/db_connect.php';
+
 
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
