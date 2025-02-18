@@ -13,7 +13,9 @@ $POST = json_decode($get_post_data, true);
 $nameClient = !empty($_POST['name']) ? $_POST['name'] : null;
 $phoneClient = !empty($_POST['phone']) ? $_POST['phone'] : null;
 $ymClient = !empty($_POST['ymClient']) ? $_POST['ymClient'] : null;
-$domain = !empty($_POST['domain']) ? $_POST['domain'] : null;
+
+$referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
+$refererDomain = $referer['host']; // получаем домен
 
 if (!$phoneClient) {
     exit();
@@ -21,7 +23,7 @@ if (!$phoneClient) {
 
 // Получатель
 $to = 'gorbatenkomax@yandex.ru';
-$subject = "=?UTF-8?B?" . base64_encode('Заявка с сайта') . "?=";
+$subject = "=?UTF-8?B?" . base64_encode('Заявка с сайта: ' . $refererDomain) . "?=";
 
 $content = '
 <html>
@@ -48,7 +50,7 @@ $content = '
             </tr>
             <tr>
                 <td style="border: 1px solid #000000; padding: 5px 10px">Сайт</td>
-                <td style="border: 1px solid #000000; padding: 5px 10px;">'.$domain.'</td>
+                <td style="border: 1px solid #000000; padding: 5px 10px;">'.$refererDomain.'</td>
             </tr>
         </tbody>
     </table>
