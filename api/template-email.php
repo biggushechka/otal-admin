@@ -26,7 +26,7 @@ if (!$phoneClient || $method !== "POST") {
 }
 
 // Получатель
-$to = 'gorbatenkomax@yandex.ru';
+$to = 'lidotal@otal-estate.ru';
 $subject = "=?UTF-8?B?" . base64_encode('Заявка с сайта: ' . $refererDomain) . "?=";
 
 $content = '
