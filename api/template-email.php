@@ -17,7 +17,7 @@ $ymClient = !empty($_POST['ymClient']) ? $_POST['ymClient'] : null;
 $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
 $refererDomain = $referer['host']; // получаем домен
 
-if (!$phoneClient) {
+if (!$phoneClient && $method !== "POST") {
     exit();
 }
 
