@@ -14,9 +14,9 @@ require_once $rootPath . '/api/config/db_connect.php';
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
 
-$nameClient = !empty($_POST['name']) ? $_POST['name'] : null;
-$phoneClient = !empty($_POST['phone']) ? $_POST['phone'] : null;
-$ymClient = !empty($_POST['ymClient']) ? $_POST['ymClient'] : null;
+$nameClient = !empty($POST['name']) ? $POST['name'] : null;
+$phoneClient = !empty($POST['phone']) ? $POST['phone'] : null;
+$ymClient = !empty($POST['ymClient']) ? $POST['ymClient'] : null;
 
 $referer = parse_url($_SERVER['HTTP_REFERER']); // конвертирует URL в строку
 $refererDomain = $referer['host']; // получаем домен
