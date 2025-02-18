@@ -5,18 +5,19 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");
 
-$rootPath = $_SERVER['DOCUMENT_ROOT'];
 $method = $_SERVER['REQUEST_METHOD'];
-
-require_once $rootPath . '/api/config/db_connect.php';
 
 $get_post_data = file_get_contents("php://input");
 $POST = json_decode($get_post_data, true);
 
-$nameClient = $POST['name'] ?? "---";
-$phoneClient = $POST['phone'] ?? "---";
-$ymClient = $POST['ymClient'] ?? "---";
-$domain = $POST['domain'] ?? "---";
+$nameClient = !empty($_POST['name']) ? $_POST['name'] : null;
+$phoneClient = !empty($_POST['phone']) ? $_POST['phone'] : null;
+$ymClient = !empty($_POST['ymClient']) ? $_POST['ymClient'] : null;
+$domain = !empty($_POST['domain']) ? $_POST['domain'] : null;
+
+if (!$phoneClient) {
+    exit();
+}
 
 // Получатель
 $to = 'gorbatenkomax@yandex.ru';
