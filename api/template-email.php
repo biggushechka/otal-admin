@@ -29,16 +29,20 @@ $content = '
         </thead>
         <tbody>
             <tr>
+                <td style="border: 1px solid #000000; padding: 5px 10px">Имя</td>
+                <td style="border: 1px solid #000000; padding: 5px 10px;">'.$nameClient.'</td>
+            </tr>
+            <tr>
                 <td style="border: 1px solid #000000; padding: 5px 10px">Номер</td>
-                <td style="border: 1px solid #000000; padding: 5px 10px;">+79998887766</td>
+                <td style="border: 1px solid #000000; padding: 5px 10px;">'.$phoneClient.'</td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000000; padding: 5px 10px">ym</td>
-                <td style="border: 1px solid #000000; padding: 5px 10px;">73452134</td>
+                <td style="border: 1px solid #000000; padding: 5px 10px;">'.$ymClient.'</td>
             </tr>
             <tr>
                 <td style="border: 1px solid #000000; padding: 5px 10px">Сайт</td>
-                <td style="border: 1px solid #000000; padding: 5px 10px;">https://akvamarin.krym-estate.ru/</td>
+                <td style="border: 1px solid #000000; padding: 5px 10px;">'.$domain.'</td>
             </tr>
         </tbody>
     </table>
