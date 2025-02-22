@@ -12,7 +12,7 @@ function getBanks($id_site) {
 
         foreach ($listBanks as &$bank) {
             $getDataBank = $dbh->prepare("SELECT * FROM `banks` WHERE `id` = :id_bank LIMIT 1");
-            $getDataBank->execute(["id" => $bank["id_bank"]]);
+            $getDataBank->execute(["id_bank" => $bank["id_bank"]]);
 
             if ($getDataBank->rowCount() > 0) {
                 $dataBankItem = $getDataBank->fetch(PDO::FETCH_OBJ);
