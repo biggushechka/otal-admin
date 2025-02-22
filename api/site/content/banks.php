@@ -9,17 +9,18 @@ function getBanks($id_site) {
 
     if ($query_get_banks->rowCount() > 0) {
         foreach ($query_get_banks as $bank) {
+            $getDataBank = $dbh->prepare("SELECT * FROM `banks` WHERE `id_bank` = :id_bank");
+            $getDataBank->execute(["id_bank" => $bank["id_bank"]]);
 
-//            $query_get_AllBanks = $dbh->prepare("SELECT * FROM `banks`");
-//            $query_get_AllBanks->execute();
+            if ($getDataBank->rowCount() > 0) {
+//                $bankItem = new stdClass();
+//                $bankItem->title = $bank["title"];
+//                $bankItem->photo = "";
+//                $bankItem->rate = $bank["rate"];
+//                $bankItem->initial_payment = $bank["initial_payment"];
 
-//            $bankItem = new stdClass();
-//            $bankItem->title = $bank["title"];
-//            $bankItem->photo = "";
-//            $bankItem->rate = $bank["rate"];
-//            $bankItem->initial_payment = $bank["initial_payment"];
-
-            $banks[] = $bank;
+                $banks[] = $getDataBank;
+            }
         }
     }
 
