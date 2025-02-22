@@ -13,24 +13,14 @@ function getBanks($id_site) {
             $getDataBank->execute(["id_bank" => $bank["id_bank"]]);
 
             if ($getDataBank->rowCount() > 0) {
-                $getDataBank = $getDataBank->fetch(PDO::FETCH_OBJ);
-//                $bankItem = new stdClass();
-//                $bankItem->title = $bank["title"];
-//                $bankItem->photo = "";
-//                $bankItem->rate = $bank["rate"];
-//                $bankItem->initial_payment = $bank["initial_payment"];
-
-                $banks[] = $getDataBank;
+                $dataBankItem = $getDataBank->fetch(PDO::FETCH_OBJ);
+                $banks[] = $dataBankItem;
             }
         }
 
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($banks, JSON_UNESCAPED_UNICODE);
-
-    } else {
-        header("HTTP/1.1 200 OK");
-        header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode([], JSON_UNESCAPED_UNICODE);
     }
+
+    header("HTTP/1.1 200 OK");
+    header('Content-Type: application/json; charset=UTF-8');
+    echo json_encode($banks, JSON_UNESCAPED_UNICODE);
 }
