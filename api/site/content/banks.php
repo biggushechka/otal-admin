@@ -13,6 +13,7 @@ function getBanks($id_site) {
             $getDataBank->execute(["id_bank" => $bank["id_bank"]]);
 
             if ($getDataBank->rowCount() > 0) {
+                $getDataBank = $getDataBank->fetch(PDO::FETCH_OBJ);
 //                $bankItem = new stdClass();
 //                $bankItem->title = $bank["title"];
 //                $bankItem->photo = "";
