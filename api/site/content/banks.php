@@ -16,7 +16,11 @@ function getBanks($id_site) {
 
             if ($getDataBank->rowCount() > 0) {
                 $dataBankItem = $getDataBank->fetch(PDO::FETCH_OBJ);
-                $banks[] = $dataBankItem;
+
+                $bank['title'] = $dataBankItem->title;
+                $bank['logo'] = $dataBankItem->logo;
+
+                $banks[] = $bank;
             }
         }
 
