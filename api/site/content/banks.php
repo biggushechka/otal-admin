@@ -9,7 +9,7 @@ function getBanks($id_site) {
 
     if ($query_get_banks->rowCount() > 0) {
         foreach ($query_get_banks as $bank) {
-            $getDataBank = $dbh->prepare("SELECT * FROM `banks` WHERE `id_bank` = :id_bank");
+            $getDataBank = $dbh->prepare("SELECT * FROM `banks` WHERE `id` = :id_bank LIMIT 1");
             $getDataBank->execute(["id_bank" => $bank["id_bank"]]);
 
             if ($getDataBank->rowCount() > 0) {
