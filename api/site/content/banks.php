@@ -4,6 +4,7 @@ function getBanks($id_site) {
     global $dbh;
     $banks = [];
 
+    $arrayBanks = [];
     $query_get_banks = $dbh->prepare("SELECT * FROM `site_banks` WHERE `id_site` = :id_site AND `activity` = :activity");
     $query_get_banks->execute(["id_site" => $id_site, "activity" => "on"]);
 
@@ -14,9 +15,6 @@ function getBanks($id_site) {
         $query_get_AllBanks->execute();
 
         if ($query_get_AllBanks->rowCount() > 0) {
-
-
-
             foreach ($arrayBanks as $bank) {
                 $bankItem = new stdClass();
 
@@ -32,5 +30,5 @@ function getBanks($id_site) {
 
     header("HTTP/1.1 200 OK");
     header('Content-Type: application/json; charset=UTF-8');
-    echo json_encode($banks, JSON_UNESCAPED_UNICODE);
+    echo json_encode($arrayBanks, JSON_UNESCAPED_UNICODE);
 }
