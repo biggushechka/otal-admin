@@ -8,7 +8,9 @@ function getBanks($id_site) {
     $query_get_banks->execute(["id_site" => $id_site, "activity" => "on"]);
 
     if ($query_get_banks->rowCount() > 0) {
-        foreach ($query_get_banks as &$bank) {
+        $listBanks = $query_get_banks->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($listBanks as &$bank) {
             $getDataBank = $dbh->prepare("SELECT * FROM `banks` WHERE `id` = :id_bank LIMIT 1");
             $getDataBank->execute(["id" => $bank["id_bank"]]);
 
