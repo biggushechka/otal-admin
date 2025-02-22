@@ -23,9 +23,14 @@ function getBanks($id_site) {
                 $banks[] = $getDataBank;
             }
         }
-    }
 
-    header("HTTP/1.1 200 OK");
-    header('Content-Type: application/json; charset=UTF-8');
-    echo json_encode($banks, JSON_UNESCAPED_UNICODE);
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode($banks, JSON_UNESCAPED_UNICODE);
+
+    } else {
+        header("HTTP/1.1 200 OK");
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode([], JSON_UNESCAPED_UNICODE);
+    }
 }
